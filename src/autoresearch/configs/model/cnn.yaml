@@ -1,0 +1,18 @@
+# @package _global_.model
+# Simple CNN with 2 convolutional layers + 1 FC hidden layer
+
+_target_: autoresearch.models.cnn.CNN
+input_channels: 1
+input_height: 28
+input_width: 28
+conv_channels: [32, 64]
+conv_kernel_sizes: [3, 3]
+conv_strides: [1, 1]
+conv_paddings: [1, 1]
+pool_kernel_size: 2
+pool_stride: 2
+fc_hidden_units: [128]
+num_classes: 10
+activation:
+  _target_: torch.nn.ReLU
+dropout: 0.2

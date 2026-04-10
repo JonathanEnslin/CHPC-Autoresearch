@@ -1,0 +1,11 @@
+torch
+torchvision
+hydra-core
+omegaconf
+numpy>=1.22,<2.0
+wandb
+pytest
+python-dotenv
+tqdm
+matplotlib
+pyyaml

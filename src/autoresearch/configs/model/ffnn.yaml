@@ -1,0 +1,10 @@
+# @package _global_.model
+# Small FFNN with 2 hidden layers
+
+_target_: autoresearch.models.ffnn.FFNN
+input_size: 784
+hidden_units: [256, 128, 10]
+activation:
+  _target_: torch.nn.ReLU
+dropout: 0.2
+flatten_input: true

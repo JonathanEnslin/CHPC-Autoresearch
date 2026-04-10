@@ -1,0 +1,5 @@
+# @package _global_.loss_fn
+# Binary Cross Entropy Loss
+
+_target_: torch.nn.BCELoss
+reduction: mean

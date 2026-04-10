@@ -1,0 +1,8 @@
+# @package _global_.dataset
+# MNIST dataset configuration
+
+_target_: torchvision.datasets.MNIST
+root: ./data
+download: true
+transform:
+  _target_: torchvision.transforms.ToTensor

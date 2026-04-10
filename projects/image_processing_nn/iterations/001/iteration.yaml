@@ -1,0 +1,13 @@
+project: image_processing_nn
+iteration: 1
+status: planned
+goal: >
+  Establish baseline results: FFNN on MNIST, CNN on MNIST, ResNet-18 on CIFAR-10.
+  Run each with 5 seeds. Collect accuracy, loss, and parameter counts.
+created: "2026-04-10"
+phase_history: []
+outcomes:
+  summary: null
+  key_metrics: {}
+  artifacts: []
+human_feedback: null

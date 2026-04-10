@@ -1,0 +1,18 @@
+name: "Image Processing with Neural Networks"
+slug: image_processing_nn
+status: active
+created: "2026-04-10"
+description: >
+  Research different neural network architectures for image classification.
+  Starting with FFNN and CNN on MNIST, progressing to ResNet-18 on CIFAR-10.
+  Focus on accuracy, convergence speed, and parameter efficiency.
+current_iteration: 1
+branch: project/image-processing-nn
+human_direction: >
+  Start with MNIST baselines (FFNN, CNN), then CIFAR-10 (ResNet-18).
+  Compare accuracy vs parameter count. Use 5 seeds for statistical robustness.
+best_result:
+  model: null
+  dataset: null
+  accuracy: null
+  experiment_config: null

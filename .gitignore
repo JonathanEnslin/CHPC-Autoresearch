@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ML outputs (regenerable, too large for git)
+outputs/
+multirun/
+logs/
+data/
+wandb/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Example project (reference only, not part of main package)
+example/
