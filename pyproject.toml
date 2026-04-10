@@ -14,7 +14,7 @@ dependencies = [
     "hydra-core",
     "omegaconf",
     "numpy>=1.22,<2.0",
-    "wandb",
+    "wandb<0.18.0",
     "pytest",
     "python-dotenv",
     "tqdm",
