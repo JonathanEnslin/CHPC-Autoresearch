@@ -18,7 +18,7 @@ dependencies = [
     "pytest",
     "python-dotenv",
     "tqdm",
-    "matplotlib",
+    "matplotlib<3.8.0",
     "pyyaml",
 ]
 
