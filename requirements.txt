@@ -7,5 +7,5 @@ wandb
 pytest
 python-dotenv
 tqdm
-matplotlib
+matplotlib --only-binary :all:
 pyyaml

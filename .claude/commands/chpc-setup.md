@@ -26,7 +26,8 @@ python -m venv .venv
 source .venv/bin/activate
 
 # 6. Install dependencies
-pip install -e .
+pip install -r requirements.txt
+pip install -e . --no-deps
 
 # 7. Create logs directory
 mkdir -p logs
@@ -44,5 +45,6 @@ ssh chpclic1
 cd lustre/$CHPC_REPO_NAME
 git pull
 source .venv/bin/activate
-pip install -e .
+pip install -r requirements.txt
+pip install -e . --no-deps
 ```
