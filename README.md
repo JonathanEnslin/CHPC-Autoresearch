@@ -4,6 +4,8 @@ Automated AI Research Assistant for the [CHPC](https://www.chpc.ac.za/) (Center 
 
 An agentic framework where AI coding agents conduct full research loops -- literature survey, implementation, experimentation on HPC, analysis, and documentation -- all driven by structured state files so sessions can pick up where the last left off.
 
+Github URL: git@github.com:Neurulation/CHPC-Autoresearch.git
+
 ## How It Works
 
 1. **Human gives direction** -- e.g., "Research NN architectures for image classification"
