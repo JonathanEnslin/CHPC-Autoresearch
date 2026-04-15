@@ -34,3 +34,6 @@ Thumbs.db
 
 # Example project (reference only, not part of main package)
 example/
+
+# PBS job scripts (contain private CHPC credentials)
+experiments/*.pbs
