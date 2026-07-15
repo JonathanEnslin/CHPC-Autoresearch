@@ -7,6 +7,8 @@
 
 - **Login**: `ssh username@lengau.chpc.ac.za`
 - **Internet node**: `ssh chpclic1` (from login node, for git/pip)
+- **Data transfer**: `ssh username@scp.chpc.ac.za` for SCP/SFTP transfers only;
+  use the login host for PBS submission and job monitoring
 - **Lustre storage**: `cd lustre/` or `/mnt/lustre/users/{username}/`
 - **Submit job**: `qsub script.pbs`
 - **Check jobs**: `qstat -u username`
