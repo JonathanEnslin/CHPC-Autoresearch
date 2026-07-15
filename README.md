@@ -27,6 +27,14 @@ Github URL: git@github.com:Neurulation/CHPC-Autoresearch.git
 **Manual prompt** (if slash commands aren't available):
 > Read CLAUDE.md and run /state-resume. Continue the autoresearch loop from wherever it left off. If no project exists, create one for: **[YOUR RESEARCH TOPIC]**. Work through each phase autonomously. For experiments, try SSH to CHPC directly; if that fails, give me the commands. Commit after each phase.
 
+**Codex Desktop app:** Open this repository as a local project and start a task with:
+```
+Use $autoresearch-start to begin or resume the AutoResearch loop for: [YOUR RESEARCH TOPIC]
+```
+
+The Codex skills live in `.agents/skills/`; use `$` in the task composer to invoke
+one explicitly. Codex also reads the repository's `AGENTS.md` automatically.
+
 ### Git + CHPC Strategy
 
 - **Development** happens on feature branches, merged to `develop` when ready
@@ -235,6 +243,21 @@ CronDelete("eb3ec6ae")
 
 Or just tell the agent: *"stop the loop"* / *"cancel monitoring"*.
 
+### Codex Desktop Job Monitoring
+
+After submitting jobs, use `$chpc-monitor` for an immediate check. For recurring
+monitoring, create a Codex Desktop scheduled task with this prompt:
+
+```
+Use $chpc-monitor to check CHPC job status. For each completed job, extract results,
+write metrics.json, update state, commit and push tracked research state. Resubmit
+any killed jobs after diagnosing the cause.
+```
+
+Test the prompt once before scheduling. Scheduled tasks can run against the local
+project while the Codex Desktop app and computer are running. Manage, pause, or
+delete the monitoring task from Scheduled.
+
 **Walltime sizing rule:** `walltime = n_seeds × per_seed_time × 1.2` (20% buffer).
 RNN-class models: use 4h. FFNN/CNN: use 2h. GPU-1 queue max is 48h.
 
@@ -257,7 +280,8 @@ projects/               # Research state tracking (YAML)
 templates/              # PBS script templates
 scripts/                # Helper scripts (PBS generator)
 docs/                   # Architecture docs, CHPC guides
-.claude/commands/       # Agent skills (slash commands)
+.agents/skills/         # Codex-native repository skills
+.claude/commands/       # Claude Code command definitions
 ```
 
 ## Agent Skills
@@ -277,6 +301,26 @@ docs/                   # Architecture docs, CHPC guides
 | `/state-resume` | Read state and determine next steps |
 | `/docs-fetch` | Fetch CHPC wiki docs for offline reference |
 
+### Codex Skills
+
+Codex skills are repository-local and can be invoked in the Codex Desktop app with
+`$<skill-name>`.
+
+| Skill | Purpose |
+|-------|---------|
+| `$snntorch-docs` | Look up snntorch neuron classes, equations, and API from local docs |
+| `$autoresearch-start` | **Kick off or resume the full AutoResearch loop** |
+| `$chpc-monitor` | Check jobs now or prepare recurring Codex Desktop monitoring |
+| `$chpc-submit` | Generate PBS script and submit to CHPC (tries SSH directly) |
+| `$chpc-status` | Check CHPC job status |
+| `$chpc-setup` | Set up the repository on CHPC for the first time |
+| `$experiment-run` | Run an experiment locally or prepare it for CHPC |
+| `$experiment-analyse` | Analyse experiment results |
+| `$autoresearch-project-init` | Create a new research project |
+| `$autoresearch-iteration-init` | Start a new iteration |
+| `$autoresearch-state-resume` | Read state and determine next steps |
+| `$chpc-docs-fetch` | Refresh offline CHPC wiki documentation |
+
 ## For Your Own Research
 
 1. Fork this repo
@@ -285,6 +329,8 @@ docs/                   # Architecture docs, CHPC guides
 4. Add models to `src/autoresearch/models/` with matching configs
 5. Run experiments locally or on CHPC
 6. The agent tracks state so you can iterate continuously
+
+Codex Desktop users can use `$autoresearch-project-init` for step 3 instead.
 
 ## Tech Stack
 
