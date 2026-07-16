@@ -51,6 +51,12 @@ phases:
       both decoder paths, VGG-9 tensor shapes, temporal loss, and scheduling.
       A bounded two-epoch Fashion-MNIST CUDA smoke test completed successfully
       with checkpointing and realistic chance-level initial metrics.
+  experiment:
+    started_at: "2026-07-16"
+    notes: >
+      Submitted the five-seed Fashion-MNIST direct-input/TET deterministic
+      post-LIF pooling calibration baseline as CHPC job 7331850.sched01. W&B
+      is disabled because the private CHPC .env transfer was not authorized.
 outcomes: []
 human_feedback: >
   Fashion-MNIST uses a 32 -> 64 -> 128 Conv-BN-LIF backbone with two variable
