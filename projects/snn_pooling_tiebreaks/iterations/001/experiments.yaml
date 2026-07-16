@@ -1,4 +1,25 @@
 jobs:
+  - job_id: "7332737.sched01"
+    name: snn_pooling_iter1_fashion_det_wandb_offline
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "03:00:00"
+    submitted_at: "2026-07-17"
+    status: queued
+    notes: >
+      Clean baseline using output group
+      fashion_mnist_snn_pooling_direct_tet_post_deterministic_wandb_offline.
+      W&B is enabled in offline mode because CHPC cannot reach api.wandb.ai;
+      offline artifacts retain the two-epoch validation/activity records for
+      synchronization after transfer.
+
   - job_id: "7332651.sched01"
     name: snn_pooling_iter1_fashion_direct_det_metrics_wandb
     configuration: fashion_mnist_snn_pooling_direct_tet
