@@ -1,4 +1,25 @@
 jobs:
+  - job_id: "7332651.sched01"
+    name: snn_pooling_iter1_fashion_direct_det_metrics_wandb
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "03:00:00"
+    submitted_at: "2026-07-17"
+    status: queued
+    notes: >
+      Clean replacement baseline using output group
+      fashion_mnist_snn_pooling_direct_tet_post_deterministic_metrics_wandb.
+      W&B is enabled through the CHPC-local .env. The run persists validation
+      accuracy and per-layer, per-timestep activity to metrics.jsonl every two
+      epochs, with no per-batch W&B logging.
+
   - job_id: "7332261.sched01"
     name: snn_pooling_iter1_fashion_direct_det_r5
     configuration: fashion_mnist_snn_pooling_direct_tet
