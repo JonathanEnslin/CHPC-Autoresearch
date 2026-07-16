@@ -72,7 +72,7 @@ def generate_pbs(
     out_dir = Path(output_dir) if output_dir else project_root / "experiments"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{name}.pbs"
-    out_path.write_text(script)
+    out_path.write_text(script, newline="\n")
 
     print(f"Generated PBS script: {out_path}")
     return str(out_path)

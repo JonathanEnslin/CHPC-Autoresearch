@@ -54,9 +54,12 @@ phases:
   experiment:
     started_at: "2026-07-16"
     notes: >
-      Submitted the five-seed Fashion-MNIST direct-input/TET deterministic
-      post-LIF pooling calibration baseline as CHPC job 7331850.sched01. W&B
-      is disabled because the private CHPC .env transfer was not authorized.
+      The first submission (7331850.sched01) failed before training because
+      PBS received a CRLF script and rejected /bin/sh^M with exit status 126.
+      No seeds ran. The generator has been corrected to write Unix LF before
+      resubmitting the same five-seed calibration baseline as 7331887.sched01.
+      W&B remains
+      disabled because the private CHPC .env transfer was not authorized.
 outcomes: []
 human_feedback: >
   Fashion-MNIST uses a 32 -> 64 -> 128 Conv-BN-LIF backbone with two variable

@@ -1,5 +1,5 @@
 jobs:
-  - job_id: "7331850.sched01"
+  - job_id: "7331887.sched01"
     name: snn_pooling_iter1_fashion_direct_det
     configuration: fashion_mnist_snn_pooling_direct_tet
     condition: post_lif_deterministic
@@ -14,6 +14,25 @@ jobs:
     submitted_at: "2026-07-16"
     status: submitted
     notes: >
-      Initial calibration baseline. Runs with PYTHONPATH=src and the existing
-      compatible CHPC SNN environment; W&B disabled pending explicit approval
-      to transfer the private .env file.
+      Corrected resubmission using a Unix-LF PBS script. Runs with
+      PYTHONPATH=src and the existing compatible CHPC SNN environment; W&B is
+      disabled pending explicit approval to transfer the private .env file.
+
+  - job_id: "7331850.sched01"
+    name: snn_pooling_iter1_fashion_direct_det
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-07-16"
+    status: failed
+    notes: >
+      Failed before training: the initial PBS script used Windows CRLF line
+      endings, producing /bin/sh^M and PBS exit status 126. No seed outputs
+      were created. Regenerate with Unix LF and resubmit the same configuration.
