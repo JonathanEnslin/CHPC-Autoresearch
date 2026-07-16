@@ -9,7 +9,12 @@ from typing import Any, Dict, Optional, Tuple
 import hydra
 import torch
 import torch.nn as nn
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*_args: Any, **_kwargs: Any) -> bool:
+        """Allow W&B-disabled training in minimal offline environments."""
+        return False
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 from torch.utils.data import DataLoader

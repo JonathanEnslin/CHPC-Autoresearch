@@ -12,11 +12,12 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-07-16"
-    status: submitted
+    status: failed
     notes: >
-      Corrected resubmission using a Unix-LF PBS script. Runs with
-      PYTHONPATH=src and the existing compatible CHPC SNN environment; W&B is
-      disabled pending explicit approval to transfer the private .env file.
+      Failed before training: the shared SNN environment lacks python-dotenv,
+      producing ModuleNotFoundError at train.py import time and PBS exit status
+      1. No seed outputs were created. Make dotenv optional for W&B-disabled
+      jobs, update the offline CHPC checkout, and resubmit.
 
   - job_id: "7331850.sched01"
     name: snn_pooling_iter1_fashion_direct_det
