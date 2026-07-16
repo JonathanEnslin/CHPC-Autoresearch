@@ -16,6 +16,13 @@ module load {python_module}
 cd {lustre_path}/{repo_name}
 source .venv/bin/activate
 
+# Keep credentials local to CHPC. This file is ignored by Git and is never echoed.
+if [ -f .env ]; then
+    set -a
+    . ./.env
+    set +a
+fi
+
 echo "=========================================="
 echo "Job: {job_name}"
 echo "=========================================="
