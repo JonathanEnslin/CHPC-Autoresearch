@@ -12,13 +12,15 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-07-17"
-    status: running
+    status: cancelled
     notes: >
       Resubmission after copying the verified local Fashion-MNIST raw cache to
       CHPC via the SCP node. Uses the same offline-compatible shared SNN
       environment and a unique PBS log name. Startup verified: seed 0 wrote
       status.json and last_checkpoint.pt, while the training process held
-      1056 MiB on the allocated GPU.
+      1056 MiB on the allocated GPU. Cancelled after seed 0 completed because
+      the baseline did not persist validation accuracy or activity artifacts
+      and W&B was disabled; it will be restarted as a clean, tracked run.
 
   - job_id: "7331952.sched01"
     name: snn_pooling_iter1_fashion_direct_det

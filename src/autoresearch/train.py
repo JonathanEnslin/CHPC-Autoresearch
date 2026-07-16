@@ -282,7 +282,7 @@ def train_one_epoch(
         pbar.set_postfix({"loss": loss.item()})
 
         # Log to W&B (step-level metrics)
-        if wandb_enabled and (batch_idx + 1) % log_frequency == 0:
+        if wandb_enabled and log_frequency > 0 and (batch_idx + 1) % log_frequency == 0:
             import wandb
 
             wandb.log(
@@ -488,6 +488,34 @@ def log_epoch_metrics(
         wandb.log(payload)
 
 
+def should_record_epoch(epoch: int, total_epochs: int, frequency: int) -> bool:
+    """Return whether this epoch should emit persistent or external metrics."""
+    return epoch == total_epochs or epoch % max(1, frequency) == 0
+
+
+def set_activity_recording(model: nn.Module, enabled: bool) -> None:
+    """Toggle optional activity instrumentation on models that support it."""
+    if hasattr(model, "set_activity_recording"):
+        model.set_activity_recording(enabled)
+
+
+def append_epoch_metrics(
+    run_dir: Path,
+    epoch: int,
+    train_metrics: Dict[str, float],
+    val_metrics: Dict[str, float],
+) -> None:
+    """Append an analysis-ready epoch record without rewriting large artifacts."""
+    record = {
+        "timestamp": datetime.now().isoformat(),
+        "epoch": epoch,
+        "train": train_metrics,
+        "validation": val_metrics,
+    }
+    with (run_dir / "metrics.jsonl").open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record) + "\n")
+
+
 def train(
     cfg: DictConfig,
     model: nn.Module,
@@ -505,6 +533,7 @@ def train(
 ) -> None:
     """Run the main training loop."""
     checkpoint_dir = run_dir / "checkpoints"
+    metric_frequency = int(cfg.metrics.get("epoch_frequency", 1))
 
     save_status(
         run_dir,
@@ -528,6 +557,8 @@ def train(
     log.info("Starting training...")
     try:
         for epoch in range(start_epoch, cfg.epochs + 1):
+            record_epoch = should_record_epoch(epoch, cfg.epochs, metric_frequency)
+            set_activity_recording(model, record_epoch)
             train_metrics = train_one_epoch(
                 model,
                 train_loader,
@@ -545,14 +576,16 @@ def train(
                 model, val_loader, loss_fn, device, cfg.get("max_validation_batches")
             )
 
-            log_epoch_metrics(
-                epoch, cfg.epochs, train_metrics, val_metrics, wandb_enabled
-            )
+            if record_epoch:
+                log_epoch_metrics(
+                    epoch, cfg.epochs, train_metrics, val_metrics, wandb_enabled
+                )
+                append_epoch_metrics(run_dir, epoch, train_metrics, val_metrics)
 
             # Step LR scheduler
             if scheduler is not None:
                 scheduler.step()
-                if wandb_enabled:
+                if wandb_enabled and record_epoch:
                     import wandb
 
                     wandb.log(
@@ -719,6 +752,8 @@ def main(cfg: DictConfig) -> None:
                     "epoch": 0,
                 }
             )
+
+        append_epoch_metrics(run_dir, 0, initial_train_metrics, initial_val_metrics)
 
     # Run training
     train(

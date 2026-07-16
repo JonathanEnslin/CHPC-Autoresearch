@@ -102,6 +102,7 @@ class SNNPoolingCNN(nn.Module):
         )
         self._last_temporal_logits: torch.Tensor | None = None
         self._last_activity: Dict[str, float] = {}
+        self._record_activity = True
 
     def _encode(self, x: torch.Tensor) -> torch.Tensor:
         if self.encoding == "direct":
@@ -121,13 +122,19 @@ class SNNPoolingCNN(nn.Module):
         self._last_activity = {}
         return metrics
 
+    def set_activity_recording(self, enabled: bool) -> None:
+        """Enable or disable detached spike-activity summaries for a forward pass."""
+        self._record_activity = enabled
+        if not enabled:
+            self._last_activity = {}
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Run the SNN and return count or first-spike class scores."""
         inputs = self._encode(x)
         membranes = self._initial_membranes()
         output_membrane = self.output_lif.init_leaky()
         output_spikes = []
-        recorder = SpikeActivityRecorder()
+        recorder = SpikeActivityRecorder() if self._record_activity else None
 
         for timestep in range(self.timesteps):
             current = inputs[timestep]
@@ -152,25 +159,31 @@ class SNNPoolingCNN(nn.Module):
                         current, membranes[stage_index][conv_index] = lif(
                             current, membranes[stage_index][conv_index]
                         )
-                        recorder.record(layer_name, timestep, current)
+                        if recorder is not None:
+                            recorder.record(layer_name, timestep, current)
                         if is_pool_site:
                             current = self.post_pools[str(stage_index)](
                                 current, membranes[stage_index][conv_index]
                             )
-                            recorder.record_pool(
-                                layer_name, timestep, self.post_pools[str(stage_index)].last_metrics
-                            )
-                    recorder.record(f"{layer_name}_output", timestep, current)
+                            if recorder is not None:
+                                recorder.record_pool(
+                                    layer_name,
+                                    timestep,
+                                    self.post_pools[str(stage_index)].last_metrics,
+                                )
+                    if recorder is not None:
+                        recorder.record(f"{layer_name}_output", timestep, current)
 
             pooled = current.mean(dim=(-2, -1))
             output_current = self.classifier(pooled)
             output_spike, output_membrane = self.output_lif(output_current, output_membrane)
-            recorder.record("output", timestep, output_spike)
+            if recorder is not None:
+                recorder.record("output", timestep, output_spike)
             output_spikes.append(output_spike)
 
         temporal_logits = torch.stack(output_spikes)
         self._last_temporal_logits = temporal_logits
-        self._last_activity = recorder.consume()
+        self._last_activity = recorder.consume() if recorder is not None else {}
         if self.decoding == "tet":
             return temporal_logits.sum(dim=0)
 

@@ -15,10 +15,13 @@ num_workers: 4
 validation_split: 0.1
 early_stopping:
   enabled: false
+metrics:
+  epoch_frequency: 2
 hydra:
   sweeper:
     params:
       seed: range(0,5)
 wandb:
+  log_frequency: 0
   tags: [fashion-mnist, snn, pooling, direct-input, tet, six-timesteps]
   notes: "Pooling tie-break study; use model overrides for condition selection."
