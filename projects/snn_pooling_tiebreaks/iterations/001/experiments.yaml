@@ -1,4 +1,45 @@
 jobs:
+  - job_id: "7332261.sched01"
+    name: snn_pooling_iter1_fashion_direct_det_r5
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-07-17"
+    status: running
+    notes: >
+      Resubmission after copying the verified local Fashion-MNIST raw cache to
+      CHPC via the SCP node. Uses the same offline-compatible shared SNN
+      environment and a unique PBS log name. Startup verified: seed 0 wrote
+      status.json and last_checkpoint.pt, while the training process held
+      1056 MiB on the allocated GPU.
+
+  - job_id: "7331952.sched01"
+    name: snn_pooling_iter1_fashion_direct_det
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-07-16"
+    status: cancelled
+    notes: >
+      Cancelled after 36 minutes with only six CPU-seconds, no allocated-GPU
+      activity, no per-seed outputs, and no Fashion-MNIST cache on CHPC. The
+      offline dataset download was blocked; its cache was copied before
+      resubmission as 7332261.sched01.
+
   - job_id: "7331927.sched01"
     name: snn_pooling_iter1_fashion_direct_det
     configuration: fashion_mnist_snn_pooling_direct_tet
