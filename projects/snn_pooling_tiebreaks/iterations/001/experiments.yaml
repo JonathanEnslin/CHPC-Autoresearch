@@ -1,4 +1,20 @@
 jobs:
+  - job_id: "7331927.sched01"
+    name: snn_pooling_iter1_fashion_direct_det
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-07-16"
+    status: submitted
+    notes: "Third attempt: Unix-LF PBS and offline-compatible dotenv fallback."
+
   - job_id: "7331887.sched01"
     name: snn_pooling_iter1_fashion_direct_det
     configuration: fashion_mnist_snn_pooling_direct_tet
