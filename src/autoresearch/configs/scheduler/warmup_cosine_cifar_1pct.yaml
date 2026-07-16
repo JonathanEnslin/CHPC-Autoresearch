@@ -1,0 +1,4 @@
+# @package _global_.scheduler
+_target_: autoresearch.utils.schedulers.WarmupCosineAnnealingLR
+warmup_epochs: 5
+eta_min: 0.001

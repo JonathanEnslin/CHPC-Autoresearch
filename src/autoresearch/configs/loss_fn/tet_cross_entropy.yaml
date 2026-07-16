@@ -1,0 +1,3 @@
+# @package _global_.loss_fn
+_target_: autoresearch.utils.snn_losses.TemporalEfficientCrossEntropy
+temporal_weight: 0.1

@@ -1,0 +1,51 @@
+name: "SNN Pooling Tie-Breaking"
+slug: snn_pooling_tiebreaks
+status: active
+created: "2026-07-16"
+description: >
+  Determine how max-pooling placement and spike-tie resolution affect the
+  optimization and generalization of convolutional spiking neural networks.
+  The project compares conventional deterministic max pooling with stochastic
+  and membrane-potential-informed alternatives when a pooling window contains
+  multiple spikes.
+current_iteration: 1
+branch: null
+human_direction: >
+  Establish a controlled comparison of pooling placement and post-spike tie
+  resolution. The primary conditions are: (A) conv-current max pooling before
+  LIF, with the standard deterministic max-pool implementation; (B) LIF then
+  deterministic max pooling; (C) LIF then uniform random resolution among
+  simultaneous spikes in each pooling window; and (D) LIF then membrane-excess
+  resolution, selecting the spiking neuron with the greatest pre-threshold,
+  post-integration membrane potential minus threshold. Random and
+  membrane-excess policies are intentionally not applied before LIF because
+  exact ties in continuous currents are rare.
+
+  Use six simulation timesteps throughout. Fashion-MNIST has two separately
+  reported tracks: scaled-log TTFS input with first-spike decoding, and direct
+  input with TET decoding. CIFAR-10 uses direct input with TET decoding.
+  Record raw and normalized spike activity per layer and timestep, plus
+  pre/post-pooling counts, multi-spike-window incidence, and tie-winner spatial
+  distributions. Use five seeds for the final comparison and keep the chosen
+  training recipe fixed across pooling conditions within each dataset/track.
+
+  Fashion-MNIST model: Conv(1,32) -> BN -> LIF -> pool,
+  Conv(32,64) -> BN -> LIF -> pool, Conv(64,128) -> BN -> LIF -> global average
+  pool -> classifier. The first two pool sites vary by condition; global average
+  pooling is fixed initially, with final-layer max pooling reserved for a later
+  ablation. Train for 60 epochs with AdamW (lr 0.02, betas 0.9/0.999,
+  eps 1e-8, weight decay 1e-4) and cosine decay to 0.0002.
+
+  CIFAR-10 model: a spiking VGG-9, not SEW-ResNet18, because three explicit
+  pooling sites make it a direct test of the pooling hypothesis without
+  residual-path confounds. Start with direct input, TET, standard CIFAR random
+  crop and horizontal-flip augmentation, SGD with Nesterov momentum 0.9,
+  lr 0.1, weight decay 5e-4, five-epoch linear warm-up, and 200-epoch cosine
+  decay to 0.001. Confirm this fixed recipe with a one-seed deterministic
+  post-spike baseline before launching the five-seed condition comparison.
+
+  Implement all SNN models and encoders with snntorch. Use its Leaky neurons
+  with surrogate gradients, while retaining each pool site's pre-reset,
+  post-integration membrane state so the membrane-excess selector can be
+  implemented and audited explicitly.
+best_result: null

@@ -90,3 +90,28 @@ def ttfs_encode(
         spikes[t] = ((t_fire == t) & fire_mask).float()
 
     return spikes  # (T, *x.shape)
+
+
+def scaled_log_ttfs_encode(
+    x: torch.Tensor,
+    timesteps: int,
+    log_scale: float = 20.0,
+) -> torch.Tensor:
+    """Encode non-negative inputs with scaled-log TTFS coding.
+
+    The logarithmic scale gives lower intensities more temporal resolution than
+    linear TTFS while retaining a single spike per active input location.
+    """
+    if log_scale <= 0:
+        raise ValueError("log_scale must be positive")
+    if (x < 0).any():
+        raise ValueError("scaled-log TTFS requires non-negative inputs")
+
+    denominator = torch.log1p(torch.tensor(log_scale, device=x.device, dtype=x.dtype))
+    scaled = (torch.log1p(log_scale * x) / denominator).clamp(0.0, 1.0)
+    firing_time = torch.floor((1.0 - scaled) * (timesteps - 1)).long()
+    active = x > 0
+    spikes = torch.zeros(timesteps, *x.shape, device=x.device, dtype=x.dtype)
+    for timestep in range(timesteps):
+        spikes[timestep] = (active & (firing_time == timestep)).to(x.dtype)
+    return spikes

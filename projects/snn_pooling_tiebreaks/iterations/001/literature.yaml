@@ -1,0 +1,82 @@
+literature:
+  - key: eshraghian_et_al_2023
+    title: "Training Spiking Neural Networks Using Lessons From Deep Learning"
+    authors: "Eshraghian, J. K. et al."
+    year: 2023
+    venue: "Proceedings of the IEEE"
+    url: "https://juser.fz-juelich.de/record/1023823/files/Training_Spiking_Neural_Networks_Using_Lessons_From_Deep_Learning.pdf"
+    relevance: >
+      Directly motivates the project. The pooling discussion contrasts pooling
+      membrane potentials before thresholding with pooling spikes after
+      thresholding, reports random resolution among simultaneous spike winners
+      in prior work, and proposes regularization as a plausible explanation.
+    key_points:
+      - "Pooling a binary spike tensor has no intrinsic preference among tied active locations."
+      - "Prior directly trained SNN work used random tie resolution among multiple spikes."
+      - "The review explicitly hypothesizes that this randomness may regularize training."
+      - "Batch normalization is identified as useful for normalizing values passed to a threshold."
+
+  - key: wang_et_al_2022_membrane_pooling
+    title: "Spiking CMOS-NVM mixed-signal neuromorphic ConvNet with circuit- and training-optimized temporal subsampling"
+    authors: "Wang, Y. et al."
+    year: 2022
+    venue: "Scientific Reports"
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10390782/"
+    relevance: >
+      Establishes membrane-potential-based max pooling as a related technique
+      and emphasizes that the winner can change across timesteps. It motivates
+      logging per-timestep activity and explicitly comparing the proposed
+      membrane-excess rule with spike-domain baselines.
+    key_points:
+      - "Membrane-potential max pooling is comparatively underexplored."
+      - "Temporal pooling decisions can change across an input sequence."
+      - "Membrane-based pooling needs carefully specified buffering and routing semantics."
+
+  - key: deng_et_al_2022_tet
+    title: "Temporal Efficient Training of Spiking Neural Network via Gradient Re-weighting"
+    authors: "Deng, S. et al."
+    year: 2022
+    venue: "ICLR"
+    url: "https://arxiv.org/abs/2202.11946"
+    relevance: >
+      Supports the direct-input, TET-decoding tracks, particularly the
+      low-timestep CIFAR-10 experiments. TET is kept fixed across pooling
+      conditions so it cannot confound the pooling comparison.
+    key_points:
+      - "TET reweights temporal gradients to improve optimization and generalization."
+      - "The method is evaluated on CIFAR-scale directly trained SNNs."
+
+  - key: snntorch_leaky_docs
+    title: "snnTorch Leaky Integrate-and-Fire tutorial"
+    authors: "Eshraghian, J. K."
+    year: 2026
+    venue: "snnTorch documentation"
+    url: "https://snntorch.readthedocs.io/en/stable/tutorials/tutorial_2.html"
+    relevance: >
+      Confirms the chosen Leaky neuron interface and default subtractive reset.
+      In the installed snntorch version, the default reset_delay=True returns
+      the current pre-reset integrated membrane state, which is the quantity
+      needed by the proposed membrane-excess selector.
+    key_points:
+      - "snn.Leaky is the selected first-order LIF implementation."
+      - "The default subtractive reset retains some threshold excess after a spike."
+      - "Use reset_delay=True explicitly and unit-test that the returned membrane is the intended pre-reset value."
+
+design_decisions:
+  primary_conditions:
+    - pre_lif_deterministic_max_pool
+    - post_lif_deterministic_max_pool
+    - post_lif_uniform_random_tie_break
+    - post_lif_membrane_excess_tie_break
+  fairness_controls:
+    - "Keep encoder, surrogate, optimizer, schedule, augmentation, and seed set fixed within each track."
+    - "Use the same initialization for all conditions within each seed."
+    - "Do not apply random or membrane-excess policies to pre-LIF float activations."
+  implementation_requirements:
+    - "Expose and test the pre-reset membrane state at every variable pooling site."
+    - "Use an explicit torch.Generator for random tie-breaking to make each seed reproducible."
+    - "Report expected test accuracy for random routing over fixed evaluation tie-break seeds."
+  metrics:
+    - "Raw spike count and normalized firing rate by layer and timestep."
+    - "Pre-pool and post-pool activity, multi-spike-window incidence, and winner offset distribution."
+    - "Validation accuracy, loss, convergence epoch, and five-seed mean with standard deviation."

@@ -16,6 +16,8 @@ num_workers: 1
 validation_split: 0.2
 
 max_grad_norm: null  # gradient clipping norm (e.g. 1.0 for RNNs); null = disabled
+max_train_batches: null  # Set only for bounded smoke tests.
+max_validation_batches: null  # Set only for bounded smoke tests.
 
 early_stopping:
   enabled: true

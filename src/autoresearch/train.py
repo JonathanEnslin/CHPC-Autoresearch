@@ -22,6 +22,7 @@ from autoresearch.utils import (
     setup_device,
     validate,
 )
+from autoresearch.utils.snn_losses import compute_model_loss
 
 load_dotenv()
 
@@ -204,6 +205,7 @@ def train_one_epoch(
     wandb_enabled: bool = False,
     log_frequency: int = 10,
     max_grad_norm: Optional[float] = None,
+    max_batches: Optional[int] = None,
 ) -> Dict[str, float]:
     """Train for one epoch.
 
@@ -224,6 +226,8 @@ def train_one_epoch(
     total_loss = 0.0
     correct = 0
     total = 0
+    activity_totals: Dict[str, float] = {}
+    batches = 0
 
     pbar = tqdm(train_loader, desc=f"Epoch {epoch}")
 
@@ -233,7 +237,7 @@ def train_one_epoch(
         # Forward pass
         optimizer.zero_grad()
         y_pred = model(x)
-        loss = loss_fn(y_pred, y)
+        loss = compute_model_loss(model, loss_fn, y_pred, y)
 
         # Backward pass
         loss.backward()
@@ -246,6 +250,12 @@ def train_one_epoch(
         _, predicted = torch.max(y_pred.data, 1)
         total += y.size(0)
         correct += (predicted == y).sum().item()
+        if hasattr(model, "pop_activity_metrics"):
+            for key, value in model.pop_activity_metrics().items():
+                activity_totals[key] = activity_totals.get(key, 0.0) + value
+        batches += 1
+        if max_batches is not None and batches >= max_batches:
+            break
 
         # Update progress bar
         pbar.set_postfix({"loss": loss.item()})
@@ -261,10 +271,12 @@ def train_one_epoch(
                 }
             )
 
-    avg_loss = total_loss / len(train_loader)
+    avg_loss = total_loss / batches
     accuracy = 100.0 * correct / total
 
-    return {"loss": avg_loss, "accuracy": accuracy}
+    metrics = {"loss": avg_loss, "accuracy": accuracy}
+    metrics.update({key: value / batches for key, value in activity_totals.items()})
+    return metrics
 
 
 class EarlyStopping:
@@ -439,15 +451,20 @@ def log_epoch_metrics(
     if wandb_enabled:
         import wandb
 
-        wandb.log(
-            {
-                "train/loss": train_metrics["loss"],
-                "train/accuracy": train_metrics["accuracy"],
-                "val/loss": val_metrics["loss"],
-                "val/accuracy": val_metrics["accuracy"],
-                "epoch": epoch,
-            }
+        payload = {
+            "train/loss": train_metrics["loss"],
+            "train/accuracy": train_metrics["accuracy"],
+            "val/loss": val_metrics["loss"],
+            "val/accuracy": val_metrics["accuracy"],
+            "epoch": epoch,
+        }
+        payload.update(
+            {f"train/{key}": value for key, value in train_metrics.items() if key not in {"loss", "accuracy"}}
         )
+        payload.update(
+            {f"val/{key}": value for key, value in val_metrics.items() if key not in {"loss", "accuracy"}}
+        )
+        wandb.log(payload)
 
 
 def train(
@@ -500,9 +517,12 @@ def train(
                 wandb_enabled,
                 cfg.wandb.log_frequency,
                 cfg.get("max_grad_norm"),
+                cfg.get("max_train_batches"),
             )
 
-            val_metrics = validate(model, val_loader, loss_fn, device)
+            val_metrics = validate(
+                model, val_loader, loss_fn, device, cfg.get("max_validation_batches")
+            )
 
             log_epoch_metrics(
                 epoch, cfg.epochs, train_metrics, val_metrics, wandb_enabled
@@ -651,8 +671,12 @@ def main(cfg: DictConfig) -> None:
     # Evaluate initial model (epoch 0) if starting from scratch
     if start_epoch == 1:
         log.info("Evaluating initial model (epoch 0)...")
-        initial_train_metrics = validate(model, train_loader, loss_fn, device)
-        initial_val_metrics = validate(model, val_loader, loss_fn, device)
+        initial_train_metrics = validate(
+            model, train_loader, loss_fn, device, cfg.get("max_train_batches")
+        )
+        initial_val_metrics = validate(
+            model, val_loader, loss_fn, device, cfg.get("max_validation_batches")
+        )
 
         log.info(
             "Epoch 0 (Initial) - Train Loss: %.4f, Train Acc: %.2f%%, Val Loss: %.4f, Val Acc: %.2f%%",

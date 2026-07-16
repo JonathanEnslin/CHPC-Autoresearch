@@ -1,0 +1,67 @@
+iteration: 1
+project: snn_pooling_tiebreaks
+status: experiment
+goal: >
+  Design a rigorous first experiment suite for convolutional SNN pooling that
+  isolates pooling placement and tie-breaking behavior. Specify and validate
+  four meaningful conditions: pre-LIF deterministic pooling, post-LIF
+  deterministic pooling, post-LIF random tie resolution, and post-LIF
+  membrane-excess tie resolution. Define the Fashion-MNIST and CIFAR-10 model
+  families, encoding/decoding tracks, training recipes, and activity metrics
+  before modifying model code.
+created: "2026-07-16"
+phases:
+  plan:
+    started_at: "2026-07-16"
+    completed_at: "2026-07-16"
+    notes: >
+      Project initialized from the human research direction. The key premise is
+      that max pooling of binary spikes is an OR operation, so a multi-spike
+      window needs an explicit policy for routing the surrogate gradient. The
+      initial study will separate effects of pooling placement from effects of
+      deterministic, random, and membrane-excess tie-breaking. The detailed
+      protocol added on 2026-07-16 fixes six timesteps for all runs; uses two
+      Fashion-MNIST tracks (scaled-log TTFS plus first-spike decoding, and
+      direct input plus TET); and uses direct input plus TET for CIFAR-10.
+      Four conditions replace a nominal 2x3 design because random and
+      membrane-based tie policies only have a meaningful interpretation after
+      LIF has created binary spikes.
+  survey:
+    completed_at: "2026-07-16"
+    notes: >
+      The literature confirms that random tie resolution among simultaneous
+      post-spike winners has been used in directly trained SNNs and was
+      hypothesized to act as regularization. It also identifies membrane-
+      potential-based pooling as a related, underexplored family rather than a
+      wholly new operation. The study will therefore state its novelty as a
+      controlled, per-timestep comparison of membrane-excess tie-breaking
+      against deterministic and random post-spike routing. See literature.yaml
+      for sources and implementation consequences.
+  implement:
+    completed_at: "2026-07-16"
+    notes: >
+      Implemented a configurable snntorch SNN pooling CNN for both the
+      Fashion-MNIST and CIFAR-10 VGG-9 architectures; deterministic, random,
+      and membrane-excess post-LIF pooling; pre-LIF deterministic pooling;
+      scaled-log TTFS; first-spike and TET decoding; TET loss; cosine and
+      warm-up cosine schedules; and per-layer, per-timestep spike and
+      tie-routing metrics. The installed snntorch Leaky semantics were checked
+      directly: reset_delay=True returns the pre-reset membrane state required
+      by membrane-excess pooling. Synthetic tests covered every pooling mode,
+      both decoder paths, VGG-9 tensor shapes, temporal loss, and scheduling.
+      A bounded two-epoch Fashion-MNIST CUDA smoke test completed successfully
+      with checkpointing and realistic chance-level initial metrics.
+outcomes: []
+human_feedback: >
+  Fashion-MNIST uses a 32 -> 64 -> 128 Conv-BN-LIF backbone with two variable
+  pooling sites and fixed final global average pooling. Train for 60 epochs
+  using AdamW (lr 0.02, betas 0.9/0.999, eps 1e-8, wd 1e-4) and cosine decay to
+  1% of the initial learning rate. CIFAR-10 starts with a spiking VGG-9 rather
+  than SEW-ResNet18 so max-pool behavior is not obscured by residual paths;
+  tune only the deterministic post-spike baseline once, then lock the resulting
+  recipe across variants. Log per-timestep per-layer raw spike counts and
+  normalized firing rates, as well as the number and spatial distribution of
+  multi-spike pooling windows and selected winners. Use snntorch's Leaky
+  neuron implementation and surrogate gradients throughout; expose the
+  pre-reset, post-integration membrane state at variable pool sites for the
+  membrane-excess tie-breaker.

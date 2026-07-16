@@ -1,0 +1,17 @@
+# @package _global_.model
+_target_: autoresearch.models.snn_pooling_cnn.SNNPoolingCNN
+input_channels: 3
+num_classes: 10
+channels: [64, 128, 256, 512]
+convs_per_stage: [2, 2, 2, 2]
+pooled_stages: [0, 1, 2]
+pooling_placement: post_lif
+tie_break: deterministic
+timesteps: 6
+encoding: direct
+decoding: tet
+beta: 0.9
+threshold: 1.0
+surrogate_slope: 25.0
+random_seed: ${seed}
+ttfs_log_scale: 20.0
