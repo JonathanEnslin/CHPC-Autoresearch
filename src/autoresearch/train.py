@@ -18,7 +18,23 @@ except ImportError:
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 from torch.utils.data import DataLoader
-from tqdm import tqdm
+try:
+    from tqdm import tqdm
+except ImportError:
+    class _NoOpProgress:
+        """Minimal tqdm replacement for offline runtime environments."""
+
+        def __init__(self, iterable: Any, **_kwargs: Any) -> None:
+            self._iterable = iterable
+
+        def __iter__(self) -> Any:
+            return iter(self._iterable)
+
+        def set_postfix(self, *_args: Any, **_kwargs: Any) -> None:
+            return None
+
+    def tqdm(iterable: Any, **kwargs: Any) -> _NoOpProgress:
+        return _NoOpProgress(iterable, **kwargs)
 
 from autoresearch.utils import (
     create_dataloaders,

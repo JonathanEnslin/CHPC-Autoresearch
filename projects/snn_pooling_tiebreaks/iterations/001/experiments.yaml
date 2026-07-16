@@ -12,8 +12,12 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-07-16"
-    status: submitted
-    notes: "Third attempt: Unix-LF PBS and offline-compatible dotenv fallback."
+    status: failed
+    notes: >
+      Failed before training: the shared SNN environment lacks tqdm, producing
+      ModuleNotFoundError at train.py import time and PBS exit status 1. Add a
+      no-op tqdm fallback for the offline, W&B-disabled execution path before
+      resubmitting.
 
   - job_id: "7331887.sched01"
     name: snn_pooling_iter1_fashion_direct_det
