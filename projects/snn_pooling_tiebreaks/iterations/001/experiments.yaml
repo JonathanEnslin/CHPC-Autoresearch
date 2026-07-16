@@ -12,13 +12,15 @@ jobs:
     queue: gpu_1
     walltime: "03:00:00"
     submitted_at: "2026-07-17"
-    status: queued
+    status: cancelled
     notes: >
       Clean replacement baseline using output group
       fashion_mnist_snn_pooling_direct_tet_post_deterministic_metrics_wandb.
       W&B is enabled through the CHPC-local .env. The run persists validation
       accuracy and per-layer, per-timestep activity to metrics.jsonl every two
-      epochs, with no per-batch W&B logging.
+      epochs, with no per-batch W&B logging. Cancelled before training because
+      CHPC cannot connect to api.wandb.ai; restarted in W&B offline mode so
+      artifacts can be synchronized after transfer.
 
   - job_id: "7332261.sched01"
     name: snn_pooling_iter1_fashion_direct_det_r5

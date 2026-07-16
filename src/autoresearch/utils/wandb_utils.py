@@ -65,6 +65,7 @@ def initialize_wandb(
                 wandb.init(
                     project=cfg.wandb.project,
                     entity=cfg.wandb.entity,
+                    mode=cfg.wandb.mode,
                     id=wandb_run_id,
                     resume="must",
                     group=wandb_group,
@@ -75,6 +76,7 @@ def initialize_wandb(
                 wandb.init(
                     project=cfg.wandb.project,
                     entity=cfg.wandb.entity,
+                    mode=cfg.wandb.mode,
                     name=run_name,
                     group=wandb_group,
                     tags=cfg.wandb.tags if cfg.wandb.tags else None,

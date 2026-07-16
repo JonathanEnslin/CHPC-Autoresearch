@@ -39,6 +39,7 @@ metrics:
 
 wandb:
   enabled: true
+  mode: ${oc.env:WANDB_MODE,online}
   project: ${oc.env:WANDB_PROJECT,autoresearch}
   entity: ${oc.env:WANDB_ENTITY,autoresearch}
   group: ${experiment_group}
