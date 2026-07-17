@@ -1,0 +1,51 @@
+iteration: 2
+project: snn_pooling_tiebreaks
+status: implement
+goal: >
+  Test whether the instability of post-LIF maximum membrane-excess tie-breaking
+  is caused by winner reinforcement. Implement the exact reverse rule: among
+  simultaneous spikes in each 2x2 pooling window, route the surrogate gradient
+  through the neuron with the least positive pre-reset membrane threshold
+  excess. First run a one-seed, 60-epoch direct/TET Fashion-MNIST calibration;
+  if it converges without pathological firing activity, run the fixed five-seed
+  comparison.
+created: "2026-07-17"
+phases:
+  plan:
+    completed_at: "2026-07-17"
+    notes: >
+      The completed direct/TET Fashion-MNIST study found maximum
+      membrane-excess routing unstable: one seed reached only 17.30% accuracy
+      while hidden-layer firing rates saturated. The human approved a reverse
+      tie-break ablation. With the fixed threshold of 1.0, selecting the
+      least threshold excess is equivalent to selecting the minimum returned
+      pre-reset membrane among active spikes. The forward OR output, model,
+      optimizer, six timesteps, and loss remain unchanged; only contested-window
+      surrogate-gradient routing changes.
+  survey:
+    completed_at: "2026-07-17"
+    notes: >
+      No separate literature claim is required for this diagnostic reversal;
+      it is a controlled ablation of the implemented maximum-excess rule.
+  implement:
+    started_at: "2026-07-17"
+    completed_at: "2026-07-17"
+    notes: >
+      Adding membrane_least_excess as the exact post-LIF reverse of the
+      existing membrane-excess selector, with synthetic winner-routing and
+      full-model forward checks before the bounded training smoke test. The
+      synthetic test verified that the lowest-membrane active spike receives
+      the pool gradient; the two-epoch direct/TET smoke run completed with
+      checkpoints and valid metrics.
+  experiment:
+    notes: ""
+  analyze:
+    notes: ""
+  conclude:
+    notes: ""
+human_feedback: >
+  Add the reverse post-LIF tie-break that selects the spiking neuron with the
+  least threshold excess. Start with one direct-input, TET Fashion-MNIST seed
+  for 60 epochs, examine convergence and per-layer firing rates, and only then
+  expand to five seeds if it is healthy.
+outcomes: []

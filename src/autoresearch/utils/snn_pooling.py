@@ -22,7 +22,12 @@ class SpikeTieMaxPool2d(nn.Module):
         super().__init__()
         if kernel_size != 2 or (stride is not None and stride != 2):
             raise ValueError("SpikeTieMaxPool2d currently supports only 2x2, stride-2 pooling")
-        if mode not in {"deterministic", "random", "membrane_excess"}:
+        if mode not in {
+            "deterministic",
+            "random",
+            "membrane_excess",
+            "membrane_least_excess",
+        }:
             raise ValueError(f"Unsupported tie-break mode: {mode}")
         self.kernel_size = kernel_size
         self.stride = stride or kernel_size
@@ -70,14 +75,18 @@ class SpikeTieMaxPool2d(nn.Module):
             )
         else:
             if membrane is None:
-                raise ValueError("membrane_excess tie-breaking requires pre-reset membrane values")
+                raise ValueError("membrane tie-breaking requires pre-reset membrane values")
             membrane_windows = functional.unfold(
                 membrane, kernel_size=self.kernel_size, stride=self.stride
             ).view(batch, channels, self.kernel_size**2, -1)
             scores = membrane_windows.permute(0, 1, 3, 2)[multi_spike]
 
-        scores = scores.masked_fill(contested_spikes <= 0, float("-inf"))
-        winner_offset = scores.argmax(dim=1)
+        if self.mode == "membrane_least_excess":
+            scores = scores.masked_fill(contested_spikes <= 0, float("inf"))
+            winner_offset = scores.argmin(dim=1)
+        else:
+            scores = scores.masked_fill(contested_spikes <= 0, float("-inf"))
+            winner_offset = scores.argmax(dim=1)
         selected = contested_spikes.gather(1, winner_offset.unsqueeze(1)).squeeze(1)
         routed[multi_spike] = selected
         winner_offset = winner_offset.detach()
