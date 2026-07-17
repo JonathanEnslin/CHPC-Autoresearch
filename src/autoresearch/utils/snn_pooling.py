@@ -59,9 +59,11 @@ class SpikeTieMaxPool2d(nn.Module):
         if self.mode == "deterministic" or not bool(multi_spike.any()):
             return pooled
 
+        routed = pooled.flatten(start_dim=2)
+        contested_spikes = windows.permute(0, 1, 3, 2)[multi_spike]
         if self.mode == "random":
             scores = torch.rand(
-                active.shape,
+                contested_spikes.shape,
                 device=spikes.device,
                 dtype=spikes.dtype,
                 generator=self._generator(spikes.device),
@@ -69,15 +71,16 @@ class SpikeTieMaxPool2d(nn.Module):
         else:
             if membrane is None:
                 raise ValueError("membrane_excess tie-breaking requires pre-reset membrane values")
-            scores = functional.unfold(
+            membrane_windows = functional.unfold(
                 membrane, kernel_size=self.kernel_size, stride=self.stride
             ).view(batch, channels, self.kernel_size**2, -1)
+            scores = membrane_windows.permute(0, 1, 3, 2)[multi_spike]
 
-        scores = scores.masked_fill(~active, float("-inf"))
-        winner = scores.argmax(dim=2, keepdim=True)
-        selected = windows.gather(dim=2, index=winner).squeeze(2)
-        routed = torch.where(multi_spike, selected, pooled.flatten(start_dim=2))
-        winner_offset = winner.squeeze(2)[multi_spike].detach()
+        scores = scores.masked_fill(contested_spikes <= 0, float("-inf"))
+        winner_offset = scores.argmax(dim=1)
+        selected = contested_spikes.gather(1, winner_offset.unsqueeze(1)).squeeze(1)
+        routed[multi_spike] = selected
+        winner_offset = winner_offset.detach()
         for offset in range(self.kernel_size**2):
             self.last_metrics[f"winner_offset_{offset}"] = float((winner_offset == offset).sum().item())
         return routed.view_as(pooled)
