@@ -8,7 +8,7 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 2
+current_iteration: 3
 branch: null
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie
@@ -20,6 +20,10 @@ human_direction: >
   post-integration membrane potential minus threshold. Random and
   membrane-excess policies are intentionally not applied before LIF because
   exact ties in continuous currents are rare.
+
+  Include the post-LIF least-threshold-excess reversal in every remaining
+  post-LIF comparison alongside deterministic, random, and greatest-excess
+  routing. It is not applicable to the pre-LIF deterministic condition.
 
   Use six simulation timesteps throughout. Fashion-MNIST has two separately
   reported tracks: scaled-log TTFS input with first-spike decoding, and direct

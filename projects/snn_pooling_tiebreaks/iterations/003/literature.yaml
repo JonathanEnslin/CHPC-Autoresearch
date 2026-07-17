@@ -1,0 +1,24 @@
+literature:
+  - key: inherited_pooling_rationale
+    source_iteration: 1
+    relevance: >
+      Pool placement, deterministic/random tie resolution, and membrane-state
+      routing are unchanged from the prior controlled study. The same
+      semantics and activity measurements therefore apply to the TTFS track.
+  - key: track_control
+    relevance: >
+      Scaled-log TTFS encoding and first-spike decoding are held fixed across
+      all five conditions. This isolates the effect of pooling placement and
+      tie routing within temporal coding rather than comparing decoding rules.
+design_decisions:
+  conditions:
+    - pre_lif_deterministic
+    - post_lif_deterministic
+    - post_lif_random
+    - post_lif_membrane_excess
+    - post_lif_membrane_least_excess
+  controls:
+    - six simulation timesteps
+    - 60 epochs
+    - identical five-seed set per condition
+    - scaled-log TTFS encoder and first-spike decoding

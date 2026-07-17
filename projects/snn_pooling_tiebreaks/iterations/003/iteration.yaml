@@ -1,0 +1,48 @@
+iteration: 3
+project: snn_pooling_tiebreaks
+status: experiment
+goal: >
+  Extend the controlled SNN pooling comparison to Fashion-MNIST scaled-log
+  TTFS encoding with first-spike decoding. Compare pre-LIF deterministic
+  pooling and four post-LIF policies: deterministic, uniform random,
+  greatest membrane threshold excess, and least membrane threshold excess.
+  Preserve the established six-timestep Fashion-MNIST CNN and 60-epoch AdamW
+  recipe so that input encoding and decoding are the only new experimental
+  factors.
+created: "2026-07-18"
+phases:
+  plan:
+    completed_at: "2026-07-18"
+    notes: >
+      The user approved including least-excess in every remaining comparison.
+      Direct/TET Fashion-MNIST showed that least-excess was stable but did not
+      outperform deterministic post-LIF pooling, whereas greatest-excess had
+      a catastrophic non-convergent seed. TTFS/first-spike is the next
+      lower-cost generalization track before the larger CIFAR-10 VGG-9 study.
+  survey:
+    completed_at: "2026-07-18"
+    notes: >
+      The iteration reuses the pool-placement and tie-routing evidence from
+      iteration 1. The only new factor is the already-implemented scaled-log
+      TTFS encoder plus first-spike decoder, so no new policy-specific
+      literature claim is needed. TET-specific sources are intentionally not
+      used to interpret this first-spike track.
+  implement:
+    started_at: "2026-07-18"
+    completed_at: "2026-07-18"
+    notes: >
+      The existing Fashion-MNIST TTFS/first-spike preset exposes both pooling
+      placement and all post-LIF selectors through composable model overrides.
+      A two-epoch, two-batch CUDA smoke run completed for post-LIF
+      least-excess with scaled-log TTFS and first-spike decoding, producing
+      checkpoints and metrics without an execution error. The limited smoke
+      is a wiring check, not an accuracy assessment.
+  experiment:
+    started_at: "2026-07-18"
+    notes: >
+      Submit one full 60-epoch post-LIF deterministic seed to verify that the
+      TTFS/first-spike recipe converges and measure per-seed runtime before
+      launching the five-condition, five-seed comparison.
+human_feedback: >
+  Include least-excess in all remaining experiments. Commence the remaining
+  experiment programme.
