@@ -44,7 +44,9 @@ phases:
       7337083.sched01. It uses the same 60-epoch recipe and six timesteps as
       iteration 1, with post-LIF membrane_least_excess routing as the only
       model change. Its one-hour walltime exceeds the observed per-seed runtime
-      with a 20% buffer.
+      with a 20% buffer. Seed 0 converged normally to 88.37% validation
+      accuracy without hidden-rate saturation, so the five-seed evaluation was
+      submitted as 7337119.sched01.
   analyze:
     notes: ""
   conclude:

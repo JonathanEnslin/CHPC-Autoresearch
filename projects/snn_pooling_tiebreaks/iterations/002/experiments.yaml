@@ -1,4 +1,23 @@
 jobs:
+  - job_id: "7337119.sched01"
+    name: snn_pooling_i2_fashion_least_excess
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_membrane_least_excess
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "03:15:00"
+    submitted_at: "2026-07-17"
+    status: queued
+    notes: >
+      Five-seed evaluation expanded from the healthy seed-0 calibration. It
+      uses post-LIF least-excess membrane routing, direct input, TET loss, and
+      the fixed iteration-1 Fashion-MNIST recipe. W&B is enabled offline.
+
   - job_id: "7337083.sched01"
     name: snn_pooling_i2_fashion_least_excess_cal
     configuration: fashion_mnist_snn_pooling_direct_tet
@@ -12,7 +31,7 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-17"
-    status: running
+    status: completed
     notes: >
       One-seed calibration for the reverse membrane rule. Among simultaneous
       post-LIF spikes in each 2x2 window, it routes the surrogate gradient to
@@ -20,4 +39,7 @@ jobs:
       least threshold excess under the fixed threshold. W&B is enabled in
       offline mode. Expand to five seeds only if convergence and firing rates
       are healthy. Startup verified at epoch 1 with an in-progress status,
-      checkpoint, and metrics artifact on its allocated GPU.
+      checkpoint, and metrics artifact on its allocated GPU. It completed all
+      60 epochs at 88.37% validation accuracy with non-saturated hidden-layer
+      firing rates (21.82%, 16.54%, 10.12%) and a 13.01% output rate, so the
+      five-seed comparison was submitted as 7337119.sched01.

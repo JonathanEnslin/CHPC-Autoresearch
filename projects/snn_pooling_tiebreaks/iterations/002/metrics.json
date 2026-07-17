@@ -1,0 +1,18 @@
+{
+  "calibration": {
+    "experiment_group": "fashion_mnist_snn_pooling_direct_tet_post_lif_membrane_least_excess_calibration_wandb_offline",
+    "seed": 0,
+    "final_epoch_val_acc": 88.366667,
+    "best_val_loss": 0.454024,
+    "final_epoch_val_loss": 0.458172,
+    "mean_validation_firing_rate": {
+      "stage_1_conv_1": 0.218199,
+      "stage_2_conv_1": 0.165440,
+      "stage_3_conv_1": 0.101227,
+      "output": 0.130089
+    },
+    "health_gate": "passed",
+    "notes": "Converged without the hidden-layer saturation and output starvation seen in the maximum-excess collapsed seed."
+  },
+  "notes": "The five-seed least-excess evaluation is queued; this file will be extended with its aggregate result."
+}
