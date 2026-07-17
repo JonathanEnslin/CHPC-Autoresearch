@@ -1,29 +1,50 @@
 {
-  "experiment_group": "fashion_mnist_snn_pooling_direct_tet_post_deterministic_wandb_offline",
-  "condition": {
-    "dataset": "fashion_mnist",
+  "dataset": "fashion_mnist",
+  "training_recipe": {
     "encoding": "direct",
     "decoding": "tet",
-    "pooling_placement": "post_lif",
-    "tie_break": "deterministic",
     "timesteps": 6,
-    "epochs": 60
+    "epochs": 60,
+    "seeds": [0, 1, 2, 3, 4]
+  },
+  "completed_conditions": {
+    "post_lif_deterministic": {
+      "experiment_group": "fashion_mnist_snn_pooling_direct_tet_post_deterministic_wandb_offline",
+      "per_seed": {
+        "0": {"final_epoch_val_acc": 89.133333, "best_val_loss": 0.4256344888},
+        "1": {"final_epoch_val_acc": 90.133333, "best_val_loss": 0.4339822042},
+        "2": {"final_epoch_val_acc": 89.050000, "best_val_loss": 0.4200682456},
+        "3": {"final_epoch_val_acc": 88.033333, "best_val_loss": 0.4923157197},
+        "4": {"final_epoch_val_acc": 89.600000, "best_val_loss": 0.4331258244}
+      },
+      "best_seed": 1,
+      "mean_final_epoch_val_acc": 89.190000,
+      "std_final_epoch_val_acc": 0.777603,
+      "mean_best_val_loss": 0.441025,
+      "std_best_val_loss": 0.029235
+    },
+    "pre_lif_deterministic": {
+      "experiment_group": "fashion_mnist_snn_pooling_direct_tet_pre_lif_deterministic_wandb_offline",
+      "per_seed": {
+        "0": {"final_epoch_val_acc": 91.850000, "best_val_loss": 0.3807524627},
+        "1": {"final_epoch_val_acc": 90.600000, "best_val_loss": 0.3964327954},
+        "2": {"final_epoch_val_acc": 91.300000, "best_val_loss": 0.3816397120},
+        "3": {"final_epoch_val_acc": 89.783333, "best_val_loss": 0.4159189723},
+        "4": {"final_epoch_val_acc": 91.200000, "best_val_loss": 0.3851856000}
+      },
+      "best_seed": 0,
+      "mean_final_epoch_val_acc": 90.946667,
+      "std_final_epoch_val_acc": 0.787171,
+      "mean_best_val_loss": 0.391986,
+      "std_best_val_loss": 0.014765
+    }
+  },
+  "comparison_to_post_lif_deterministic": {
+    "pre_lif_deterministic_delta_mean_final_epoch_val_acc": 1.756667
   },
   "wandb": {
     "mode": "offline",
     "sync_required": true
   },
-  "seeds": [0, 1, 2, 3, 4],
-  "per_seed": {
-    "0": {"final_epoch_val_acc": 89.133333, "best_val_loss": 0.4256344888},
-    "1": {"final_epoch_val_acc": 90.133333, "best_val_loss": 0.4339822042},
-    "2": {"final_epoch_val_acc": 89.050000, "best_val_loss": 0.4200682456},
-    "3": {"final_epoch_val_acc": 88.033333, "best_val_loss": 0.4923157197},
-    "4": {"final_epoch_val_acc": 89.600000, "best_val_loss": 0.4331258244}
-  },
-  "mean_final_epoch_val_acc": 89.190000,
-  "std_final_epoch_val_acc": 0.777603,
-  "mean_best_val_loss": 0.441025,
-  "std_best_val_loss": 0.029235,
-  "notes": "Final validation accuracy is taken from each seed's epoch-60 metrics.jsonl record. Per-timestep spike and tie-window activity are retained in the CHPC output artifacts and offline W&B runs."
+  "notes": "Final validation accuracy is taken from every completed seed's epoch-60 metrics.jsonl record. Per-timestep spike and tie-window activity remain in CHPC artifacts and offline W&B runs. The random and membrane-excess post-LIF conditions are not yet complete."
 }

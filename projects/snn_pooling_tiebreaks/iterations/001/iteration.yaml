@@ -68,6 +68,11 @@ phases:
       (7334008.sched01) and post-LIF random tie-breaking (7334009.sched01).
       This is the configured two-job maximum; membrane-excess pooling remains
       pending until one of these jobs has finished.
+      Pre-LIF deterministic pooling then completed all five seeds in 72
+      minutes with 90.95% ± 0.79% final validation accuracy, compared with
+      89.19% ± 0.78% for post-LIF deterministic pooling. Its released GPU
+      slot was used to submit the membrane-excess condition (7334679.sched01)
+      while the random tie-break condition remained active.
   analyze:
     started_at: "2026-07-17"
     notes: >
