@@ -37,14 +37,30 @@
       "std_final_epoch_val_acc": 0.787171,
       "mean_best_val_loss": 0.391986,
       "std_best_val_loss": 0.014765
+    },
+    "post_lif_random": {
+      "experiment_group": "fashion_mnist_snn_pooling_direct_tet_post_lif_random_wandb_offline",
+      "per_seed": {
+        "0": {"final_epoch_val_acc": 90.000000, "best_val_loss": 0.4114593686},
+        "1": {"final_epoch_val_acc": 88.950000, "best_val_loss": 0.4456218500},
+        "2": {"final_epoch_val_acc": 89.000000, "best_val_loss": 0.4250812968},
+        "3": {"final_epoch_val_acc": 90.466667, "best_val_loss": 0.4037501888},
+        "4": {"final_epoch_val_acc": 88.050000, "best_val_loss": 0.4585628972}
+      },
+      "best_seed": 3,
+      "mean_final_epoch_val_acc": 89.293333,
+      "std_final_epoch_val_acc": 0.952088,
+      "mean_best_val_loss": 0.428895,
+      "std_best_val_loss": 0.022972
     }
   },
   "comparison_to_post_lif_deterministic": {
-    "pre_lif_deterministic_delta_mean_final_epoch_val_acc": 1.756667
+    "pre_lif_deterministic_delta_mean_final_epoch_val_acc": 1.756667,
+    "post_lif_random_delta_mean_final_epoch_val_acc": 0.103333
   },
   "wandb": {
     "mode": "offline",
     "sync_required": true
   },
-  "notes": "Final validation accuracy is taken from every completed seed's epoch-60 metrics.jsonl record. Per-timestep spike and tie-window activity remain in CHPC artifacts and offline W&B runs. The random and membrane-excess post-LIF conditions are not yet complete."
+  "notes": "Final validation accuracy is taken from every completed seed's epoch-60 metrics.jsonl record. Per-timestep spike and tie-window activity remain in CHPC artifacts and offline W&B runs. Membrane-excess post-LIF pooling is the only condition not yet complete."
 }

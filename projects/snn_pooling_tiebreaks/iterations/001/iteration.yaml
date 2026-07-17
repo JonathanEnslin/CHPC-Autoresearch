@@ -73,6 +73,9 @@ phases:
       89.19% ± 0.78% for post-LIF deterministic pooling. Its released GPU
       slot was used to submit the membrane-excess condition (7334679.sched01)
       while the random tie-break condition remained active.
+      Random post-LIF tie-breaking then completed all five seeds with 89.29%
+      ± 0.95% validation accuracy, a negligible +0.10-point difference from
+      the deterministic post-LIF baseline under this initial protocol.
   analyze:
     started_at: "2026-07-17"
     notes: >

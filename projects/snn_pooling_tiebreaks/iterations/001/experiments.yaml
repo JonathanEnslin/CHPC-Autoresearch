@@ -36,7 +36,7 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-07-17"
-    status: running
+    status: completed
     notes: >
       Post-LIF max pooling with a uniform random tie-break over simultaneous
       spikes. The routing implementation samples scores only for contested
@@ -44,7 +44,8 @@ jobs:
       W&B is enabled in offline mode; the run will be synced from its artifact
       directory after completion. Submitted as one of at most two active GPU
       jobs. Startup verified at epoch 1: seed 0 has an in-progress status,
-      checkpoint, and metrics artifact on its allocated GPU.
+      checkpoint, and metrics artifact on its allocated GPU. All five seeds
+      completed at epoch 60; final validation accuracy was 89.29% ± 0.95%.
 
   - job_id: "7334008.sched01"
     name: snn_pooling_i1_fashion_pre_lif_det
