@@ -1,4 +1,47 @@
 jobs:
+  - job_id: "7334009.sched01"
+    name: snn_pooling_i1_fashion_post_lif_random
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_random
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-07-17"
+    status: queued
+    notes: >
+      Post-LIF max pooling with a uniform random tie-break over simultaneous
+      spikes. The routing implementation samples scores only for contested
+      windows, which was validated with a bounded two-epoch local smoke test.
+      W&B is enabled in offline mode; the run will be synced from its artifact
+      directory after completion. Submitted as one of at most two active GPU
+      jobs.
+
+  - job_id: "7334008.sched01"
+    name: snn_pooling_i1_fashion_pre_lif_det
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: pre_lif_deterministic
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "02:00:00"
+    submitted_at: "2026-07-17"
+    status: queued
+    notes: >
+      Max pooling of convolutional currents before the corresponding LIF
+      threshold; ties are ordinary deterministic float max-pool ties. Its
+      two-hour allocation is based on the completed 94-minute five-seed
+      baseline plus a 20% runtime buffer. W&B is enabled in offline mode and
+      the job was submitted as one of at most two active GPU jobs.
+
   - job_id: "7332737.sched01"
     name: snn_pooling_iter1_fashion_det_wandb_offline
     configuration: fashion_mnist_snn_pooling_direct_tet

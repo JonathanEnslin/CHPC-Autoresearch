@@ -1,6 +1,6 @@
 iteration: 1
 project: snn_pooling_tiebreaks
-status: analyze
+status: experiment
 goal: >
   Design a rigorous first experiment suite for convolutional SNN pooling that
   isolates pooling placement and tie-breaking behavior. Specify and validate
@@ -63,6 +63,11 @@ phases:
       offline W&B because CHPC cannot reach api.wandb.ai. Job 7332737.sched01
       completed all five direct-encoding, TET, deterministic post-LIF pooling
       runs; its epoch-60 validation accuracy was 89.19% ± 0.78%.
+      On 2026-07-17, the next two conditions were submitted concurrently after
+      confirming that no other jobs were active: pre-LIF deterministic pooling
+      (7334008.sched01) and post-LIF random tie-breaking (7334009.sched01).
+      This is the configured two-job maximum; membrane-excess pooling remains
+      pending until one of these jobs has finished.
   analyze:
     started_at: "2026-07-17"
     notes: >
