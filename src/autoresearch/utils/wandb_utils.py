@@ -36,6 +36,8 @@ def initialize_wandb(
             import wandb
             from omegaconf import OmegaConf
 
+            os.environ.setdefault("WANDB_DATA_DIR", str(run_dir / "wandb_data"))
+
             # Login to wandb using API key from environment variable
             wandb_api_key = os.getenv("WANDB_API_KEY")
             if wandb_api_key:

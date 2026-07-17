@@ -479,12 +479,6 @@ def log_epoch_metrics(
             "val/accuracy": val_metrics["accuracy"],
             "epoch": epoch,
         }
-        payload.update(
-            {f"train/{key}": value for key, value in train_metrics.items() if key not in {"loss", "accuracy"}}
-        )
-        payload.update(
-            {f"val/{key}": value for key, value in val_metrics.items() if key not in {"loss", "accuracy"}}
-        )
         wandb.log(payload)
 
 
@@ -514,6 +508,27 @@ def append_epoch_metrics(
     }
     with (run_dir / "metrics.jsonl").open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(record) + "\n")
+
+
+def log_activity_artifact(cfg: DictConfig, run_dir: Path) -> None:
+    """Upload all activity traces as one artifact, not dashboard scalar series."""
+    metrics_path = run_dir / "metrics.jsonl"
+    if not metrics_path.exists():
+        return
+
+    import wandb
+
+    artifact = wandb.Artifact(
+        name=f"{cfg.experiment_group}-seed-{cfg.seed}-activity",
+        type="snn-activity",
+        metadata={
+            "dataset": cfg.dataset.get("_target_"),
+            "timesteps": cfg.model.timesteps,
+            "metric_epoch_frequency": cfg.metrics.epoch_frequency,
+        },
+    )
+    artifact.add_file(str(metrics_path), name="metrics.jsonl")
+    wandb.log_artifact(artifact)
 
 
 def train(
@@ -648,7 +663,12 @@ def train(
         if wandb_enabled:
             import wandb
 
-            wandb.finish()
+            try:
+                log_activity_artifact(cfg, run_dir)
+            except Exception as exc:  # pragma: no cover - W&B runtime dependent
+                log.warning("Unable to upload activity artifact: %s", exc)
+            finally:
+                wandb.finish()
 
 
 @hydra.main(version_base=None, config_path="configs", config_name="train")
