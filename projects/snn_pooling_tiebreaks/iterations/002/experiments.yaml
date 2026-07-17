@@ -1,0 +1,22 @@
+jobs:
+  - job_id: "7337083.sched01"
+    name: snn_pooling_i2_fashion_least_excess_cal
+    configuration: fashion_mnist_snn_pooling_direct_tet
+    condition: post_lif_membrane_least_excess_calibration
+    dataset: fashion_mnist
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 60
+    queue: gpu_1
+    walltime: "01:00:00"
+    submitted_at: "2026-07-17"
+    status: queued
+    notes: >
+      One-seed calibration for the reverse membrane rule. Among simultaneous
+      post-LIF spikes in each 2x2 window, it routes the surrogate gradient to
+      the smallest returned pre-reset membrane potential, equivalently the
+      least threshold excess under the fixed threshold. W&B is enabled in
+      offline mode. Expand to five seeds only if convergence and firing rates
+      are healthy.

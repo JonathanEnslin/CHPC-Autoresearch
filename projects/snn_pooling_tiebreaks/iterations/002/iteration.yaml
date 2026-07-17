@@ -1,6 +1,6 @@
 iteration: 2
 project: snn_pooling_tiebreaks
-status: implement
+status: experiment
 goal: >
   Test whether the instability of post-LIF maximum membrane-excess tie-breaking
   is caused by winner reinforcement. Implement the exact reverse rule: among
@@ -38,7 +38,13 @@ phases:
       the pool gradient; the two-epoch direct/TET smoke run completed with
       checkpoints and valid metrics.
   experiment:
-    notes: ""
+    started_at: "2026-07-17"
+    notes: >
+      One direct/TET Fashion-MNIST calibration seed was submitted as
+      7337083.sched01. It uses the same 60-epoch recipe and six timesteps as
+      iteration 1, with post-LIF membrane_least_excess routing as the only
+      model change. Its one-hour walltime exceeds the observed per-seed runtime
+      with a 20% buffer.
   analyze:
     notes: ""
   conclude:
