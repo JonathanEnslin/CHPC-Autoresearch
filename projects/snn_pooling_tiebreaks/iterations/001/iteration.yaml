@@ -1,6 +1,6 @@
 iteration: 1
 project: snn_pooling_tiebreaks
-status: experiment
+status: analyze
 goal: >
   Design a rigorous first experiment suite for convolutional SNN pooling that
   isolates pooling placement and tie-breaking behavior. Specify and validate
@@ -58,8 +58,18 @@ phases:
       PBS received a CRLF script and rejected /bin/sh^M with exit status 126.
       No seeds ran. The generator has been corrected to write Unix LF before
       resubmitting the same five-seed calibration baseline as 7331887.sched01.
-      W&B remains
-      disabled because the private CHPC .env transfer was not authorized.
+      W&B remained disabled because the private CHPC .env transfer was not
+      authorized. The final five-seed baseline was later restarted with
+      offline W&B because CHPC cannot reach api.wandb.ai. Job 7332737.sched01
+      completed all five direct-encoding, TET, deterministic post-LIF pooling
+      runs; its epoch-60 validation accuracy was 89.19% ± 0.78%.
+  analyze:
+    started_at: "2026-07-17"
+    notes: >
+      The deterministic post-LIF Fashion-MNIST baseline is analysis-ready.
+      metrics.json records final validation accuracy and best validation loss
+      for all five seeds; metrics.jsonl and offline W&B artifacts retain the
+      complete two-epoch activity traces for later cross-condition comparison.
 outcomes: []
 human_feedback: >
   Fashion-MNIST uses a 32 -> 64 -> 128 Conv-BN-LIF backbone with two variable

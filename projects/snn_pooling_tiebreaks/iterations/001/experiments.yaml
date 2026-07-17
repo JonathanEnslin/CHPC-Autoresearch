@@ -12,14 +12,14 @@ jobs:
     queue: gpu_1
     walltime: "03:00:00"
     submitted_at: "2026-07-17"
-    status: running
+    status: completed
     notes: >
       Clean baseline using output group
       fashion_mnist_snn_pooling_direct_tet_post_deterministic_wandb_offline.
       W&B is enabled in offline mode because CHPC cannot reach api.wandb.ai;
       offline artifacts retain the two-epoch validation/activity records for
-      synchronization after transfer. Startup verified: seed 0 is in progress
-      and has written its metrics.jsonl artifact.
+      synchronization after transfer. All five seeds completed successfully;
+      final epoch validation accuracy was 89.19% ± 0.78%.
 
   - job_id: "7332651.sched01"
     name: snn_pooling_iter1_fashion_direct_det_metrics_wandb
