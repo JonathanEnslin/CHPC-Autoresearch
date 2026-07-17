@@ -76,6 +76,9 @@ phases:
       Random post-LIF tie-breaking then completed all five seeds with 89.29%
       ± 0.95% validation accuracy, a negligible +0.10-point difference from
       the deterministic post-LIF baseline under this initial protocol.
+      The membrane-excess five-seed job reached its two-hour PBS walltime after
+      completing seeds 0–3; seed 4 had no epoch checkpoint, so a single-seed
+      one-hour replacement job (7335345.sched01) was submitted.
   analyze:
     started_at: "2026-07-17"
     notes: >
