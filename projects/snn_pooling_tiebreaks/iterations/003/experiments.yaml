@@ -1,5 +1,6 @@
 jobs:
   - name: snn_pooling_i3_fashion_ttfs_post_det_cal
+    job_id: "7337181.sched01"
     configuration: fashion_mnist_snn_pooling_ttfs_first_spike
     condition: post_lif_deterministic_calibration
     dataset: fashion_mnist
@@ -10,7 +11,8 @@ jobs:
     epochs: 60
     queue: gpu_1
     walltime: "01:30:00"
-    status: planned
+    status: queued
+    submitted_at: "2026-07-18"
     notes: >
       Single-seed recipe and runtime calibration. On healthy convergence,
       launch five seeds for each of the five planned conditions.
