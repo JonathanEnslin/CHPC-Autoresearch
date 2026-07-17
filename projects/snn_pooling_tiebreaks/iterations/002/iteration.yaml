@@ -1,6 +1,6 @@
 iteration: 2
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Test whether the instability of post-LIF maximum membrane-excess tie-breaking
   is caused by winner reinforcement. Implement the exact reverse rule: among
@@ -48,12 +48,33 @@ phases:
       accuracy without hidden-rate saturation, so the five-seed evaluation was
       submitted as 7337119.sched01.
   analyze:
-    notes: ""
+    started_at: "2026-07-18"
+    completed_at: "2026-07-18"
+    notes: >
+      The five least-excess seeds all completed normally. Final validation
+      accuracy was 88.74% ± 0.35%, 0.45 points below deterministic post-LIF
+      pooling but without the maximum-excess collapse. Mean final firing rates
+      were 10.88%, 5.46%, 4.04%, and 13.71% for stages 1–3 and output.
   conclude:
-    notes: ""
+    completed_at: "2026-07-18"
+    notes: >
+      Reversing maximum-excess routing to least-excess routing eliminated the
+      catastrophic instability observed in one maximum-excess seed, supporting
+      the winner-reinforcement explanation. However, it did not improve
+      accuracy over deterministic post-LIF pooling (88.74% ± 0.35% versus
+      89.19% ± 0.78%). The direction of hard membrane-based credit assignment
+      therefore affects stability, while neither tested direction beats the
+      deterministic baseline under this recipe.
 human_feedback: >
   Add the reverse post-LIF tie-break that selects the spiking neuron with the
   least threshold excess. Start with one direct-input, TET Fashion-MNIST seed
   for 60 epochs, examine convergence and per-layer firing rates, and only then
   expand to five seeds if it is healthy.
-outcomes: []
+outcomes:
+  - >
+    Least-excess membrane routing was stable across all five seeds, unlike
+    maximum-excess routing, which had one catastrophic non-convergence.
+  - >
+    Least-excess routing reached 88.74% ± 0.35% validation accuracy, 0.45
+    points below deterministic post-LIF pooling, so stability alone did not
+    produce an accuracy gain.

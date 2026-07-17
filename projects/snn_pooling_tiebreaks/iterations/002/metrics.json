@@ -14,5 +14,37 @@
     "health_gate": "passed",
     "notes": "Converged without the hidden-layer saturation and output starvation seen in the maximum-excess collapsed seed."
   },
-  "notes": "The five-seed least-excess evaluation is queued; this file will be extended with its aggregate result."
+  "five_seed_evaluation": {
+    "experiment_group": "fashion_mnist_snn_pooling_direct_tet_post_lif_membrane_least_excess_wandb_offline",
+    "condition": "post_lif_membrane_least_excess",
+    "per_seed": {
+      "0": {"final_epoch_val_acc": 88.366667, "best_val_loss": 0.4540239179},
+      "1": {"final_epoch_val_acc": 88.466667, "best_val_loss": 0.4358200437},
+      "2": {"final_epoch_val_acc": 88.900000, "best_val_loss": 0.4743413767},
+      "3": {"final_epoch_val_acc": 89.250000, "best_val_loss": 0.4287372174},
+      "4": {"final_epoch_val_acc": 88.716667, "best_val_loss": 0.4439002878}
+    },
+    "best_seed": 3,
+    "mean_final_epoch_val_acc": 88.740000,
+    "std_final_epoch_val_acc": 0.353671,
+    "mean_best_val_loss": 0.447365,
+    "std_best_val_loss": 0.017779,
+    "mean_validation_firing_rate": {
+      "stage_1_conv_1": 0.108776,
+      "stage_2_conv_1": 0.054624,
+      "stage_3_conv_1": 0.040356,
+      "output": 0.137084
+    },
+    "std_validation_firing_rate": {
+      "stage_1_conv_1": 0.064857,
+      "stage_2_conv_1": 0.062132,
+      "stage_3_conv_1": 0.034070,
+      "output": 0.004711
+    },
+    "comparison_to_post_lif_deterministic": {
+      "delta_mean_final_epoch_val_acc": -0.450000
+    },
+    "notes": "All five seeds converged; no seed showed the maximum-excess collapse signature of hidden-layer saturation plus output starvation."
+  },
+  "notes": "Least-excess membrane routing is stable but does not improve mean accuracy over deterministic post-LIF pooling."
 }

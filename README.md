@@ -139,6 +139,7 @@ membrane-excess primary statistic retains its non-convergent seed.
 | SNN pooling tie-breaks | 1 | Pre-LIF deterministic | **90.95% ± 0.79%** | best condition; +1.76pp vs post-LIF deterministic |
 | SNN pooling tie-breaks | 1 | Post-LIF random tie-break | 89.29% ± 0.95% | +0.10pp vs deterministic; no material improvement |
 | SNN pooling tie-breaks | 1 | Post-LIF deterministic | 89.19% ± 0.78% | baseline |
+| SNN pooling tie-breaks | 2 | Post-LIF least-excess tie-break | 88.74% ± 0.35% | stable reverse-membrane rule; −0.45pp vs deterministic |
 | SNN pooling tie-breaks | 1 | Post-LIF membrane-excess | 74.42% ± 31.94% | one seed failed to converge (17.30%) |
 
 ### MNIST — In Progress
