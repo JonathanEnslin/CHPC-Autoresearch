@@ -12,14 +12,16 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-17"
-    status: running
+    status: completed
     notes: >
       One-seed replacement for seed 4 of the membrane-excess condition. The
       original five-seed job ended at its two-hour PBS walltime after seeds
       0–3 completed and seed 4 finished only initial evaluation, without a
       resumable epoch checkpoint. One hour gives this single seed more than a
       20% buffer over the observed per-seed runtime. Startup verified at epoch
-      1 with an in-progress status, checkpoint, and metrics artifact.
+      1 with an in-progress status, checkpoint, and metrics artifact. Seed 4
+      completed at epoch 60 with 88.52% validation accuracy, completing the
+      five-seed membrane-excess comparison.
 
   - job_id: "7334679.sched01"
     name: snn_pooling_i1_fashion_post_lif_membrane
@@ -46,7 +48,9 @@ jobs:
       allocated GPU. PBS killed the job after approximately two hours, after
       seeds 0–3 completed;
       seed 4 had not reached its first checkpoint. It is being replaced by
-      7335345.sched01 with a sufficient one-seed walltime allocation.
+      7335345.sched01 with a sufficient one-seed walltime allocation. The
+      aggregate five-seed result, including the replacement seed, is 74.42% ±
+      31.94%; seed 2 was a genuine non-convergent training run (17.30%).
 
   - job_id: "7334009.sched01"
     name: snn_pooling_i1_fashion_post_lif_random

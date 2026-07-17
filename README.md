@@ -129,6 +129,18 @@ Sorted by descending accuracy. Only valid, fully-converged results.
 | 21 | ANP — PC-NN | 7 | PC-EncDec v2 @ 30ep | 96.59% ± 0.28% | |
 | 22 | ANP — PC-NN | 11 | PC-CNN | 93.12% ± 0.56% | first PC-CNN; underperforms PC baselines |
 
+### Fashion-MNIST — Completed
+
+Direct encoding, TET loss, six timesteps, five seeds, 60 epochs. The
+membrane-excess primary statistic retains its non-convergent seed.
+
+| Project | Iter | Pooling condition | Val Acc | Notes |
+|---------|------|-------------------|---------|-------|
+| SNN pooling tie-breaks | 1 | Pre-LIF deterministic | **90.95% ± 0.79%** | best condition; +1.76pp vs post-LIF deterministic |
+| SNN pooling tie-breaks | 1 | Post-LIF random tie-break | 89.29% ± 0.95% | +0.10pp vs deterministic; no material improvement |
+| SNN pooling tie-breaks | 1 | Post-LIF deterministic | 89.19% ± 0.78% | baseline |
+| SNN pooling tie-breaks | 1 | Post-LIF membrane-excess | 74.42% ± 31.94% | one seed failed to converge (17.30%) |
+
 ### MNIST — In Progress
 
 | Project | Iter | Model | Job | Status |

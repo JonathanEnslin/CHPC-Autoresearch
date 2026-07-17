@@ -52,15 +52,37 @@
       "std_final_epoch_val_acc": 0.952088,
       "mean_best_val_loss": 0.428895,
       "std_best_val_loss": 0.022972
+    },
+    "post_lif_membrane_excess": {
+      "experiment_group": "fashion_mnist_snn_pooling_direct_tet_post_lif_membrane_excess_wandb_offline",
+      "per_seed": {
+        "0": {"final_epoch_val_acc": 87.916667, "best_val_loss": 0.4493940682},
+        "1": {"final_epoch_val_acc": 89.150000, "best_val_loss": 0.4224501417},
+        "2": {"final_epoch_val_acc": 17.300000, "best_val_loss": 2.2286968434},
+        "3": {"final_epoch_val_acc": 89.233333, "best_val_loss": 0.4275360209},
+        "4": {"final_epoch_val_acc": 88.516667, "best_val_loss": 0.4620992243}
+      },
+      "best_seed": 3,
+      "mean_final_epoch_val_acc": 74.423333,
+      "std_final_epoch_val_acc": 31.937353,
+      "mean_best_val_loss": 0.798035,
+      "std_best_val_loss": 0.799927,
+      "converged_seed_subset_excluding_seed_2": {
+        "n": 4,
+        "mean_final_epoch_val_acc": 88.704167,
+        "std_final_epoch_val_acc": 0.614843,
+        "interpretation": "Post-hoc diagnostic only; seed 2 did not converge and remains in the primary five-seed result."
+      }
     }
   },
   "comparison_to_post_lif_deterministic": {
     "pre_lif_deterministic_delta_mean_final_epoch_val_acc": 1.756667,
-    "post_lif_random_delta_mean_final_epoch_val_acc": 0.103333
+    "post_lif_random_delta_mean_final_epoch_val_acc": 0.103333,
+    "post_lif_membrane_excess_delta_mean_final_epoch_val_acc": -14.766667
   },
   "wandb": {
     "mode": "offline",
     "sync_required": true
   },
-  "notes": "Final validation accuracy is taken from every completed seed's epoch-60 metrics.jsonl record. Per-timestep spike and tie-window activity remain in CHPC artifacts and offline W&B runs. Membrane-excess post-LIF pooling is the only condition not yet complete."
+  "notes": "Final validation accuracy is taken from every completed seed's epoch-60 metrics.jsonl record. Per-timestep spike and tie-window activity remain in CHPC artifacts and offline W&B runs. Membrane-excess pooling had one catastrophic non-convergent seed (17.30%), which is included in its primary five-seed statistic."
 }

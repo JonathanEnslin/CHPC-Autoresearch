@@ -48,4 +48,11 @@ human_direction: >
   with surrogate gradients, while retaining each pool site's pre-reset,
   post-integration membrane state so the membrane-excess selector can be
   implemented and audited explicitly.
-best_result: null
+best_result:
+  iteration: 1
+  dataset: fashion_mnist
+  track: direct_tet
+  condition: pre_lif_deterministic
+  mean_final_epoch_val_acc: 90.946667
+  std_final_epoch_val_acc: 0.787171
+  notes: "Best of the first four-condition controlled pooling comparison."

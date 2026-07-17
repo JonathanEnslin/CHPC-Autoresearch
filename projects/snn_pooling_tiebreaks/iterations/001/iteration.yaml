@@ -1,6 +1,6 @@
 iteration: 1
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Design a rigorous first experiment suite for convolutional SNN pooling that
   isolates pooling placement and tie-breaking behavior. Specify and validate
@@ -81,12 +81,37 @@ phases:
       one-hour replacement job (7335345.sched01) was submitted.
   analyze:
     started_at: "2026-07-17"
+    completed_at: "2026-07-17"
     notes: >
       The deterministic post-LIF Fashion-MNIST baseline is analysis-ready.
       metrics.json records final validation accuracy and best validation loss
       for all five seeds; metrics.jsonl and offline W&B artifacts retain the
       complete two-epoch activity traces for later cross-condition comparison.
-outcomes: []
+      All four direct/TET Fashion-MNIST conditions are now aggregated in
+      metrics.json. The primary five-seed statistics retain a catastrophic
+      non-convergence in membrane-excess seed 2 rather than omitting it.
+  conclude:
+    completed_at: "2026-07-17"
+    notes: >
+      For direct input plus TET on Fashion-MNIST, deterministic max pooling
+      before LIF was the strongest tested condition (90.95% ± 0.79%), improving
+      1.76 points over deterministic post-LIF pooling (89.19% ± 0.78%). Random
+      post-LIF tie-breaking was effectively neutral (89.29% ± 0.95%).
+      Membrane-excess pooling was unstable: one of five seeds converged only to
+      17.30%, yielding 74.42% ± 31.94% overall; the remaining four seeds
+      averaged 88.70% ± 0.61% only as a post-hoc diagnostic. This condition is
+      therefore not a viable replacement without a stability intervention.
+outcomes:
+  - >
+    Pre-LIF deterministic pooling is the best direct/TET Fashion-MNIST result
+    in this controlled first comparison: 90.95% ± 0.79% across five seeds.
+  - >
+    Uniform random post-LIF tie-breaking did not improve accuracy relative to
+    deterministic post-LIF routing (+0.10 percentage points).
+  - >
+    Membrane-excess post-LIF routing is presently unstable because one seed
+    catastrophically failed to converge; retain all five seeds in the reported
+    primary result rather than excluding that outcome.
 human_feedback: >
   Fashion-MNIST uses a 32 -> 64 -> 128 Conv-BN-LIF backbone with two variable
   pooling sites and fixed final global average pooling. Train for 60 epochs
