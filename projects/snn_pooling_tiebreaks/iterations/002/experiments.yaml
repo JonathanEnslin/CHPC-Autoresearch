@@ -12,11 +12,12 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-17"
-    status: queued
+    status: running
     notes: >
       One-seed calibration for the reverse membrane rule. Among simultaneous
       post-LIF spikes in each 2x2 window, it routes the surrogate gradient to
       the smallest returned pre-reset membrane potential, equivalently the
       least threshold excess under the fixed threshold. W&B is enabled in
       offline mode. Expand to five seeds only if convergence and firing rates
-      are healthy.
+      are healthy. Startup verified at epoch 1 with an in-progress status,
+      checkpoint, and metrics artifact on its allocated GPU.
