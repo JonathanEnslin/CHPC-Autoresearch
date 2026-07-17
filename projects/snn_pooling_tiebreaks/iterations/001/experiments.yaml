@@ -12,14 +12,16 @@ jobs:
     queue: gpu_1
     walltime: "02:00:00"
     submitted_at: "2026-07-17"
-    status: queued
+    status: running
     notes: >
       Post-LIF max pooling with ties routed through the spike whose pre-reset,
       post-integration LIF membrane potential most exceeded threshold. The
       implementation and a bounded two-epoch local smoke test were verified
       before submission. W&B is enabled in offline mode. Submitted only after
       the pre-LIF job completed, so it is the second of at most two active GPU
-      jobs alongside the random condition.
+      jobs alongside the random condition. Startup verified at epoch 1: seed 0
+      has an in-progress status, checkpoint, and metrics artifact on its
+      allocated GPU.
 
   - job_id: "7334009.sched01"
     name: snn_pooling_i1_fashion_post_lif_random
