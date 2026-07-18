@@ -1,6 +1,6 @@
 iteration: 5
 project: snn_pooling_tiebreaks
-status: implement
+status: completed
 goal: >
   Test whether batch normalization through time (BNTT) stabilizes the
   six-timestep direct/TET CIFAR-10 spiking VGG-9 deterministic reference that
@@ -35,7 +35,30 @@ phases:
   experiment:
     started_at: "2026-07-18"
     notes: >
-      Submit the one-seed deterministic post-LIF BNTT calibration on CHPC.
-      It is the stability gate for any future BNTT pooling-policy comparison.
+      The one-seed deterministic post-LIF BNTT calibration initially passed
+      startup, with nonzero deep-layer and output activity at epoch 5. It then
+      collapsed by epoch 70 to 9.64% validation accuracy and chance-level loss,
+      with stage_4_conv_2 and the output LIF silent at all six timesteps in
+      epochs 70--71. It was intentionally terminated; the five-condition BNTT
+      comparison was not submitted.
+  analyze:
+    completed_at: "2026-07-18"
+    notes: >
+      BNTT delayed but did not prevent eventual output starvation and the
+      chance-level solution on this fixed recipe: shared BN collapsed by epoch
+      27, whereas true BNTT collapsed by epoch 70 after a visibly healthy startup. This
+      rules out simple temporal sharing of BatchNorm statistics as a sufficient
+      stabilization remedy, though it does not isolate the optimizer schedule,
+      threshold/reset dynamics, or architecture as the cause.
+  conclude:
+    completed_at: "2026-07-18"
+    notes: >
+      Do not expand CIFAR-10 pooling-policy experiments under the current
+      VGG-9/direct/TET recipe. First establish a stable deterministic baseline
+      with a materially different stabilization intervention.
+outcomes:
+  - >
+    True BNTT did not prevent deep-layer/output silence: the one-seed run
+    collapsed by epoch 70 and was intentionally stopped.
 human_feedback: >
   Implement BNTT in the snnTorch model and test whether it improves stability.

@@ -11,9 +11,11 @@ jobs:
     epochs: 200
     queue: gpu_1
     walltime: "12:00:00"
-    status: running
+    status: terminated_nonlearning
     submitted_at: "2026-07-18"
     notes: >
-      One-seed calibration. Startup passed: epoch-1 status and epoch-5 metrics
-      were recorded. Expand to the five pooling conditions only if BNTT prevents
-      deep-layer/output starvation and shows sustained learning.
+      BNTT startup was healthy, with nonzero deep/output activity through epoch
+      5. It nevertheless collapsed by epoch 70: validation accuracy was 9.64%,
+      validation loss 2.302584892511368, and stage_4_conv_2 plus output firing
+      were zero at every timestep across epochs 70--71. The job was intentionally
+      terminated; no five-condition BNTT comparison was submitted.
