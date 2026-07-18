@@ -11,8 +11,9 @@ jobs:
     epochs: 200
     queue: gpu_1
     walltime: "12:00:00"
-    status: planned
+    status: running
     submitted_at: "2026-07-18"
     notes: >
-      One-seed calibration. Expand to the five pooling conditions only if BNTT
-      prevents deep-layer/output starvation and shows sustained learning.
+      One-seed calibration. Startup passed: epoch-1 status and epoch-5 metrics
+      were recorded. Expand to the five pooling conditions only if BNTT prevents
+      deep-layer/output starvation and shows sustained learning.
