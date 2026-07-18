@@ -1,0 +1,16 @@
+jobs:
+  - name: snn_pooling_i5_cifar_bntt_post_det_cal
+    configuration: cifar10_snn_pooling_vgg9_tet_bntt
+    condition: post_lif_deterministic_bntt_calibration
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    status: planned
+    notes: >
+      One-seed calibration. Expand to the five pooling conditions only if BNTT
+      prevents deep-layer/output starvation and shows sustained learning.

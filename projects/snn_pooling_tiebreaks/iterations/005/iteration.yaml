@@ -1,0 +1,41 @@
+iteration: 5
+project: snn_pooling_tiebreaks
+status: implement
+goal: >
+  Test whether batch normalization through time (BNTT) stabilizes the
+  six-timestep direct/TET CIFAR-10 spiking VGG-9 deterministic reference that
+  collapsed under shared BatchNorm. BNTT gives every convolution and timestep
+  an independent BatchNorm2d instance while retaining snnTorch Leaky neurons,
+  architecture, optimizer, loss, and pooling semantics.
+created: "2026-07-18"
+phases:
+  plan:
+    completed_at: "2026-07-18"
+    notes: >
+      The iteration-4 deterministic reference briefly learned, then stage 4
+      and the output LIF became silent. The user explicitly requested BNTT as
+      the next stabilization intervention.
+  survey:
+    completed_at: "2026-07-18"
+    notes: >
+      Kim and Panda (2021) introduce BNTT for low-latency directly trained
+      SNNs. The implementation uses a separate normalization state per
+      timestep to avoid mixing time-dependent activation distributions.
+  implement:
+    started_at: "2026-07-18"
+    completed_at: "2026-07-18"
+    notes: >
+      Add a bntt switch to the snnTorch-based pooling model. With bntt=true,
+      every convolution owns one BatchNorm2d per simulation timestep; with
+      bntt=false, the exact prior shared-BN behavior is retained. A synthetic
+      CUDA forward/backward smoke test passed for the six-timestep VGG-9
+      configuration and verified six independent normalizers per convolution.
+      The real local CIFAR smoke remains unavailable because dataset download
+      is network-blocked; CHPC has the verified dataset copy.
+  experiment:
+    started_at: "2026-07-18"
+    notes: >
+      Submit the one-seed deterministic post-LIF BNTT calibration on CHPC.
+      It is the stability gate for any future BNTT pooling-policy comparison.
+human_feedback: >
+  Implement BNTT in the snnTorch model and test whether it improves stability.

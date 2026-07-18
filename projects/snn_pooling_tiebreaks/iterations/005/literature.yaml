@@ -1,0 +1,23 @@
+literature:
+  - key: kim_panda_2021_bntt
+    title: "Revisiting Batch Normalization for Training Low-Latency Deep Spiking Neural Networks From Scratch"
+    authors: "Youngeun Kim and Priyadarshini Panda"
+    year: 2021
+    venue: "Frontiers in Neuroscience"
+    url: "https://arxiv.org/abs/2010.01729"
+    relevance: >
+      Motivates separate batch-normalization statistics and affine parameters
+      across timesteps for directly trained low-latency SNNs.
+    key_points:
+      - "BNTT avoids mixing time-dependent activation distributions in a shared BN state."
+      - "It is a stabilization baseline, not a change to pooling semantics."
+design_decisions:
+  bntt_definition: >
+    For each convolutional layer l and timestep t, use an independent
+    BatchNorm2d(l, t), including separate affine parameters and running
+    statistics. snnTorch Leaky membrane states remain per-layer recurrent
+    state and are not normalized directly.
+  controls:
+    - deterministic post-LIF pooling for calibration
+    - six timesteps, direct input, TET loss, and unchanged VGG-9 architecture
+    - same optimizer and warm-up/cosine schedule as iteration 4

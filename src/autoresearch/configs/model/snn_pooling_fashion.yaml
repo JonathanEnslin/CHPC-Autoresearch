@@ -8,6 +8,7 @@ pooled_stages: [0, 1]
 pooling_placement: post_lif
 tie_break: deterministic
 timesteps: 6
+bntt: false
 encoding: direct
 decoding: tet
 beta: 0.9

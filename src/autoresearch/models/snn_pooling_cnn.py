@@ -26,6 +26,7 @@ class SNNPoolingCNN(nn.Module):
         pooling_placement: str = "post_lif",
         tie_break: str = "deterministic",
         timesteps: int = 6,
+        bntt: bool = False,
         encoding: str = "direct",
         decoding: str = "tet",
         beta: float = 0.9,
@@ -47,6 +48,7 @@ class SNNPoolingCNN(nn.Module):
             raise ValueError("random and membrane tie-breaking are defined only for post-LIF pooling")
 
         self.timesteps = timesteps
+        self.bntt = bntt
         self.encoding = encoding
         self.decoding = decoding
         self.pooling_placement = pooling_placement
@@ -65,7 +67,14 @@ class SNNPoolingCNN(nn.Module):
             stage_lifs = nn.ModuleList()
             for _ in range(conv_count):
                 stage_convs.append(nn.Conv2d(previous_channels, stage_channels, 3, padding=1, bias=False))
-                stage_norms.append(nn.BatchNorm2d(stage_channels))
+                if bntt:
+                    stage_norms.append(
+                        nn.ModuleList(
+                            [nn.BatchNorm2d(stage_channels) for _ in range(timesteps)]
+                        )
+                    )
+                else:
+                    stage_norms.append(nn.BatchNorm2d(stage_channels))
                 stage_lifs.append(
                     snn.Leaky(
                         beta=beta,
@@ -144,7 +153,8 @@ class SNNPoolingCNN(nn.Module):
                 for conv_index, (conv, norm, lif) in enumerate(
                     zip(stage_convs, stage_norms, stage_lifs)
                 ):
-                    current = norm(conv(current))
+                    normalizer = norm[timestep] if self.bntt else norm
+                    current = normalizer(conv(current))
                     is_pool_site = (
                         stage_index in self.pooled_stages
                         and conv_index == len(stage_convs) - 1

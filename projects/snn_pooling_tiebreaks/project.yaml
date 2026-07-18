@@ -8,7 +8,7 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 4
+current_iteration: 5
 branch: null
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie
@@ -58,6 +58,11 @@ human_direction: >
   reference had active hidden layers but a completely silent output layer, so
   BNTT must be calibrated as a deterministic-pooling baseline before any
   TTFS tie-break comparison.
+
+  The failed CIFAR VGG-9 deterministic calibration makes BNTT a prerequisite
+  for that track too. First establish a stable post-LIF deterministic BNTT
+  baseline on CIFAR-10; only then rerun the five pooling conditions with BNTT
+  held fixed.
 best_result:
   iteration: 1
   dataset: fashion_mnist
