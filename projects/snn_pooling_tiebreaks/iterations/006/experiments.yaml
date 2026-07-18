@@ -1,4 +1,21 @@
-jobs: []
+jobs:
+  - name: snn_pooling_i6_controls_smoke
+    job_id: "7339012.sched01"
+    configuration:
+      - cifar10_snn_pooling_vgg9_tet_linear_output_control
+      - cifar10_snn_pooling_vgg9_tet_fashion_dynamics_control
+    condition: bounded_smoke_test
+    dataset: cifar10
+    seeds: [0]
+    epochs: 2
+    queue: gpu_1
+    walltime: "01:00:00"
+    status: queued
+    submitted_at: "2026-07-18"
+    notes: >
+      Two sequential bounded smoke runs, each limited to two training and two
+      validation batches, with W&B disabled. A full calibration is contingent
+      on both modes completing forward/backward successfully.
 planned_conditions:
   - post_lif_deterministic_linear_output_control
   - post_lif_deterministic_fashion_dynamics_control

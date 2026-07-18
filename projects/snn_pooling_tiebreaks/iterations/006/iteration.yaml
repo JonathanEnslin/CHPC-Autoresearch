@@ -1,6 +1,6 @@
 iteration: 6
 project: snn_pooling_tiebreaks
-status: implement
+status: experiment
 goal: >
   Identify a healthy six-timestep CIFAR-10 deterministic max-pooling SNN
   reference after shared BN and BNTT calibrations both became output-silent.
@@ -31,6 +31,20 @@ phases:
       deterministic post-LIF max pooling.
   implement:
     started_at: "2026-07-18"
+    completed_at: "2026-07-18"
+    notes: >
+      Added output-mode, surrogate-kind, and reset-delay controls to the
+      snnTorch pooling model. The linear-output control retains all hidden
+      spikes and deterministic post-LIF max pooling. The Fashion-like control
+      retains the spiking output and pooling policy, while changing beta,
+      surrogate, reset timing, optimiser, schedule, and gradient clipping.
+      Python syntax and YAML parsing checks passed; a bounded CHPC smoke test
+      was submitted before the full calibrations.
+  experiment:
+    started_at: "2026-07-18"
+    notes: >
+      Submit a single sequential, two-configuration two-epoch CHPC smoke test
+      before allocating the two one-seed 200-epoch calibration jobs.
 human_feedback: >
   Test whether the validated Fashion-MNIST SpikingJelly first-spike design
   reveals a stabilising control for the CIFAR-10 snnTorch VGG-9 reference.
