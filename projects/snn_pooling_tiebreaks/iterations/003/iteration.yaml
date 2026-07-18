@@ -1,6 +1,6 @@
 iteration: 3
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Extend the controlled SNN pooling comparison to Fashion-MNIST scaled-log
   TTFS encoding with first-spike decoding. Compare pre-LIF deterministic
@@ -39,10 +39,37 @@ phases:
       is a wiring check, not an accuracy assessment.
   experiment:
     started_at: "2026-07-18"
+    completed_at: "2026-07-18"
     notes: >
       Submit one full 60-epoch post-LIF deterministic seed to verify that the
       TTFS/first-spike recipe converges and measure per-seed runtime before
-      launching the five-condition, five-seed comparison.
+      launching the five-condition, five-seed comparison. The calibration
+      completed in about 19 minutes of GPU walltime but failed the health
+      gate: validation accuracy stayed at 9.55%, cross-entropy stayed at
+      2.302585, and the output LIF emitted no spikes across all six timesteps.
+  analyze:
+    completed_at: "2026-07-18"
+    notes: >
+      The final validation firing rates averaged 11.41%, 25.06%, and 25.47%
+      in stages 1–3, while every output-timestep rate was exactly zero. This
+      is output starvation despite active hidden layers, not an informative
+      pooling-policy result.
+  conclude:
+    completed_at: "2026-07-18"
+    notes: >
+      The requested scaled-log TTFS plus first-spike Fashion-MNIST track is
+      not viable under the fixed direct/TET architecture and threshold recipe.
+      The five-condition comparison was correctly withheld: changing pooling
+      would be confounded by a non-learning reference model. A future TTFS
+      iteration must first calibrate its output threshold/readout or decoder
+      while keeping pooling deterministic.
+outcomes:
+  - >
+    The deterministic TTFS/first-spike calibration failed at chance accuracy
+    (9.55%) because output-layer spikes were absent throughout training.
+  - >
+    No TTFS pooling-policy conclusions can be drawn, and the planned
+    five-condition expansion was not run.
 human_feedback: >
   Include least-excess in all remaining experiments. Commence the remaining
   experiment programme.

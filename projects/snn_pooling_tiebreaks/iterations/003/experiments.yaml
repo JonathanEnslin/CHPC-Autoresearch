@@ -11,13 +11,12 @@ jobs:
     epochs: 60
     queue: gpu_1
     walltime: "01:30:00"
-    status: running
+    status: completed
     submitted_at: "2026-07-18"
     notes: >
-      Startup verified at epoch 7 with checkpoints and metrics artifacts. The
-      model is currently at chance accuracy with no recorded output spikes;
-      assess the completed 60-epoch trajectory before expanding. On healthy
-      convergence, launch five seeds for each of the five planned conditions.
+      Completed all 60 epochs, but failed the health gate: validation accuracy
+      remained 9.55% with loss 2.302585 and zero output-layer firing at every
+      timestep. No five-condition TTFS expansion was submitted.
 planned_conditions:
   - pre_lif_deterministic
   - post_lif_deterministic

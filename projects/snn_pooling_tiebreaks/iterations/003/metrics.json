@@ -1,0 +1,20 @@
+{
+  "calibration": {
+    "experiment_group": "fashion_mnist_snn_pooling_ttfs_first_spike_post_lif_deterministic_calibration_wandb_offline",
+    "condition": "post_lif_deterministic",
+    "seed": 0,
+    "epochs": 60,
+    "final_epoch_val_acc": 9.55,
+    "best_val_loss": 2.302584906841846,
+    "final_epoch_val_loss": 2.302584906841846,
+    "final_validation_firing_rate": {
+      "stage_1_conv_1": 0.114135,
+      "stage_2_conv_1": 0.25062,
+      "stage_3_conv_1": 0.254718,
+      "output": 0.0
+    },
+    "health_gate": "failed",
+    "failure_signature": "Active hidden layers with zero output spikes at every one of six timesteps; chance-level accuracy and flat cross-entropy.",
+    "decision": "Do not expand to the five-condition TTFS comparison."
+  }
+}
