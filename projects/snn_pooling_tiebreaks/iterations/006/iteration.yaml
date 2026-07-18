@@ -1,0 +1,36 @@
+iteration: 6
+project: snn_pooling_tiebreaks
+status: implement
+goal: >
+  Identify a healthy six-timestep CIFAR-10 deterministic max-pooling SNN
+  reference after shared BN and BNTT calibrations both became output-silent.
+  Use small, one-seed diagnostic controls to separate output-head starvation
+  from the effects of Fashion-MNIST-like neuron/optimisation dynamics before
+  rerunning any pooling-policy comparison.
+created: "2026-07-18"
+phases:
+  plan:
+    completed_at: "2026-07-18"
+    notes: >
+      The human requested additional stabilisation experiments after reviewing
+      non-collapsing SpikingJelly baselines. Run two concurrent one-seed,
+      deterministic post-LIF max-pooling calibrations: a linear-output control
+      and a fully spiking, Fashion-like dynamics/optimisation control. Hold
+      direct input, six timesteps, CIFAR augmentation, and pooling placement
+      fixed. Do not submit the five-policy sweep unless a control is healthy.
+  survey:
+    completed_at: "2026-07-18"
+    notes: >
+      Local code comparison established that the non-collapsing Fashion
+      first-spike MLP uses a true spiking output, but differs in TTFS drive,
+      a leak equivalent to beta about 0.5, ATan surrogate gradients, no biases,
+      combined time-batch BN, AdamW/cosine, and norm-5 gradient clipping. The
+      non-collapsing CIFAR VGG direct/TET baseline instead uses average pooling
+      and a temporal linear readout. The two controls isolate output mode and a
+      compact Fashion-like dynamics/optimisation bundle while retaining
+      deterministic post-LIF max pooling.
+  implement:
+    started_at: "2026-07-18"
+human_feedback: >
+  Test whether the validated Fashion-MNIST SpikingJelly first-spike design
+  reveals a stabilising control for the CIFAR-10 snnTorch VGG-9 reference.

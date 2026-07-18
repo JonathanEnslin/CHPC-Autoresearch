@@ -1,0 +1,14 @@
+sources:
+  - title: "Validated local SpikingJelly Fashion-MNIST first-spike implementation"
+    type: local_code
+    location: "F:/UnivDevelopment/MSc/Dev/fashion_mnist_experiments/spikingjelly_ttfs_mlp.py"
+    findings:
+      - "first_spike requires a spiking output LIF node."
+      - "The model uses tau=2, ATan surrogate gradients, no reset detachment, and gradient clipping."
+      - "Prediction falls back to final output membrane voltage for examples with no output spike."
+  - title: "Validated local SpikingJelly VGG-9 baseline"
+    type: local_code
+    location: "F:/UnivDevelopment/MSc/Dev/spikingjelly_ssl/models/backbones/spiking_vgg.py"
+    findings:
+      - "The direct/TET comparator uses post-LIF average pooling and a temporal linear classification head."
+      - "It is not a max-pooling tie-breaking baseline."

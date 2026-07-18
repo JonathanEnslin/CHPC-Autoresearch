@@ -1,0 +1,22 @@
+# @package _global_
+defaults:
+  - override /dataset: cifar10_augmented
+  - override /model: snn_pooling_cifar_vgg9
+  - override /optimizer: sgd_nesterov
+  - override /loss_fn: tet_cross_entropy
+  - override /scheduler: warmup_cosine_cifar_1pct
+
+experiment_group: cifar10_snn_pooling_vgg9_tet_linear_output_control
+experiment_name: ${experiment_group}_seed_${seed}
+seed: 0
+batch_size: 128
+epochs: 200
+num_workers: 4
+validation_split: 0.1
+model:
+  output_mode: linear
+early_stopping:
+  enabled: false
+wandb:
+  tags: [cifar10, snn, vgg9, deterministic-max-pooling, linear-output-control]
+  notes: "Diagnostic: retain deterministic post-LIF max pooling and replace only the output LIF with a temporal linear readout."

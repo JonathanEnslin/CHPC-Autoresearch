@@ -1,0 +1,25 @@
+# @package _global_
+defaults:
+  - override /dataset: cifar10_augmented
+  - override /model: snn_pooling_cifar_vgg9
+  - override /optimizer: adamw_snn_pooling
+  - override /loss_fn: tet_cross_entropy
+  - override /scheduler: cosine_fashion_1pct
+
+experiment_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_control
+experiment_name: ${experiment_group}_seed_${seed}
+seed: 0
+batch_size: 128
+epochs: 200
+num_workers: 4
+validation_split: 0.1
+max_grad_norm: 5.0
+model:
+  beta: 0.5
+  surrogate_kind: atan
+  reset_delay: false
+early_stopping:
+  enabled: false
+wandb:
+  tags: [cifar10, snn, vgg9, deterministic-max-pooling, fashion-dynamics-control]
+  notes: "Diagnostic: retain a spiking output and deterministic post-LIF max pooling while using Fashion-like leak, ATan surrogate, immediate reset, AdamW/cosine, and gradient clipping."

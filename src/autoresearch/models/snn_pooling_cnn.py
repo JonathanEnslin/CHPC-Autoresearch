@@ -29,9 +29,12 @@ class SNNPoolingCNN(nn.Module):
         bntt: bool = False,
         encoding: str = "direct",
         decoding: str = "tet",
+        output_mode: str = "spiking",
         beta: float = 0.9,
         threshold: float = 1.0,
+        surrogate_kind: str = "fast_sigmoid",
         surrogate_slope: float = 25.0,
+        reset_delay: bool = True,
         random_seed: int | None = None,
         ttfs_log_scale: float = 20.0,
     ) -> None:
@@ -44,6 +47,12 @@ class SNNPoolingCNN(nn.Module):
             raise ValueError("encoding must be 'direct' or 'scaled_log_ttfs'")
         if decoding not in {"tet", "first_spike"}:
             raise ValueError("decoding must be 'tet' or 'first_spike'")
+        if output_mode not in {"spiking", "linear"}:
+            raise ValueError("output_mode must be 'spiking' or 'linear'")
+        if decoding == "first_spike" and output_mode != "spiking":
+            raise ValueError("first-spike decoding requires a spiking output mode")
+        if surrogate_kind not in {"fast_sigmoid", "atan"}:
+            raise ValueError("surrogate_kind must be 'fast_sigmoid' or 'atan'")
         if pooling_placement == "pre_lif" and tie_break != "deterministic":
             raise ValueError("random and membrane tie-breaking are defined only for post-LIF pooling")
 
@@ -51,11 +60,16 @@ class SNNPoolingCNN(nn.Module):
         self.bntt = bntt
         self.encoding = encoding
         self.decoding = decoding
+        self.output_mode = output_mode
         self.pooling_placement = pooling_placement
         self.pooled_stages = set(pooled_stages)
         self.threshold = threshold
         self.ttfs_log_scale = ttfs_log_scale
-        spike_grad = surrogate.fast_sigmoid(slope=surrogate_slope)
+        spike_grad = (
+            surrogate.fast_sigmoid(slope=surrogate_slope)
+            if surrogate_kind == "fast_sigmoid"
+            else surrogate.atan()
+        )
 
         self.convs = nn.ModuleList()
         self.norms = nn.ModuleList()
@@ -81,7 +95,7 @@ class SNNPoolingCNN(nn.Module):
                         threshold=threshold,
                         spike_grad=spike_grad,
                         reset_mechanism="subtract",
-                        reset_delay=True,
+                        reset_delay=reset_delay,
                     )
                 )
                 previous_channels = stage_channels
@@ -102,12 +116,16 @@ class SNNPoolingCNN(nn.Module):
             }
         )
         self.classifier = nn.Linear(channels[-1], num_classes)
-        self.output_lif = snn.Leaky(
-            beta=beta,
-            threshold=threshold,
-            spike_grad=spike_grad,
-            reset_mechanism="subtract",
-            reset_delay=True,
+        self.output_lif = (
+            snn.Leaky(
+                beta=beta,
+                threshold=threshold,
+                spike_grad=spike_grad,
+                reset_mechanism="subtract",
+                reset_delay=reset_delay,
+            )
+            if output_mode == "spiking"
+            else None
         )
         self._last_temporal_logits: torch.Tensor | None = None
         self._last_activity: Dict[str, float] = {}
@@ -141,8 +159,8 @@ class SNNPoolingCNN(nn.Module):
         """Run the SNN and return count or first-spike class scores."""
         inputs = self._encode(x)
         membranes = self._initial_membranes()
-        output_membrane = self.output_lif.init_leaky()
-        output_spikes = []
+        output_membrane = self.output_lif.init_leaky() if self.output_lif is not None else None
+        output_values = []
         recorder = SpikeActivityRecorder() if self._record_activity else None
 
         for timestep in range(self.timesteps):
@@ -186,12 +204,17 @@ class SNNPoolingCNN(nn.Module):
 
             pooled = current.mean(dim=(-2, -1))
             output_current = self.classifier(pooled)
-            output_spike, output_membrane = self.output_lif(output_current, output_membrane)
-            if recorder is not None:
-                recorder.record("output", timestep, output_spike)
-            output_spikes.append(output_spike)
+            if self.output_lif is not None:
+                output_value, output_membrane = self.output_lif(
+                    output_current, output_membrane
+                )
+                if recorder is not None:
+                    recorder.record("output", timestep, output_value)
+            else:
+                output_value = output_current
+            output_values.append(output_value)
 
-        temporal_logits = torch.stack(output_spikes)
+        temporal_logits = torch.stack(output_values)
         self._last_temporal_logits = temporal_logits
         self._last_activity = recorder.consume() if recorder is not None else {}
         if self.decoding == "tet":

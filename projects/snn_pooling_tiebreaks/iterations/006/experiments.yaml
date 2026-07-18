@@ -1,0 +1,4 @@
+jobs: []
+planned_conditions:
+  - post_lif_deterministic_linear_output_control
+  - post_lif_deterministic_fashion_dynamics_control
