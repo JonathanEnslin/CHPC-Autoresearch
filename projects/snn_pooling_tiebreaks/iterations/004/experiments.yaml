@@ -9,13 +9,12 @@ jobs:
     seeds: [0]
     epochs: 200
     queue: gpu_1
-    walltime: "04:00:00"
-    status: blocked_prerequisite
+    walltime: "12:00:00"
+    status: planned
     notes: >
       One-seed convergence and runtime calibration. Expand only if accuracy,
-      loss, and firing rates show a healthy non-saturated baseline. Submission
-      is blocked because CIFAR-10 is absent from CHPC and cannot be downloaded
-      by the current environment.
+      loss, and firing rates show a healthy non-saturated baseline. CIFAR-10
+      is available at data/cifar-10-batches-py on CHPC.
 planned_conditions:
   - pre_lif_deterministic
   - post_lif_deterministic

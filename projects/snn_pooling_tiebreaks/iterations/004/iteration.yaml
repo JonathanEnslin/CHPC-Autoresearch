@@ -1,6 +1,6 @@
 iteration: 4
 project: snn_pooling_tiebreaks
-status: implement
+status: experiment
 goal: >
   Establish a healthy one-seed CIFAR-10 direct-input/TET reference for the
   spiking VGG-9 pooling model using deterministic post-LIF pooling. If it
@@ -26,6 +26,7 @@ phases:
       planned conditions.
   implement:
     started_at: "2026-07-18"
+    completed_at: "2026-07-18"
     notes: >
       The existing CIFAR-10 VGG-9 preset has three explicit 2x2 pool sites,
       direct six-timestep encoding, TET loss, CIFAR augmentation, Nesterov
@@ -33,7 +34,16 @@ phases:
       passed for deterministic and least-excess routing. A real local
       two-epoch smoke could not download CIFAR-10 because outbound network is
       blocked, and CHPC currently lacks data/cifar-10-batches-py. Do not
-      submit until the dataset archive is placed on CHPC.
+      submit until the dataset archive is placed on CHPC. An existing 173 MB
+      CIFAR-10 extraction was then found in the user's CHPC Lustre area and
+      copied into this project's data/cifar-10-batches-py directory; the
+      required data_batch_1 file was verified.
+  experiment:
+    started_at: "2026-07-18"
+    notes: >
+      Submit the deterministic post-LIF, seed-0, 200-epoch calibration with
+      the now-available CHPC dataset. Use its observed runtime to size the
+      five-seed condition jobs with a 20% buffer.
 human_feedback: >
   Include least-excess in all remaining experiments. Add BNTT as a later
   deterministic-baseline remedy for the failed TTFS/first-spike track.
