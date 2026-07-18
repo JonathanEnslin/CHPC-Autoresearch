@@ -36,18 +36,18 @@ phases:
     started_at: "2026-07-18"
     notes: >
       The one-seed deterministic post-LIF BNTT calibration initially passed
-      startup, with nonzero deep-layer and output activity at epoch 5. It then
-      collapsed by epoch 70 to 9.64% validation accuracy and chance-level loss,
-      with stage_4_conv_2 and the output LIF silent at all six timesteps in
-      epochs 70--71. It was intentionally terminated; the five-condition BNTT
-      comparison was not submitted.
+      startup, reaching 36.40% validation accuracy at epoch 3. It then decayed
+      to chance-level accuracy and loss, with stage_4_conv_2 and the output LIF
+      silent at all six timesteps from epoch 16 onward. The job was detected and
+      intentionally terminated at epoch 71; the five-condition BNTT comparison
+      was not submitted.
   analyze:
     completed_at: "2026-07-18"
     notes: >
-      BNTT delayed but did not prevent eventual output starvation and the
-      chance-level solution on this fixed recipe: shared BN collapsed by epoch
-      27, whereas true BNTT collapsed by epoch 70 after a visibly healthy startup. This
-      rules out simple temporal sharing of BatchNorm statistics as a sufficient
+      BNTT did not prevent eventual output starvation and the chance-level
+      solution on this fixed recipe: shared BN collapsed by epoch 27, whereas
+      true BNTT became fully silent from epoch 16 after a visibly healthy
+      startup. This rules out simple temporal sharing of BatchNorm statistics as a sufficient
       stabilization remedy, though it does not isolate the optimizer schedule,
       threshold/reset dynamics, or architecture as the cause.
   conclude:
@@ -59,6 +59,6 @@ phases:
 outcomes:
   - >
     True BNTT did not prevent deep-layer/output silence: the one-seed run
-    collapsed by epoch 70 and was intentionally stopped.
+    became fully silent from epoch 16 and was intentionally stopped at epoch 71.
 human_feedback: >
   Implement BNTT in the snnTorch model and test whether it improves stability.

@@ -6,6 +6,12 @@
     "planned_epochs": 200,
     "last_observed_epoch": 71,
     "startup_epoch": 5,
+    "peak_validation": {
+      "epoch": 3,
+      "accuracy": 36.4,
+      "loss": 1.843527489900589
+    },
+    "first_all_timestep_silent_epoch": 16,
     "last_observed_val_acc": 9.64,
     "last_observed_val_loss": 2.302584892511368,
     "final_validation_firing_rate": {
@@ -13,7 +19,7 @@
       "output": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     },
     "health_gate": "failed",
-    "termination": "Intentional qdel after confirming chance-level accuracy and all-timestep deep/output silence at epochs 70--71.",
+    "termination": "Intentional qdel at epoch 71 after retrospective metric inspection confirmed chance-level accuracy and all-timestep deep/output silence from epoch 16 onward.",
     "decision": "Do not expand to the five-condition CIFAR BNTT pooling comparison."
   }
 }

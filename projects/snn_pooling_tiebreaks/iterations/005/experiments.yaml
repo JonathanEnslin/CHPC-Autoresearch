@@ -14,8 +14,8 @@ jobs:
     status: terminated_nonlearning
     submitted_at: "2026-07-18"
     notes: >
-      BNTT startup was healthy, with nonzero deep/output activity through epoch
-      5. It nevertheless collapsed by epoch 70: validation accuracy was 9.64%,
-      validation loss 2.302584892511368, and stage_4_conv_2 plus output firing
-      were zero at every timestep across epochs 70--71. The job was intentionally
-      terminated; no five-condition BNTT comparison was submitted.
+      BNTT initially learned, reaching 36.40% validation accuracy at epoch 3.
+      Deep/output activity decayed thereafter and was zero at every timestep
+      from epoch 16 onward. At the epoch-71 intervention point, validation
+      accuracy was 9.64% and validation loss 2.302584892511368. The job was
+      intentionally terminated; no five-condition BNTT comparison was submitted.
