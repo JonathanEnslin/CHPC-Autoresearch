@@ -29,12 +29,30 @@ jobs:
     epochs: 2
     queue: gpu_1
     walltime: "01:00:00"
-    status: queued
+    status: failed_before_training
     submitted_at: "2026-07-18"
     notes: >
       Retry after a verified PBS-template fix exports $PWD/src through
       PYTHONPATH. The activated CHPC environment then imported autoresearch
-      from the project source tree successfully.
+      from the project source tree successfully, but the two-epoch override
+      was incompatible with the production five-epoch warm-up.
+  - name: snn_pooling_i6_controls_smoke_retry2
+    job_id: "7339314.sched01"
+    configuration:
+      - cifar10_snn_pooling_vgg9_tet_linear_output_control
+      - cifar10_snn_pooling_vgg9_tet_fashion_dynamics_control
+    condition: bounded_smoke_test_retry2
+    dataset: cifar10
+    seeds: [0]
+    epochs: 2
+    queue: gpu_1
+    walltime: "01:00:00"
+    status: queued
+    submitted_at: "2026-07-19"
+    notes: >
+      The linear-output smoke sets scheduler.warmup_epochs=1 solely because
+      the bounded two-epoch test must have a warm-up shorter than T_max. Full
+      200-epoch calibrations retain the five-epoch production warm-up.
 planned_conditions:
   - post_lif_deterministic_linear_output_control
   - post_lif_deterministic_fashion_dynamics_control
