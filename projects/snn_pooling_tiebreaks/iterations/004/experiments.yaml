@@ -1,5 +1,6 @@
 jobs:
   - name: snn_pooling_i4_cifar_post_det_cal
+    job_id: "7337386.sched01"
     configuration: cifar10_snn_pooling_vgg9_tet
     condition: post_lif_deterministic_calibration
     dataset: cifar10
@@ -11,6 +12,7 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     status: planned
+    submitted_at: "2026-07-18"
     notes: >
       One-seed convergence and runtime calibration. Expand only if accuracy,
       loss, and firing rates show a healthy non-saturated baseline. CIFAR-10
