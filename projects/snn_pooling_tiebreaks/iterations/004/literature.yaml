@@ -1,0 +1,18 @@
+literature:
+  - key: inherited_pooling_controls
+    source_iteration: 1
+    relevance: >
+      Deterministic, random, greatest-excess, and least-excess selectors keep
+      their previously audited forward and surrogate-gradient semantics.
+  - key: tet_direct_snn_training
+    source_iteration: 1
+    relevance: >
+      Direct encoding and TET are fixed for the CIFAR-10 comparison to avoid
+      confounding pooling effects with temporal-loss changes.
+design_decisions:
+  controls:
+    - spiking VGG-9 with three explicit pool sites
+    - direct input, TET loss, and six simulation timesteps
+    - CIFAR random crop and horizontal flip augmentation
+    - Nesterov SGD with five-epoch warm-up and cosine decay
+    - five seeds per final condition

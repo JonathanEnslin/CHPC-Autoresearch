@@ -8,7 +8,7 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 3
+current_iteration: 4
 branch: null
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie
@@ -52,6 +52,12 @@ human_direction: >
   with surrogate gradients, while retaining each pool site's pre-reset,
   post-integration membrane state so the membrane-excess selector can be
   implemented and audited explicitly.
+
+  Later TTFS remedy: evaluate batch normalization through time (BNTT) before
+  retrying the scaled-log-TTFS/first-spike track. Iteration 3's deterministic
+  reference had active hidden layers but a completely silent output layer, so
+  BNTT must be calibrated as a deterministic-pooling baseline before any
+  TTFS tie-break comparison.
 best_result:
   iteration: 1
   dataset: fashion_mnist

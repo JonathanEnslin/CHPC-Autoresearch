@@ -1,0 +1,39 @@
+iteration: 4
+project: snn_pooling_tiebreaks
+status: implement
+goal: >
+  Establish a healthy one-seed CIFAR-10 direct-input/TET reference for the
+  spiking VGG-9 pooling model using deterministic post-LIF pooling. If it
+  converges normally, use its runtime and activity profile to launch the
+  fixed five-condition comparison: pre-LIF deterministic, post-LIF
+  deterministic, post-LIF random, post-LIF greatest-excess, and post-LIF
+  least-excess.
+created: "2026-07-18"
+phases:
+  plan:
+    completed_at: "2026-07-18"
+    notes: >
+      Iteration 3 correctly stopped before its TTFS pooling comparison because
+      the deterministic reference was output-silent. The project direction
+      already specifies the next independent track: CIFAR-10 direct/TET with
+      a spiking VGG-9 and a deterministic calibration before comparison.
+  survey:
+    completed_at: "2026-07-18"
+    notes: >
+      The existing iteration-1 survey supports low-timestep direct SNN
+      training and pooling-policy controls. This iteration changes dataset and
+      architecture, not the pooling semantics, and holds TET fixed across the
+      planned conditions.
+  implement:
+    started_at: "2026-07-18"
+    notes: >
+      The existing CIFAR-10 VGG-9 preset has three explicit 2x2 pool sites,
+      direct six-timestep encoding, TET loss, CIFAR augmentation, Nesterov
+      SGD, warm-up, and cosine decay. Synthetic CUDA forward/backward checks
+      passed for deterministic and least-excess routing. A real local
+      two-epoch smoke could not download CIFAR-10 because outbound network is
+      blocked, and CHPC currently lacks data/cifar-10-batches-py. Do not
+      submit until the dataset archive is placed on CHPC.
+human_feedback: >
+  Include least-excess in all remaining experiments. Add BNTT as a later
+  deterministic-baseline remedy for the failed TTFS/first-spike track.
