@@ -1,0 +1,19 @@
+{
+  "calibration": {
+    "experiment_group": "cifar10_snn_pooling_vgg9_tet_post_lif_deterministic_calibration_wandb_offline",
+    "condition": "post_lif_deterministic",
+    "seed": 0,
+    "planned_epochs": 200,
+    "last_observed_epoch": 27,
+    "early_epoch_3_val_acc": 28.12,
+    "last_observed_val_acc": 9.64,
+    "last_observed_val_loss": 2.302584892511368,
+    "final_validation_firing_rate": {
+      "stage_4_conv_2": 0.0,
+      "output": 0.0
+    },
+    "health_gate": "failed",
+    "termination": "Intentional qdel after confirming deep-layer and output silence at all six timesteps.",
+    "decision": "Do not expand to the five-condition CIFAR pooling comparison."
+  }
+}

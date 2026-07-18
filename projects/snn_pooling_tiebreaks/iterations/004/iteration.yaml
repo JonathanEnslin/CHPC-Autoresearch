@@ -1,6 +1,6 @@
 iteration: 4
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Establish a healthy one-seed CIFAR-10 direct-input/TET reference for the
   spiking VGG-9 pooling model using deterministic post-LIF pooling. If it
@@ -43,7 +43,31 @@ phases:
     notes: >
       Submit the deterministic post-LIF, seed-0, 200-epoch calibration with
       the now-available CHPC dataset. Use its observed runtime to size the
-      five-seed condition jobs with a 20% buffer.
+      five-seed condition jobs with a 20% buffer. The reference showed early
+      learning (28.12% validation accuracy at epoch 3), but collapsed by epoch
+      27 to chance-level accuracy with a silent stage-4 and output LIF. It was
+      intentionally terminated rather than expanded.
+  analyze:
+    completed_at: "2026-07-18"
+    notes: >
+      The collapse is not a data-loading or initial wiring failure: the model
+      learned briefly before the deep spiking path became silent. Shared
+      BatchNorm across six temporal passes and the post-warm-up 0.1 learning
+      rate are leading, untested explanations. BNTT is a justified next
+      deterministic-reference intervention, but is not yet an outcome.
+  conclude:
+    completed_at: "2026-07-18"
+    notes: >
+      Do not run the five pooling conditions on this VGG-9 recipe. A valid
+      deterministic CIFAR reference must first be established; otherwise any
+      pooling comparison is confounded by deep-layer output starvation.
+outcomes:
+  - >
+    The CIFAR-10 deterministic VGG-9 calibration was intentionally stopped at
+    epoch 27 after deep-layer and output silence caused chance-level results.
+  - >
+    BNTT should be evaluated first as a deterministic-baseline stabilization
+    intervention before retrying CIFAR pooling policies.
 human_feedback: >
   Include least-excess in all remaining experiments. Add BNTT as a later
   deterministic-baseline remedy for the failed TTFS/first-spike track.
