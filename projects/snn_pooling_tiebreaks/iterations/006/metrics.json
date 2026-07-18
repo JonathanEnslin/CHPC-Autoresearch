@@ -1,0 +1,22 @@
+{
+  "linear_output_control": {
+    "condition": "post_lif_deterministic_linear_output_control",
+    "seed": 0,
+    "last_observed_epoch": 82,
+    "last_validation_accuracy": 10.08,
+    "last_validation_loss": 2.32589276432991,
+    "stage_4_conv_2_firing_rate": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    "health_gate": "failed",
+    "termination": "Intentional qdel after stage-4 silence persisted across epochs 80--82."
+  },
+  "fashion_dynamics_control_interim": {
+    "condition": "post_lif_deterministic_fashion_dynamics_control",
+    "seed": 0,
+    "last_observed_epoch": 58,
+    "validation_accuracy": 85.2,
+    "validation_loss": 0.6364263065159321,
+    "stage_4_conv_2_firing_rate": [0.006276822090148926, 0.007584476470947265, 0.008005928993225098, 0.008164429664611816, 0.008182287216186523, 0.008054518699645996],
+    "output_firing_rate": [0.14333984375000003, 0.1487109375, 0.13873046875, 0.136171875, 0.13667968749999998, 0.13527343750000004],
+    "health_gate": "healthy_interim"
+  }
+}
