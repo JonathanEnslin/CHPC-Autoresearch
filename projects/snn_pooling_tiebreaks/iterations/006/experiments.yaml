@@ -10,12 +10,31 @@ jobs:
     epochs: 2
     queue: gpu_1
     walltime: "01:00:00"
-    status: queued
+    status: failed_before_startup
     submitted_at: "2026-07-18"
     notes: >
       Two sequential bounded smoke runs, each limited to two training and two
       validation batches, with W&B disabled. A full calibration is contingent
-      on both modes completing forward/backward successfully.
+      on both modes completing forward/backward successfully. This first
+      submission failed before model import because the PBS template omitted
+      the repository src/ path from PYTHONPATH.
+  - name: snn_pooling_i6_controls_smoke_retry
+    job_id: "7339161.sched01"
+    configuration:
+      - cifar10_snn_pooling_vgg9_tet_linear_output_control
+      - cifar10_snn_pooling_vgg9_tet_fashion_dynamics_control
+    condition: bounded_smoke_test_retry
+    dataset: cifar10
+    seeds: [0]
+    epochs: 2
+    queue: gpu_1
+    walltime: "01:00:00"
+    status: queued
+    submitted_at: "2026-07-18"
+    notes: >
+      Retry after a verified PBS-template fix exports $PWD/src through
+      PYTHONPATH. The activated CHPC environment then imported autoresearch
+      from the project source tree successfully.
 planned_conditions:
   - post_lif_deterministic_linear_output_control
   - post_lif_deterministic_fashion_dynamics_control
