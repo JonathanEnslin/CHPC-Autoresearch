@@ -43,8 +43,10 @@ phases:
   experiment:
     started_at: "2026-07-18"
     notes: >
-      Submit a single sequential, two-configuration two-epoch CHPC smoke test
-      before allocating the two one-seed 200-epoch calibration jobs.
+      The two-configuration, two-epoch CHPC smoke test passed after correcting
+      its PBS source path and smoke-only warm-up. Submit the two separate
+      one-seed, 200-epoch calibration jobs within the two-GPU-job limit:
+      linear output versus fully spiking Fashion-like dynamics.
 human_feedback: >
   Test whether the validated Fashion-MNIST SpikingJelly first-spike design
   reveals a stabilising control for the CIFAR-10 snnTorch VGG-9 reference.
