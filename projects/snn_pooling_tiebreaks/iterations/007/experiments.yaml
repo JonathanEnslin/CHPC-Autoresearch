@@ -1,0 +1,4 @@
+jobs: []
+planned_conditions:
+  - fashion_mnist_ttfs_first_spike_stable_dynamics_calibration
+  - cifar10_ttfs_first_spike_stable_dynamics_calibration

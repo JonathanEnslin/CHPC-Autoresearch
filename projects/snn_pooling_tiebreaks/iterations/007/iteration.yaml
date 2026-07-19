@@ -1,0 +1,44 @@
+iteration: 7
+project: snn_pooling_tiebreaks
+status: planned
+goal: >
+  Test whether scaled-log TTFS input with first-spike decoding is viable under
+  the stable six-timestep snnTorch dynamics established in iteration 6, before
+  investing in further pooling-policy replications. Run deterministic post-LIF
+  max-pooling calibration gates on Fashion-MNIST and CIFAR-10.
+created: "2026-07-19"
+phases:
+  plan:
+    completed_at: "2026-07-19"
+    notes: >
+      The human prioritised other input encodings and networks/datasets over a
+      direct/TET Fashion-MNIST replication. Use beta=0.5, ATan surrogate,
+      immediate reset, AdamW/cosine, and norm-5 clipping for two single-seed
+      deterministic post-LIF gates at LIF threshold 0.5: Fashion-MNIST
+      TTFS/first-spike (60 epochs) and CIFAR-10 TTFS/first-spike VGG-9 (200
+      epochs). A two-epoch local Fashion smoke showed that the former threshold
+      1.0 leaves stage 2 initially silent, whereas threshold 0.5 produces
+      activity through all hidden stages and a nonzero final-timestep output.
+      CIFAR must omit normalization because scaled-log TTFS requires values in
+      [0, 1].
+  survey:
+    completed_at: "2026-07-19"
+    notes: >
+      The encoder requires non-negative samples, so CIFAR uses the same crop
+      and flip augmentation as the direct control without normalization. The
+      local sparse-drive check selected threshold 0.5 for these first gates.
+  implement:
+    completed_at: "2026-07-19"
+    notes: >
+      Added composable stable-dynamics TTFS/first-spike presets for both
+      datasets and an unnormalized augmented CIFAR-10 dataset preset. Hydra
+      composition passed for both; a local two-epoch Fashion smoke completed.
+  experiment:
+    pending: true
+  analyze:
+    pending: true
+  conclude:
+    pending: true
+human_feedback: >
+  Fashion-MNIST direct/TET is confirmed workable. Prioritise other encodings,
+  networks, and datasets.

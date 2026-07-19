@@ -1,0 +1,30 @@
+# @package _global_
+defaults:
+  - override /dataset: cifar10_augmented_unnormalized
+  - override /model: snn_pooling_cifar_vgg9
+  - override /optimizer: adamw_snn_pooling
+  - override /loss_fn: cross_entropy
+  - override /scheduler: cosine_fashion_1pct
+
+experiment_group: cifar10_snn_pooling_vgg9_ttfs_first_stable_dynamics
+experiment_name: ${experiment_group}_seed_${seed}
+seed: 0
+batch_size: 128
+epochs: 200
+num_workers: 4
+validation_split: 0.1
+max_grad_norm: 5.0
+model:
+  encoding: scaled_log_ttfs
+  decoding: first_spike
+  beta: 0.5
+  threshold: 0.5
+  surrogate_kind: atan
+  reset_delay: false
+  ttfs_log_scale: 48.0
+early_stopping:
+  enabled: false
+wandb:
+  log_frequency: 0
+  tags: [cifar10, snn, vgg9, ttfs, first-spike, stable-dynamics, six-timesteps]
+  notes: "One-seed TTFS/first-spike calibration using non-negative augmented CIFAR inputs and the stable Fashion-like dynamics bundle."

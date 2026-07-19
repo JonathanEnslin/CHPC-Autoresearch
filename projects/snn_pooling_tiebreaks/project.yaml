@@ -8,7 +8,7 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 6
+current_iteration: 7
 branch: null
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie
@@ -27,7 +27,10 @@ human_direction: >
 
   Use six simulation timesteps throughout. Fashion-MNIST has two separately
   reported tracks: scaled-log TTFS input with first-spike decoding, and direct
-  input with TET decoding. CIFAR-10 uses direct input with TET decoding.
+  input with TET decoding. CIFAR-10 has a stable direct-input/TET reference
+  under the Fashion-like dynamics recipe. Before extending any pooling-policy
+  comparison, test scaled-log TTFS/first-spike one-seed gates on both datasets
+  using that stable dynamics recipe.
   Record raw and normalized spike activity per layer and timestep, plus
   pre/post-pooling counts, multi-spike-window incidence, and tie-winner spatial
   distributions. Use five seeds for the final comparison and keep the chosen
