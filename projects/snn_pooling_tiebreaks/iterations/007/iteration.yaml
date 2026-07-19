@@ -14,13 +14,13 @@ phases:
       The human prioritised other input encodings and networks/datasets over a
       direct/TET Fashion-MNIST replication. Use beta=0.5, ATan surrogate,
       immediate reset, AdamW/cosine, and norm-5 clipping for two single-seed
-      deterministic post-LIF gates at LIF threshold 0.5: Fashion-MNIST
-      TTFS/first-spike (60 epochs) and CIFAR-10 TTFS/first-spike VGG-9 (200
-      epochs). A two-epoch local Fashion smoke showed that the former threshold
-      1.0 leaves stage 2 initially silent, whereas threshold 0.5 produces
-      activity through all hidden stages and a nonzero final-timestep output.
-      CIFAR must omit normalization because scaled-log TTFS requires values in
-      [0, 1].
+      deterministic post-LIF gates: Fashion-MNIST TTFS/first-spike (60 epochs)
+      uses threshold 0.75, while CIFAR-10 TTFS/first-spike VGG-9 (200 epochs)
+      uses threshold 0.5. A two-epoch local Fashion smoke showed that threshold
+      1.0 leaves stage 2 initially silent; 0.5 activates every hidden stage
+      but is strongly saturated, while 0.75 retains output firing with much
+      lower hidden activity. CIFAR must omit normalization because scaled-log
+      TTFS requires values in [0, 1].
   survey:
     completed_at: "2026-07-19"
     notes: >

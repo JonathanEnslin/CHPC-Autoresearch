@@ -18,7 +18,7 @@ model:
   encoding: scaled_log_ttfs
   decoding: first_spike
   beta: 0.5
-  threshold: 0.5
+  threshold: 0.75
   surrogate_kind: atan
   reset_delay: false
   ttfs_log_scale: 48.0

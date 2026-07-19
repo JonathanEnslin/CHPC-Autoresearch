@@ -11,8 +11,8 @@ sources:
       prior shared-BN and BNTT references.
   - citation: "Local iteration 7 Fashion-MNIST TTFS threshold smoke"
     relevance: >
-      With beta=0.5 and threshold 1.0, stage 2 was initially silent. A
-      threshold-0.5 two-batch smoke activated all three hidden stages and
-      produced a nonzero output spike rate at timestep 5, so the CHPC gates
-      use threshold 0.5 rather than conflating sparse-drive starvation with
-      the encoding comparison.
+      With beta=0.5 and threshold 1.0, stage 2 was initially silent. Threshold
+      0.5 activated all hidden stages but stage 3 reached about 50% firing at
+      timestep 0; threshold 0.75 kept stage-3 activity near 30% and output
+      firing near 5.7% at timestep 5. Fashion therefore uses 0.75, while the
+      deeper CIFAR gate conservatively uses 0.5 to avoid sparse-drive silence.
