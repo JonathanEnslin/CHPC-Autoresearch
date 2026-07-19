@@ -91,15 +91,16 @@ jobs:
     epochs: 200
     queue: gpu_1
     walltime: "12:00:00"
-    status: running
+    status: completed
     submitted_at: "2026-07-19"
     notes: >
       Retains the spiking output and deterministic post-LIF max pooling while
       using beta=0.5, ATan surrogate, immediate reset, AdamW/cosine, and
-      norm-5 gradient clipping. W&B runs offline in a unique output group and
-      startup passed with active hidden/output spiking. At epoch 58 it retained
-      85.20% validation accuracy, active stage-4 firing, and 13--15% output
-      firing; continue the full calibration.
+      norm-5 gradient clipping. W&B ran offline in a unique output group. The
+      full calibration completed healthily: final validation accuracy 88.34%,
+      peak accuracy 89.10% at epoch 183, and nonzero stage-4/output firing at
+      every timestep through epoch 200. This is a one-seed deterministic
+      reference; it must be replicated before a five-policy comparison.
 planned_conditions:
   - post_lif_deterministic_linear_output_control
   - post_lif_deterministic_fashion_dynamics_control

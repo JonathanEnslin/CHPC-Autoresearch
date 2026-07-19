@@ -1,6 +1,6 @@
 iteration: 6
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Identify a healthy six-timestep CIFAR-10 deterministic max-pooling SNN
   reference after shared BN and BNTT calibrations both became output-silent.
@@ -47,6 +47,34 @@ phases:
       its PBS source path and smoke-only warm-up. Submit the two separate
       one-seed, 200-epoch calibration jobs within the two-GPU-job limit:
       linear output versus fully spiking Fashion-like dynamics.
+  analyze:
+    completed_at: "2026-07-19"
+    notes: >
+      Replacing only the output LIF did not prevent failure: the linear-output
+      control reached chance performance and zero stage-4 firing by epochs
+      80--82. In contrast, the fully spiking Fashion-like control completed
+      200 epochs, reached 89.10% peak validation accuracy, and retained
+      nonzero deep-layer and output firing. The decisive change is therefore
+      not merely the output head; the lower leak, ATan surrogate, immediate
+      reset, AdamW/cosine schedule, and clipping bundle establishes a stable
+      recipe, although this one-seed calibration cannot attribute causality
+      within that bundle.
+  conclude:
+    completed_at: "2026-07-19"
+    notes: >
+      The project now has a viable deterministic post-LIF max-pooling CIFAR
+      reference under the Fashion-like dynamics/optimisation recipe. Replicate
+      that reference across five seeds before using the recipe for the fixed
+      pooling-policy comparison; do not compare against the collapsed linear
+      output or prior shared-BN/BNTT recipes.
+outcomes:
+  - >
+    Fashion-like fully spiking dynamics stabilised the six-timestep CIFAR
+    VGG-9 max-pooling reference, achieving 88.34% final validation accuracy
+    and 89.10% peak validation accuracy in its one-seed calibration.
+  - >
+    A linear output alone is insufficient: its control collapsed with silent
+    hidden layers despite retaining deterministic post-LIF max pooling.
 human_feedback: >
   Test whether the validated Fashion-MNIST SpikingJelly first-spike design
   reveals a stabilising control for the CIFAR-10 snnTorch VGG-9 reference.

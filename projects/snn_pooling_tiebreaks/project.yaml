@@ -59,10 +59,12 @@ human_direction: >
   BNTT must be calibrated as a deterministic-pooling baseline before any
   TTFS tie-break comparison.
 
-  The failed CIFAR VGG-9 deterministic calibration makes BNTT a prerequisite
-  for that track too. First establish a stable post-LIF deterministic BNTT
-  baseline on CIFAR-10; only then rerun the five pooling conditions with BNTT
-  held fixed.
+  The CIFAR BNTT calibration also collapsed, so BNTT is not the recipe for
+  that track. Iteration 6 instead established a healthy one-seed deterministic
+  post-LIF max-pooling reference with beta=0.5, ATan surrogate, immediate
+  reset, AdamW/cosine, and norm-5 gradient clipping. Replicate that exact
+  recipe across five deterministic seeds before rerunning the five pooling
+  conditions with the stable recipe held fixed.
 best_result:
   iteration: 1
   dataset: fashion_mnist
