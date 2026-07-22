@@ -1,3 +1,22 @@
-jobs: []
+jobs:
+  - name: snn_pooling_i8_fashion_ttfs_bridge_cal
+    job_id: "7347948.sched01"
+    configuration: fashion_mnist_snn_pooling_ttfs_external_bridge
+    condition: post_lif_deterministic_external_ttfs_bridge
+    dataset: fashion_mnist
+    encoding: thresholded_log_ttfs
+    decoding: first_spike
+    timesteps: 6
+    seeds: [0]
+    epochs: 60
+    queue: gpu_1
+    walltime: "02:00:00"
+    status: submitted
+    submitted_at: "2026-07-23"
+    notes: >
+      Deterministic post-LIF pooling with reference-compatible temporal BN,
+      thresholded-log TTFS input, bias-free projection LIF, and spiking class
+      readout. W&B is offline in a unique output group. This is a one-seed
+      viability calibration, not a pooling-policy comparison.
 planned_conditions:
   - fashion_mnist_ttfs_external_bridge_post_lif_deterministic_calibration

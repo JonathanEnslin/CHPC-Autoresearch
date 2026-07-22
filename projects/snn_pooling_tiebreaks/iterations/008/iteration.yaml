@@ -1,6 +1,6 @@
 iteration: 8
 project: snn_pooling_tiebreaks
-status: planned
+status: experiment
 goal: >
   Test whether the successful external Fashion-MNIST TTFS CNN's temporal
   normalisation and projection-LIF readout eliminate output starvation when
@@ -43,7 +43,12 @@ phases:
       output firing rates from 6.70% to 18.54% across the six timesteps. The
       bridge is therefore healthy enough for a one-seed full calibration.
   experiment:
-    pending: true
+    started_at: "2026-07-23"
+    notes: >
+      Submitted one deterministic post-LIF Fashion-MNIST bridge calibration
+      after the local learning probe established nonzero output firing and
+      rapidly improving bounded validation accuracy. Expand only if this
+      60-epoch run remains output-active and clearly exceeds chance.
   analyze:
     pending: true
   conclude:
