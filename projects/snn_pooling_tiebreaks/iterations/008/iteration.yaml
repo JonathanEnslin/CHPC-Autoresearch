@@ -49,6 +49,11 @@ phases:
       after the local learning probe established nonzero output firing and
       rapidly improving bounded validation accuracy. Expand only if this
       60-epoch run remains output-active and clearly exceeds chance.
+    startup_validated_at: "2026-07-23"
+    startup_notes: >
+      At epoch 6, validation accuracy was 83.80% and output firing was
+      nonzero at every timestep. This is the first healthy TTFS/first-spike
+      pooled-CNN reference in the project.
   analyze:
     pending: true
   conclude:

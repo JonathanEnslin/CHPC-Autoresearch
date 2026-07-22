@@ -11,12 +11,14 @@ jobs:
     epochs: 60
     queue: gpu_1
     walltime: "02:00:00"
-    status: submitted
+    status: running
     submitted_at: "2026-07-23"
     notes: >
       Deterministic post-LIF pooling with reference-compatible temporal BN,
       thresholded-log TTFS input, bias-free projection LIF, and spiking class
       readout. W&B is offline in a unique output group. This is a one-seed
-      viability calibration, not a pooling-policy comparison.
+      viability calibration, not a pooling-policy comparison. Startup passed:
+      epoch 6 validation accuracy was 83.80%, and validation output firing was
+      nonzero at all six timesteps (6.74--23.48%).
 planned_conditions:
   - fashion_mnist_ttfs_external_bridge_post_lif_deterministic_calibration
