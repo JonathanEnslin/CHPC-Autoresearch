@@ -1,6 +1,6 @@
 iteration: 7
 project: snn_pooling_tiebreaks
-status: planned
+status: experiment
 goal: >
   Test whether scaled-log TTFS input with first-spike decoding is viable under
   the stable six-timestep snnTorch dynamics established in iteration 6, before
@@ -34,7 +34,11 @@ phases:
       datasets and an unnormalized augmented CIFAR-10 dataset preset. Hydra
       composition passed for both; a local two-epoch Fashion smoke completed.
   experiment:
-    pending: true
+    started_at: "2026-07-22"
+    notes: >
+      A sequential, bounded two-epoch smoke was submitted before full
+      calibration. It runs Fashion-MNIST and unnormalized CIFAR-10 TTFS/
+      first-spike deterministic post-LIF configurations with W&B disabled.
   analyze:
     pending: true
   conclude:

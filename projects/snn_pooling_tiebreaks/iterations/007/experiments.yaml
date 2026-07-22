@@ -1,4 +1,21 @@
-jobs: []
+jobs:
+  - name: snn_pooling_i7_ttfs_smoke
+    job_id: "7347821.sched01"
+    configuration:
+      - fashion_mnist_snn_pooling_ttfs_first_stable_dynamics
+      - cifar10_snn_pooling_vgg9_ttfs_first_stable_dynamics
+    condition: bounded_smoke_test
+    datasets: [fashion_mnist, cifar10]
+    seeds: [0]
+    epochs: 2
+    queue: gpu_1
+    walltime: "02:00:00"
+    status: submitted
+    submitted_at: "2026-07-22"
+    notes: >
+      Sequential end-to-end smoke: each configuration is limited to two train
+      and two validation batches, has W&B disabled, and writes to a unique
+      smoke output group. Full one-seed calibrations require both to complete.
 planned_conditions:
   - fashion_mnist_ttfs_first_spike_stable_dynamics_calibration
   - cifar10_ttfs_first_spike_stable_dynamics_calibration
