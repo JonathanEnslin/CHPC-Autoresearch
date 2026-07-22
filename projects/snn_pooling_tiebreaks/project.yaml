@@ -8,7 +8,7 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 7
+current_iteration: 8
 branch: null
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie

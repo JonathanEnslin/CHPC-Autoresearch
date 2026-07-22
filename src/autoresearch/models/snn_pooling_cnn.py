@@ -10,7 +10,10 @@ import snntorch as snn
 from snntorch import surrogate
 
 from autoresearch.utils.snn_pooling import SpikeActivityRecorder, SpikeTieMaxPool2d
-from autoresearch.utils.spike_encoding import scaled_log_ttfs_encode
+from autoresearch.utils.spike_encoding import (
+    scaled_log_ttfs_encode,
+    thresholded_log_ttfs_encode,
+)
 
 
 class SNNPoolingCNN(nn.Module):
@@ -37,14 +40,21 @@ class SNNPoolingCNN(nn.Module):
         reset_delay: bool = True,
         random_seed: int | None = None,
         ttfs_log_scale: float = 20.0,
+        temporal_batch_norm: bool = False,
+        projection_features: int | None = None,
+        classifier_bias: bool = True,
+        ttfs_input_threshold: float = 0.01,
+        first_spike_survival: bool = False,
     ) -> None:
         super().__init__()
         if len(channels) != len(convs_per_stage):
             raise ValueError("channels and convs_per_stage must have the same length")
         if pooling_placement not in {"pre_lif", "post_lif"}:
             raise ValueError("pooling_placement must be 'pre_lif' or 'post_lif'")
-        if encoding not in {"direct", "scaled_log_ttfs"}:
-            raise ValueError("encoding must be 'direct' or 'scaled_log_ttfs'")
+        if encoding not in {"direct", "scaled_log_ttfs", "thresholded_log_ttfs"}:
+            raise ValueError(
+                "encoding must be 'direct', 'scaled_log_ttfs', or 'thresholded_log_ttfs'"
+            )
         if decoding not in {"tet", "first_spike"}:
             raise ValueError("decoding must be 'tet' or 'first_spike'")
         if output_mode not in {"spiking", "linear"}:
@@ -55,6 +65,8 @@ class SNNPoolingCNN(nn.Module):
             raise ValueError("surrogate_kind must be 'fast_sigmoid' or 'atan'")
         if pooling_placement == "pre_lif" and tie_break != "deterministic":
             raise ValueError("random and membrane tie-breaking are defined only for post-LIF pooling")
+        if temporal_batch_norm and bntt:
+            raise ValueError("temporal_batch_norm and bntt are mutually exclusive")
 
         self.timesteps = timesteps
         self.bntt = bntt
@@ -65,6 +77,9 @@ class SNNPoolingCNN(nn.Module):
         self.pooled_stages = set(pooled_stages)
         self.threshold = threshold
         self.ttfs_log_scale = ttfs_log_scale
+        self.temporal_batch_norm = temporal_batch_norm
+        self.ttfs_input_threshold = ttfs_input_threshold
+        self.first_spike_survival = first_spike_survival
         spike_grad = (
             surrogate.fast_sigmoid(slope=surrogate_slope)
             if surrogate_kind == "fast_sigmoid"
@@ -115,7 +130,24 @@ class SNNPoolingCNN(nn.Module):
                 for stage in self.pooled_stages
             }
         )
-        self.classifier = nn.Linear(channels[-1], num_classes)
+        self.projection = (
+            nn.Linear(channels[-1], projection_features, bias=classifier_bias)
+            if projection_features is not None
+            else None
+        )
+        self.projection_lif = (
+            snn.Leaky(
+                beta=beta,
+                threshold=threshold,
+                spike_grad=spike_grad,
+                reset_mechanism="subtract",
+                reset_delay=reset_delay,
+            )
+            if projection_features is not None
+            else None
+        )
+        classifier_features = projection_features or channels[-1]
+        self.classifier = nn.Linear(classifier_features, num_classes, bias=classifier_bias)
         self.output_lif = (
             snn.Leaky(
                 beta=beta,
@@ -134,7 +166,14 @@ class SNNPoolingCNN(nn.Module):
     def _encode(self, x: torch.Tensor) -> torch.Tensor:
         if self.encoding == "direct":
             return x.unsqueeze(0).expand(self.timesteps, *x.shape)
-        return scaled_log_ttfs_encode(x, self.timesteps, self.ttfs_log_scale)
+        if self.encoding == "scaled_log_ttfs":
+            return scaled_log_ttfs_encode(x, self.timesteps, self.ttfs_log_scale)
+        return thresholded_log_ttfs_encode(
+            x,
+            self.timesteps,
+            input_threshold=self.ttfs_input_threshold,
+            log_scale=self.ttfs_log_scale,
+        )
 
     def _initial_membranes(self) -> List[List[torch.Tensor]]:
         return [[lif.init_leaky() for lif in stage] for stage in self.lifs]
@@ -155,13 +194,100 @@ class SNNPoolingCNN(nn.Module):
         if not enabled:
             self._last_activity = {}
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Run the SNN and return count or first-spike class scores."""
-        inputs = self._encode(x)
+    def _decode(self, temporal_logits: torch.Tensor) -> torch.Tensor:
+        """Decode temporal class values with TET or differentiable first-spike scores."""
+        self._last_temporal_logits = temporal_logits
+        if self.decoding == "tet":
+            return temporal_logits.sum(dim=0)
+
+        if self.first_spike_survival:
+            prior_survival = torch.cat(
+                [
+                    torch.ones_like(temporal_logits[:1]),
+                    torch.cumprod(1.0 - temporal_logits[:-1], dim=0),
+                ],
+                dim=0,
+            )
+            first_events = temporal_logits * prior_survival
+        else:
+            first_event_mask = temporal_logits.detach().cumsum(dim=0) == 1
+            first_events = temporal_logits * first_event_mask.to(temporal_logits.dtype)
+        temporal_weights = torch.arange(
+            self.timesteps,
+            0,
+            -1,
+            device=temporal_logits.device,
+            dtype=temporal_logits.dtype,
+        ).view(self.timesteps, 1, 1)
+        return (first_events * temporal_weights).sum(dim=0)
+
+    def _readout(
+        self,
+        current: torch.Tensor,
+        timestep: int,
+        output_membrane: torch.Tensor | None,
+        projection_membrane: torch.Tensor | None,
+        recorder: SpikeActivityRecorder | None,
+    ) -> tuple[torch.Tensor, torch.Tensor | None, torch.Tensor | None]:
+        pooled = current.mean(dim=(-2, -1))
+        if self.projection is not None and self.projection_lif is not None:
+            projection_current = self.projection(pooled)
+            projection_value, projection_membrane = self.projection_lif(
+                projection_current, projection_membrane
+            )
+            if recorder is not None:
+                recorder.record("projection", timestep, projection_value)
+            pooled = projection_value
+        output_current = self.classifier(pooled)
+        if self.output_lif is not None:
+            output_value, output_membrane = self.output_lif(
+                output_current, output_membrane
+            )
+            if recorder is not None:
+                recorder.record("output", timestep, output_value)
+        else:
+            output_value = output_current
+        return output_value, output_membrane, projection_membrane
+
+    def _apply_lif_and_pool(
+        self,
+        current: torch.Tensor,
+        membrane: torch.Tensor | None,
+        lif: snn.Leaky,
+        stage_index: int,
+        is_pool_site: bool,
+        layer_name: str,
+        timestep: int,
+        recorder: SpikeActivityRecorder | None,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if is_pool_site and self.pooling_placement == "pre_lif":
+            current = self.pre_pools[str(stage_index)](current)
+            return lif(current, membrane)
+
+        current, membrane = lif(current, membrane)
+        if recorder is not None:
+            recorder.record(layer_name, timestep, current)
+        if is_pool_site:
+            current = self.post_pools[str(stage_index)](current, membrane)
+            if recorder is not None:
+                recorder.record_pool(
+                    layer_name,
+                    timestep,
+                    self.post_pools[str(stage_index)].last_metrics,
+                )
+        return current, membrane
+
+    def _forward_sequential(
+        self,
+        inputs: torch.Tensor,
+        recorder: SpikeActivityRecorder | None,
+    ) -> torch.Tensor:
         membranes = self._initial_membranes()
         output_membrane = self.output_lif.init_leaky() if self.output_lif is not None else None
+        projection_membrane = (
+            self.projection_lif.init_leaky() if self.projection_lif is not None else None
+        )
         output_values = []
-        recorder = SpikeActivityRecorder() if self._record_activity else None
 
         for timestep in range(self.timesteps):
             current = inputs[timestep]
@@ -178,51 +304,93 @@ class SNNPoolingCNN(nn.Module):
                         and conv_index == len(stage_convs) - 1
                     )
                     layer_name = f"stage_{stage_index + 1}_conv_{conv_index + 1}"
-                    if is_pool_site and self.pooling_placement == "pre_lif":
-                        current = self.pre_pools[str(stage_index)](current)
-                        current, membranes[stage_index][conv_index] = lif(
-                            current, membranes[stage_index][conv_index]
-                        )
-                    else:
-                        current, membranes[stage_index][conv_index] = lif(
-                            current, membranes[stage_index][conv_index]
-                        )
-                        if recorder is not None:
-                            recorder.record(layer_name, timestep, current)
-                        if is_pool_site:
-                            current = self.post_pools[str(stage_index)](
-                                current, membranes[stage_index][conv_index]
-                            )
-                            if recorder is not None:
-                                recorder.record_pool(
-                                    layer_name,
-                                    timestep,
-                                    self.post_pools[str(stage_index)].last_metrics,
-                                )
+                    current, membranes[stage_index][conv_index] = self._apply_lif_and_pool(
+                        current,
+                        membranes[stage_index][conv_index],
+                        lif,
+                        stage_index,
+                        is_pool_site,
+                        layer_name,
+                        timestep,
+                        recorder,
+                    )
                     if recorder is not None:
                         recorder.record(f"{layer_name}_output", timestep, current)
 
-            pooled = current.mean(dim=(-2, -1))
-            output_current = self.classifier(pooled)
-            if self.output_lif is not None:
-                output_value, output_membrane = self.output_lif(
-                    output_current, output_membrane
-                )
-                if recorder is not None:
-                    recorder.record("output", timestep, output_value)
-            else:
-                output_value = output_current
+            output_value, output_membrane, projection_membrane = self._readout(
+                current,
+                timestep,
+                output_membrane,
+                projection_membrane,
+                recorder,
+            )
             output_values.append(output_value)
+        return torch.stack(output_values)
 
-        temporal_logits = torch.stack(output_values)
-        self._last_temporal_logits = temporal_logits
+    def _forward_temporal_batch_norm(
+        self,
+        inputs: torch.Tensor,
+        recorder: SpikeActivityRecorder | None,
+    ) -> torch.Tensor:
+        """Process layers over all timesteps to normalise their joint time-batch axis."""
+        membranes = self._initial_membranes()
+        current = inputs
+        for stage_index, (stage_convs, stage_norms, stage_lifs) in enumerate(
+            zip(self.convs, self.norms, self.lifs)
+        ):
+            for conv_index, (conv, norm, lif) in enumerate(
+                zip(stage_convs, stage_norms, stage_lifs)
+            ):
+                time_steps, batch_size = current.shape[:2]
+                normalized = norm(conv(current.flatten(0, 1))).reshape(
+                    time_steps, batch_size, -1, *current.shape[-2:]
+                )
+                is_pool_site = (
+                    stage_index in self.pooled_stages
+                    and conv_index == len(stage_convs) - 1
+                )
+                layer_name = f"stage_{stage_index + 1}_conv_{conv_index + 1}"
+                outputs = []
+                for timestep in range(self.timesteps):
+                    output, membranes[stage_index][conv_index] = self._apply_lif_and_pool(
+                        normalized[timestep],
+                        membranes[stage_index][conv_index],
+                        lif,
+                        stage_index,
+                        is_pool_site,
+                        layer_name,
+                        timestep,
+                        recorder,
+                    )
+                    if recorder is not None:
+                        recorder.record(f"{layer_name}_output", timestep, output)
+                    outputs.append(output)
+                current = torch.stack(outputs)
+
+        output_membrane = self.output_lif.init_leaky() if self.output_lif is not None else None
+        projection_membrane = (
+            self.projection_lif.init_leaky() if self.projection_lif is not None else None
+        )
+        output_values = []
+        for timestep in range(self.timesteps):
+            output_value, output_membrane, projection_membrane = self._readout(
+                current[timestep],
+                timestep,
+                output_membrane,
+                projection_membrane,
+                recorder,
+            )
+            output_values.append(output_value)
+        return torch.stack(output_values)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Run the SNN and return count or first-spike class scores."""
+        inputs = self._encode(x)
+        recorder = SpikeActivityRecorder() if self._record_activity else None
+        temporal_logits = (
+            self._forward_temporal_batch_norm(inputs, recorder)
+            if self.temporal_batch_norm
+            else self._forward_sequential(inputs, recorder)
+        )
         self._last_activity = recorder.consume() if recorder is not None else {}
-        if self.decoding == "tet":
-            return temporal_logits.sum(dim=0)
-
-        first_event_mask = temporal_logits.detach().cumsum(dim=0) == 1
-        first_events = temporal_logits * first_event_mask.to(temporal_logits.dtype)
-        temporal_weights = torch.arange(
-            self.timesteps, 0, -1, device=x.device, dtype=x.dtype
-        ).view(self.timesteps, 1, 1)
-        return (first_events * temporal_weights).sum(dim=0)
+        return self._decode(temporal_logits)

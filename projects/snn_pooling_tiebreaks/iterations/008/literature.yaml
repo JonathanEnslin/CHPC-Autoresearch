@@ -1,0 +1,12 @@
+sources:
+  - citation: "fashion_mnist_experiments/spikingjelly_ttfs_mlp.py (local reference)"
+    relevance: >
+      Its successful CNN uses BatchNorm2d over combined time and batch axes,
+      adaptive global averaging, a bias-free c3-to-projection linear layer plus
+      LIF, then a spiking class layer. It also uses a thresholded latency
+      encoder. These are the controlled bridge components.
+  - citation: "Iteration 7 TTFS smoke"
+    relevance: >
+      The current snnTorch model completed both smoke runs but validation
+      output firing was zero at every timestep despite high hidden activity,
+      locating the failure at the readout path rather than data loading.

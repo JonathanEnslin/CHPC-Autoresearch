@@ -1,0 +1,53 @@
+iteration: 8
+project: snn_pooling_tiebreaks
+status: planned
+goal: >
+  Test whether the successful external Fashion-MNIST TTFS CNN's temporal
+  normalisation and projection-LIF readout eliminate output starvation when
+  ported into the controlled snnTorch post-LIF pooling architecture.
+created: "2026-07-23"
+phases:
+  plan:
+    completed_at: "2026-07-23"
+    notes: >
+      Iteration 7 showed active hidden layers but zero final validation output
+      spikes in both datasets. The human authorised a controlled bridge test:
+      retain deterministic post-LIF pooling and six timesteps, while porting
+      temporal BN across time and batch plus the external model's projection
+      LIF before the spiking class layer. Run Fashion-MNIST first as a
+      one-seed calibration; do not launch a pooling-policy sweep unless it is
+      healthy.
+  survey:
+    completed_at: "2026-07-23"
+    notes: >
+      The external reference CNN confirms the relevant bridge is not merely a
+      different decoder: it jointly uses a thresholded log-latency encoder,
+      temporal BN over time times batch, a bias-free projection LIF after
+      global pooling, and differentiable first-event survival scores. Retain
+      six timesteps and deterministic post-LIF pooling for compatibility with
+      the project protocol.
+  implement:
+    completed_at: "2026-07-23"
+    notes: >
+      Added a thresholded log TTFS encoder and optional temporal-BN/projection
+      readout path to the existing model, leaving the default direct/TET path
+      unchanged. The new Fashion preset activates only the bridge options.
+      The latency encoder was verified bit-for-bit against the external
+      reference on the same Fashion-MNIST batch.
+  local_validation:
+    completed_at: "2026-07-23"
+    notes: >
+      A two-epoch/two-batch smoke remains silent at initialization, matching
+      the external model. A more meaningful five-epoch, ten-batch-per-epoch
+      learning probe reached 59.22% bounded validation accuracy and generated
+      output firing rates from 6.70% to 18.54% across the six timesteps. The
+      bridge is therefore healthy enough for a one-seed full calibration.
+  experiment:
+    pending: true
+  analyze:
+    pending: true
+  conclude:
+    pending: true
+human_feedback: >
+  Port the successful external readout and temporal-normalisation structure
+  into the controlled pooling model, then test it.

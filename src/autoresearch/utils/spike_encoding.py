@@ -115,3 +115,43 @@ def scaled_log_ttfs_encode(
     for timestep in range(timesteps):
         spikes[timestep] = (active & (firing_time == timestep)).to(x.dtype)
     return spikes
+
+
+def thresholded_log_ttfs_encode(
+    x: torch.Tensor,
+    timesteps: int,
+    input_threshold: float = 0.01,
+    log_scale: float = 48.0,
+) -> torch.Tensor:
+    """Encode with the thresholded logarithmic latency rule used by the reference CNN.
+
+    This intentionally differs from :func:`scaled_log_ttfs_encode`: pixels at
+    or below ``input_threshold`` are silent, while the remaining pixels use a
+    logarithmic latency mapping. It is used only for the controlled external-
+    architecture bridge experiment.
+    """
+    if not 0.0 <= input_threshold < 1.0:
+        raise ValueError("input_threshold must lie in [0, 1)")
+    if log_scale <= 0:
+        raise ValueError("log_scale must be positive")
+    if (x < 0).any() or (x > 1).any():
+        raise ValueError("thresholded log TTFS requires inputs in [0, 1]")
+
+    # Match the reference implementation's fixed numerical boundary exactly.
+    epsilon = 1e-7
+    active = x > input_threshold
+    safe = x.clamp_min(input_threshold + epsilon)
+    continuous_time = torch.log(safe / (safe - input_threshold))
+    max_time = torch.log(
+        torch.tensor(
+            (input_threshold + epsilon) / epsilon,
+            device=x.device,
+            dtype=x.dtype,
+        )
+    )
+    continuous_time = continuous_time * (timesteps - 1) / max_time * log_scale
+    firing_time = continuous_time.round().long().clamp(0, timesteps - 1)
+    spikes = torch.zeros(timesteps, *x.shape, device=x.device, dtype=x.dtype)
+    for timestep in range(timesteps):
+        spikes[timestep] = (active & (firing_time == timestep)).to(x.dtype)
+    return spikes

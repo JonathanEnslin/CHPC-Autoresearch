@@ -1,0 +1,35 @@
+# @package _global_
+defaults:
+  - override /dataset: fashion_mnist
+  - override /model: snn_pooling_fashion
+  - override /optimizer: adamw_snn_pooling
+  - override /loss_fn: cross_entropy
+  - override /scheduler: cosine_fashion_1pct
+
+experiment_group: fashion_mnist_snn_pooling_ttfs_external_bridge
+experiment_name: ${experiment_group}_seed_${seed}
+seed: 0
+batch_size: 128
+epochs: 60
+num_workers: 4
+validation_split: 0.1
+max_grad_norm: 5.0
+model:
+  encoding: thresholded_log_ttfs
+  decoding: first_spike
+  beta: 0.5
+  threshold: 1.0
+  surrogate_kind: atan
+  reset_delay: false
+  temporal_batch_norm: true
+  projection_features: 128
+  classifier_bias: false
+  ttfs_input_threshold: 0.01
+  ttfs_log_scale: 48.0
+  first_spike_survival: true
+early_stopping:
+  enabled: false
+wandb:
+  log_frequency: 0
+  tags: [fashion-mnist, snn, ttfs, first-spike, temporal-bn, projection-lif, external-bridge]
+  notes: "Controlled snnTorch bridge of the working external TTFS CNN readout and temporal-normalisation structure; pooling remains deterministic post-LIF."
