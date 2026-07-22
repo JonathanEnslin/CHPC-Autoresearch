@@ -1,0 +1,23 @@
+{
+  "smoke": {
+    "fashion_mnist_ttfs_first_spike": {
+      "epochs": 2,
+      "max_train_batches": 2,
+      "max_validation_batches": 2,
+      "final_validation_accuracy_percent": 9.38,
+      "final_validation_loss": 2.3026,
+      "final_validation_output_firing_rate_by_timestep": [0, 0, 0, 0, 0, 0],
+      "decision": "unhealthy_output_starvation"
+    },
+    "cifar10_ttfs_first_spike": {
+      "epochs": 2,
+      "max_train_batches": 2,
+      "max_validation_batches": 2,
+      "final_validation_accuracy_percent": 8.59,
+      "final_validation_loss": 2.3026,
+      "final_validation_output_firing_rate_by_timestep": [0, 0, 0, 0, 0, 0],
+      "decision": "unhealthy_output_starvation"
+    }
+  },
+  "conclusion": "Do not expand the current TTFS/first-spike convolutional recipe to full runs."
+}

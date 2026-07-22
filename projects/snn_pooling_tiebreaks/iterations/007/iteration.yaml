@@ -1,6 +1,6 @@
 iteration: 7
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Test whether scaled-log TTFS input with first-spike decoding is viable under
   the stable six-timestep snnTorch dynamics established in iteration 6, before
@@ -39,10 +39,27 @@ phases:
       A sequential, bounded two-epoch smoke was submitted before full
       calibration. It runs Fashion-MNIST and unnormalized CIFAR-10 TTFS/
       first-spike deterministic post-LIF configurations with W&B disabled.
+    completed_at: "2026-07-22"
+    result: >
+      Both bounded jobs completed, but their final validation output firing
+      rates were exactly zero at all six timesteps while hidden layers remained
+      highly active. The threshold-calibrated direct substitution does not make
+      the convolutional TTFS/first-spike path viable, so full Fashion and
+      CIFAR calibrations were deliberately not submitted.
   analyze:
-    pending: true
+    completed_at: "2026-07-22"
+    notes: >
+      The smoke is sufficient for a negative feasibility gate, not an accuracy
+      estimate: two batches produced chance-level validation accuracy and final
+      zero output spikes for both datasets. This reproduces the prior output-
+      starvation signature despite altering threshold and neuron dynamics.
   conclude:
-    pending: true
+    completed_at: "2026-07-22"
+    notes: >
+      Current scaled-log TTFS plus first-spike decoding is not compatible with
+      this pooled convolutional snnTorch architecture under six timesteps. A
+      future TTFS attempt should change the architecture or output/readout
+      mechanism rather than extend this configuration's training budget.
 human_feedback: >
   Fashion-MNIST direct/TET is confirmed workable. Prioritise other encodings,
   networks, and datasets.

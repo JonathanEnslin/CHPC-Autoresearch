@@ -10,12 +10,16 @@ jobs:
     epochs: 2
     queue: gpu_1
     walltime: "02:00:00"
-    status: submitted
+    status: completed_unhealthy
     submitted_at: "2026-07-22"
     notes: >
       Sequential end-to-end smoke: each configuration is limited to two train
       and two validation batches, has W&B disabled, and writes to a unique
-      smoke output group. Full one-seed calibrations require both to complete.
+      smoke output group. Both configurations completed and saved checkpoints,
+      but the final validation pass had zero output spikes at every timestep.
+      Hidden activity remained substantial (Fashion stage 3 about 24--35%;
+      CIFAR stage 3 about 37--39%), so this is output starvation rather than a
+      data-loading or process failure. Do not expand this recipe to full runs.
 planned_conditions:
   - fashion_mnist_ttfs_first_spike_stable_dynamics_calibration
   - cifar10_ttfs_first_spike_stable_dynamics_calibration
