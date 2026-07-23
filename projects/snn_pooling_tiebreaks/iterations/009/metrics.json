@@ -107,6 +107,32 @@
         "stage_2": [0.389266, 0.232209, 0.208460, 0.170066]
       },
       "notes": "All five seeds completed successfully. Greatest-excess consistently favored offset 0 at both pool sites, while retaining active output firing and avoiding the earlier direct/TET collapse."
+    },
+    "post_lif_membrane_least_excess": {
+      "final_accuracy_by_seed": [89.600000, 89.116667, 90.183333, 89.783333, 89.216667],
+      "mean_final_accuracy": 89.580000,
+      "sample_std_final_accuracy": 0.433718,
+      "mean_final_loss": 0.300690,
+      "mean_final_stage_firing_rate": [0.248559, 0.084065, 0.047582],
+      "mean_final_output_firing_rate_by_timestep": [0.068956, 0.100028, 0.116506, 0.131998, 0.150619, 0.170291],
+      "mean_final_contested_window_rate": [0.210304, 0.042360],
+      "mean_winner_offset_distribution": {
+        "stage_1": [0.661157, 0.140123, 0.115086, 0.083634],
+        "stage_2": [0.359423, 0.239970, 0.223451, 0.177156]
+      },
+      "notes": "All five seeds completed successfully. Least-excess retained active output firing and routed winners predominantly to offset 0."
     }
+  },
+  "five_seed_analysis": {
+    "test": "paired Friedman omnibus test across the five common seed indices",
+    "friedman_statistic": 5.280000,
+    "friedman_p_value": 0.259755,
+    "primary_paired_comparisons": {
+      "pre_lif_deterministic_vs_post_lif_deterministic": {"mean_difference_pp": 0.313333, "two_sided_p_value": 0.197300},
+      "post_lif_random_vs_post_lif_deterministic": {"mean_difference_pp": 0.190000, "two_sided_p_value": 0.212700},
+      "post_lif_membrane_excess_vs_post_lif_deterministic": {"mean_difference_pp": -0.006667, "two_sided_p_value": 0.953600},
+      "post_lif_membrane_least_excess_vs_post_lif_deterministic": {"mean_difference_pp": 0.026667, "two_sided_p_value": 0.865400}
+    },
+    "conclusion": "No policy effect reached 95% confidence: the omnibus test and every unadjusted planned paired comparison are non-significant. The observed differences are small relative to five-seed variability."
   }
 }

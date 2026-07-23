@@ -156,6 +156,21 @@ five-seed policy comparison.
 | SNN pooling tie-breaks | 9 | Post-LIF random | 89.83% | 89.87% | healthy calibration |
 | SNN pooling tie-breaks | 9 | Post-LIF least-excess | 89.60% | 90.07% | healthy calibration |
 
+### Fashion-MNIST — TTFS bridge five-seed pooling comparison
+
+Six timesteps, thresholded-log TTFS input, first-spike decoding, temporal BN,
+and the projection-LIF bridge. All policies use the same five seed indices.
+The paired Friedman omnibus test was not significant (p=0.260); none of the
+planned paired contrasts reached 95% confidence.
+
+| Project | Iter | Pooling condition | Final val. acc. | Result |
+|---------|------|-------------------|-----------------|--------|
+| SNN pooling tie-breaks | 9 | Pre-LIF deterministic | **89.87% ± 0.45%** | highest observed mean; not significant vs post-LIF deterministic |
+| SNN pooling tie-breaks | 9 | Post-LIF random | 89.74% ± 0.29% | stage-1 tie winners effectively uniform |
+| SNN pooling tie-breaks | 9 | Post-LIF least-excess | 89.58% ± 0.43% | stable; active output throughout |
+| SNN pooling tie-breaks | 9 | Post-LIF deterministic | 89.55% ± 0.22% | standard reference |
+| SNN pooling tie-breaks | 9 | Post-LIF greatest-excess | 89.55% ± 0.26% | stable; no direct/TET-style collapse |
+
 ### MNIST — In Progress
 
 | Project | Iter | Model | Job | Status |

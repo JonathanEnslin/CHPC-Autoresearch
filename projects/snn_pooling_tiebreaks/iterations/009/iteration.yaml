@@ -1,6 +1,6 @@
 iteration: 9
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Establish the full, five-seed Fashion-MNIST thresholded-log TTFS / first-spike
   comparison under the healthy temporal-BN plus projection-LIF bridge. Compare
@@ -120,10 +120,33 @@ phases:
       validation accuracy. It again did not reproduce the earlier direct/TET
       collapse: output firing was active and its winner distribution favored
       the largest-excess offset as designed. Least-excess remains running.
+    least_excess_five_seed_completed_at: "2026-07-23"
+    least_excess_five_seed_summary: >
+      Least-excess completed all five seeds at 89.58% ± 0.43% final validation
+      accuracy, with active output firing throughout. All five policy
+      conditions now have complete five-seed results.
   analyze:
-    pending: true
+    completed_at: "2026-07-23"
+    notes: >
+      The five-condition paired Friedman omnibus test was not significant
+      (chi-square=5.28, p=0.260). No unadjusted planned paired comparison
+      reached 95% confidence; the largest observed mean gap was 0.32 points
+      between pre-LIF deterministic and greatest-excess. Random routing was
+      spatially uniform at stage 1, while both membrane rules displayed their
+      audited, non-uniform selection patterns. All policies retained active
+      output firing and none collapsed under the TTFS bridge.
   conclude:
-    pending: true
+    completed_at: "2026-07-23"
+    conclusion: >
+      Under the fixed six-timestep Fashion-MNIST TTFS bridge, pooling placement
+      and the tested post-LIF tie-break rules have no detectable accuracy
+      effect at five seeds. Pre-LIF deterministic has the highest observed
+      mean (89.87% ± 0.45%), but not a significant advantage over post-LIF
+      deterministic (89.55% ± 0.22%). Random, greatest-excess, and
+      least-excess are viable and auditably distinct gradient routes, but do
+      not improve final validation accuracy in this setting. The earlier
+      greatest-excess collapse is therefore recipe-dependent rather than an
+      inherent consequence of the rule.
 human_feedback: >
   Continue with the remaining experiments, including least-excess in all
   remaining post-LIF comparisons.
