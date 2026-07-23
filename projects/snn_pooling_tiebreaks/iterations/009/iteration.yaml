@@ -43,6 +43,12 @@ phases:
       The deterministic post-LIF bridge seed from iteration 8 is the already
       healthy reference. Submit one-seed calibrations for pre-LIF deterministic
       and post-LIF greatest-excess first, respecting the two-GPU-job limit.
+    startup_validated_at: "2026-07-23"
+    startup_notes: >
+      Pre-LIF deterministic completed healthily at 89.87% final validation
+      accuracy. Greatest-excess reached 86.80% validation accuracy by epoch
+      11, with nonzero output activity at every timestep and no saturation
+      signature, so both initial calibration paths have passed startup.
   analyze:
     pending: true
   conclude:

@@ -1,0 +1,19 @@
+{
+  "dataset": "fashion_mnist",
+  "track": "thresholded_log_ttfs_first_spike_temporal_bn_projection_lif",
+  "timesteps": 6,
+  "completed_conditions": {
+    "pre_lif_deterministic_calibration": {
+      "n": 1,
+      "final_epoch_val_acc": 89.866667,
+      "final_epoch_val_loss": 0.305811,
+      "best_val_loss": 0.305811,
+      "final_output_firing_rate_by_timestep": [0.072127, 0.100648, 0.115200, 0.130082, 0.146450, 0.168389],
+      "interpretation": "Healthy one-seed calibration. The output remained active at all six timesteps through epoch 60."
+    }
+  },
+  "in_progress_conditions": [
+    "post_lif_membrane_excess_calibration"
+  ],
+  "notes": "Partial result file; the full five-condition comparison has not started."
+}

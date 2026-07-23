@@ -12,11 +12,13 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-23"
-    status: submitted
+    status: completed
     notes: >
       One-seed bridge calibration with deterministic max pooling of currents
       before each LIF. The temporal-BN, projection-LIF TTFS recipe is otherwise
-      identical to the healthy iteration-8 post-LIF reference.
+      identical to the healthy iteration-8 post-LIF reference. Completed all
+      60 epochs with 89.87% final validation accuracy and nonzero output firing
+      at every timestep.
 
   - job_id: "7347984.sched01"
     name: snn_pooling_i9_fashion_ttfs_maxexcess_cal
@@ -31,11 +33,13 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-23"
-    status: submitted
+    status: running
     notes: >
       One-seed bridge calibration for greatest post-integration membrane-excess
       tie routing. It is specifically monitored for the earlier collapse
-      signature: saturated hidden activity with a starved output.
+      signature: saturated hidden activity with a starved output. Startup
+      passed at epoch 11: validation accuracy was 86.80%, the output was
+      active at every timestep, and no hidden layer was saturated.
 planned_conditions:
   - pre_lif_deterministic
   - post_lif_deterministic
