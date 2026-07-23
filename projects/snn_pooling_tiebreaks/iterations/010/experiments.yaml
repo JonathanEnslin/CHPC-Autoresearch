@@ -12,12 +12,14 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-07-23"
-    status: queued
+    status: running
     notes: >
       Sequential five-seed replication of the healthy iteration-6 CIFAR-10
       reference. It holds deterministic post-LIF pooling and the complete
       Fashion-like stabilisation bundle fixed. Twelve hours provides a
-      conservative 20% buffer for five 200-epoch seeds.
+      conservative 20% buffer for five 200-epoch seeds. Seed 0 has passed
+      startup at epoch 9: 75.26% validation accuracy with nonzero stage-4 and
+      output firing at every timestep.
 
 planned_conditions:
   - pre_lif_deterministic

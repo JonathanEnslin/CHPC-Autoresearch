@@ -47,6 +47,12 @@ phases:
       reference job with a 20% walltime buffer based on the completed
       iteration-6 calibration. Do not launch a policy sweep until all seeds
       satisfy the activity and accuracy health gate.
+    startup_validated_at: "2026-07-23"
+    startup_notes: >
+      Seed 0 reached 75.26% validation accuracy by epoch 9. Stage-4 conv-2
+      firing is nonzero at every timestep (0.42--0.84%), as is output firing
+      (14.76--26.05%), so this reproduces the healthy rather than output-silent
+      training trajectory at startup.
   analyze:
     pending: true
   conclude:
