@@ -1,0 +1,35 @@
+{
+  "experiment": "fashion_mnist_snn_pooling_ttfs_external_bridge",
+  "condition": "post_lif_deterministic_external_ttfs_bridge",
+  "purpose": "one-seed viability calibration, not a pooling-policy comparison",
+  "dataset": "fashion_mnist",
+  "encoding": "thresholded_log_ttfs",
+  "decoding": "first_spike",
+  "timesteps": 6,
+  "seeds": {
+    "0": {
+      "final_epoch": 60,
+      "final_epoch_val_acc": 89.666667,
+      "final_epoch_val_loss": 0.311893,
+      "best_val_acc": 90.016667,
+      "best_val_acc_epoch": 47,
+      "best_val_loss": 0.299818,
+      "best_val_loss_epoch": 53
+    }
+  },
+  "aggregate": {
+    "n": 1,
+    "mean_final_epoch_val_acc": 89.666667,
+    "std_final_epoch_val_acc": null,
+    "mean_final_epoch_val_loss": 0.311893,
+    "std_final_epoch_val_loss": null
+  },
+  "final_validation_firing_rates": {
+    "stage_1_post_pool_mean": 0.253286,
+    "stage_2_post_pool_mean": 0.093145,
+    "stage_3_mean": 0.051825,
+    "projection_by_timestep": [0.197105, 0.177676, 0.167662, 0.149690, 0.134713, 0.108264],
+    "output_by_timestep": [0.069052, 0.099535, 0.115138, 0.129555, 0.146288, 0.160541]
+  },
+  "conclusion": "Healthy. The temporal-BN plus projection-LIF bridge removed the output-starvation signature: all output timesteps fired at the final epoch and validation accuracy was substantially above chance. A controlled multi-seed pooling-policy sweep is now technically viable, but has not been launched."
+}

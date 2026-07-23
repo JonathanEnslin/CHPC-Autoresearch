@@ -142,6 +142,16 @@ membrane-excess primary statistic retains its non-convergent seed.
 | SNN pooling tie-breaks | 2 | Post-LIF least-excess tie-break | 88.74% ± 0.35% | stable reverse-membrane rule; −0.45pp vs deterministic |
 | SNN pooling tie-breaks | 1 | Post-LIF membrane-excess | 74.42% ± 31.94% | one seed failed to converge (17.30%) |
 
+### Fashion-MNIST — TTFS bridge calibration
+
+One seed, six timesteps, thresholded-log TTFS input, first-spike decoding, and
+deterministic post-LIF pooling. This is a viability calibration rather than a
+five-seed policy comparison.
+
+| Project | Iter | Architecture bridge | Final val. acc. | Peak val. acc. | Outcome |
+|---------|------|---------------------|-----------------|----------------|---------|
+| SNN pooling tie-breaks | 8 | temporal-BN + projection-LIF | 89.67% | 90.02% (epoch 47) | healthy output firing at all six timesteps |
+
 ### MNIST — In Progress
 
 | Project | Iter | Model | Job | Status |

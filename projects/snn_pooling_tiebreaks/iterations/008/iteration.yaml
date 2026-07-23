@@ -1,6 +1,6 @@
 iteration: 8
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Test whether the successful external Fashion-MNIST TTFS CNN's temporal
   normalisation and projection-LIF readout eliminate output starvation when
@@ -55,9 +55,22 @@ phases:
       nonzero at every timestep. This is the first healthy TTFS/first-spike
       pooled-CNN reference in the project.
   analyze:
-    pending: true
+    completed_at: "2026-07-23"
+    notes: >
+      The one-seed calibration completed at epoch 60 with 89.67% final
+      validation accuracy (90.02% peak at epoch 47) and a 0.3119 final
+      validation loss. Output firing was nonzero at all six validation
+      timesteps (6.91%, 9.95%, 11.51%, 12.96%, 14.63%, and 16.05%), so this is
+      not an output-starvation result.
   conclude:
-    pending: true
+    completed_at: "2026-07-23"
+    notes: >
+      Temporal normalization across time and batch, together with the
+      projection-LIF readout and thresholded-log TTFS encoder, establishes a
+      viable six-timestep Fashion-MNIST TTFS/first-spike deterministic
+      post-LIF pooling reference. This result is one seed only and therefore
+      does not compare pooling policies or replace the five-seed direct/TET
+      leaderboard. Any policy sweep must keep this complete recipe fixed.
 human_feedback: >
   Port the successful external readout and temporal-normalisation structure
   into the controlled pooling model, then test it.
