@@ -1,0 +1,27 @@
+jobs:
+  - job_id: "7349285.sched01"
+    name: snn_pooling_i10_cifar_postdet_5seed
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_deterministic
+    condition: post_lif_deterministic
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-07-23"
+    status: queued
+    notes: >
+      Sequential five-seed replication of the healthy iteration-6 CIFAR-10
+      reference. It holds deterministic post-LIF pooling and the complete
+      Fashion-like stabilisation bundle fixed. Twelve hours provides a
+      conservative 20% buffer for five 200-epoch seeds.
+
+planned_conditions:
+  - pre_lif_deterministic
+  - post_lif_deterministic
+  - post_lif_random
+  - post_lif_membrane_excess
+  - post_lif_membrane_least_excess
