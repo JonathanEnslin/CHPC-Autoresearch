@@ -92,6 +92,11 @@ phases:
       The random and greatest-excess five-seed jobs were submitted after wave
       one completed. Least-excess remains pending until one of these two jobs
       frees a GPU slot; the active-job cap remains two.
+    wave_two_startup_validated_at: "2026-07-23"
+    wave_two_startup_notes: >
+      Both five-seed jobs have started seed 0 and created metrics plus a last
+      checkpoint. They are in progress concurrently, with the two-job GPU cap
+      respected.
   analyze:
     pending: true
   conclude:
