@@ -60,6 +60,14 @@ phases:
       Random completed healthily at 89.83% final validation accuracy. The
       least-excess calibration reached 87.02% validation accuracy by epoch 14
       with active output at all timesteps and non-saturated hidden activity.
+    calibrations_completed_at: "2026-07-23"
+    calibration_conclusion: >
+      All four required one-seed bridge calibrations completed healthily:
+      pre-LIF deterministic 89.87%, post-LIF greatest-excess 89.92%, random
+      89.83%, and least-excess 89.60% final validation accuracy. Greatest-
+      excess is stable in this TTFS bridge despite its direct/TET collapse.
+      These values establish viability only; the five-seed comparison awaits
+      explicit human confirmation.
   analyze:
     pending: true
   conclude:

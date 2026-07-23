@@ -77,13 +77,15 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-23"
-    status: running
+    status: completed
     notes: >
       One-seed bridge calibration of least positive membrane-excess routing
       among simultaneous post-LIF spikes. The controlled TTFS bridge is
       otherwise unchanged. Startup passed at epoch 14: validation accuracy was
       87.02%, output firing was nonzero at every timestep, and hidden rates
-      were non-saturated.
+      were non-saturated. It completed all 60 epochs with 89.60% final
+      validation accuracy, active output at every timestep, and non-saturated
+      hidden firing.
 planned_conditions:
   - pre_lif_deterministic
   - post_lif_deterministic

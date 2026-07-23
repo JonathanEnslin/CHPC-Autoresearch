@@ -40,10 +40,23 @@
         "stage_2": [0.297094, 0.266592, 0.239053, 0.197261]
       },
       "interpretation": "Healthy one-seed calibration. Random routing produced an approximately uniform stage-1 winner distribution and retained active output firing."
+    },
+    "post_lif_membrane_least_excess_calibration": {
+      "n": 1,
+      "final_epoch_val_acc": 89.600000,
+      "final_epoch_val_loss": 0.296380,
+      "best_val_acc": 90.066667,
+      "best_val_loss": 0.292939,
+      "final_output_firing_rate_by_timestep": [0.070638, 0.100755, 0.116855, 0.131554, 0.149026, 0.159924],
+      "final_stage_firing_rate_mean": [0.248128, 0.082161, 0.048661],
+      "final_contested_window_rate_mean": [0.206020, 0.039221],
+      "final_winner_offset_distribution": {
+        "stage_1": [0.667056, 0.142377, 0.109667, 0.080900],
+        "stage_2": [0.388836, 0.228154, 0.223613, 0.159397]
+      },
+      "interpretation": "Healthy one-seed calibration. Least-excess routing retained active output firing and non-saturated hidden activity."
     }
   },
-  "in_progress_conditions": [
-    "post_lif_membrane_least_excess_calibration"
-  ],
-  "notes": "Partial result file; the full five-condition comparison has not started."
+  "in_progress_conditions": [],
+  "calibration_conclusion": "All four newly calibrated policies are healthy under the fixed TTFS bridge. This includes greatest-excess, which did not reproduce its earlier direct/TET collapse. These one-seed values are viability gates only and must not be used as a policy ranking; a five-seed comparison has not started."
 }

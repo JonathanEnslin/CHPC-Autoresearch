@@ -148,9 +148,13 @@ One seed, six timesteps, thresholded-log TTFS input, first-spike decoding, and
 deterministic post-LIF pooling. This is a viability calibration rather than a
 five-seed policy comparison.
 
-| Project | Iter | Architecture bridge | Final val. acc. | Peak val. acc. | Outcome |
-|---------|------|---------------------|-----------------|----------------|---------|
-| SNN pooling tie-breaks | 8 | temporal-BN + projection-LIF | 89.67% | 90.02% (epoch 47) | healthy output firing at all six timesteps |
+| Project | Iter | Pooling condition | Final val. acc. | Peak val. acc. | Outcome |
+|---------|------|-------------------|-----------------|----------------|---------|
+| SNN pooling tie-breaks | 8 | Post-LIF deterministic | 89.67% | 90.02% (epoch 47) | initial healthy bridge reference |
+| SNN pooling tie-breaks | 9 | Pre-LIF deterministic | 89.87% | — | healthy calibration |
+| SNN pooling tie-breaks | 9 | Post-LIF greatest-excess | 89.92% | 90.20% | healthy; no collapse |
+| SNN pooling tie-breaks | 9 | Post-LIF random | 89.83% | 89.87% | healthy calibration |
+| SNN pooling tie-breaks | 9 | Post-LIF least-excess | 89.60% | 90.07% | healthy calibration |
 
 ### MNIST — In Progress
 
