@@ -56,10 +56,13 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-23"
-    status: submitted
+    status: completed
     notes: >
       One-seed bridge calibration of uniform random routing among simultaneous
-      post-LIF spikes. The controlled TTFS bridge is otherwise unchanged.
+      post-LIF spikes. The controlled TTFS bridge is otherwise unchanged. It
+      completed all 60 epochs with 89.83% final validation accuracy, active
+      output at every timestep, and an approximately uniform stage-1 winner
+      distribution.
 
   - job_id: "7347993.sched01"
     name: snn_pooling_i9_fashion_ttfs_least_cal
@@ -74,11 +77,13 @@ jobs:
     queue: gpu_1
     walltime: "01:00:00"
     submitted_at: "2026-07-23"
-    status: submitted
+    status: running
     notes: >
       One-seed bridge calibration of least positive membrane-excess routing
       among simultaneous post-LIF spikes. The controlled TTFS bridge is
-      otherwise unchanged.
+      otherwise unchanged. Startup passed at epoch 14: validation accuracy was
+      87.02%, output firing was nonzero at every timestep, and hidden rates
+      were non-saturated.
 planned_conditions:
   - pre_lif_deterministic
   - post_lif_deterministic

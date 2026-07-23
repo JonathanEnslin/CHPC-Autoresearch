@@ -55,6 +55,11 @@ phases:
       (90.20% peak), without the earlier direct/TET collapse. The random and
       least-excess one-seed bridge calibrations were therefore submitted as the
       complete remaining calibration pair. No five-seed comparison has started.
+    second_pair_startup_validated_at: "2026-07-23"
+    second_pair_startup_notes: >
+      Random completed healthily at 89.83% final validation accuracy. The
+      least-excess calibration reached 87.02% validation accuracy by epoch 14
+      with active output at all timesteps and non-saturated hidden activity.
   analyze:
     pending: true
   conclude:
