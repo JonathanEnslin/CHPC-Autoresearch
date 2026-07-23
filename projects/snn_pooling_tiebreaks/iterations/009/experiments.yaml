@@ -186,12 +186,13 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: queued
+    status: running
     notes: >
       Five-seed post-LIF least membrane-excess tie-break condition. It selects
       the smallest positive post-integration threshold excess among spiking
       candidates. Submitted after random completed, while greatest-excess was
-      still running; this maintains the two-job GPU cap.
+      still running; this maintains the two-job GPU cap. Seed 0 has passed
+      startup with an in-progress status, metrics, and a checkpoint.
 
 planned_conditions:
   - pre_lif_deterministic

@@ -109,6 +109,11 @@ phases:
       after random completed. The existing remote checkout already contains
       the required code and configuration; the generated PBS file was copied
       through the CHPC SCP node. Greatest-excess remains the other active job.
+    least_excess_five_seed_startup_validated_at: "2026-07-23"
+    least_excess_five_seed_startup_notes: >
+      Least-excess seed 0 is in progress with metrics and a checkpoint. Both
+      final remaining policy jobs are therefore actively training under the
+      two-job GPU cap.
   analyze:
     pending: true
   conclude:
