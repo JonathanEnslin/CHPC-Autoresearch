@@ -100,14 +100,15 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: running
+    status: completed
     notes: >
       Five-seed controlled comparison condition. Max pooling acts on
       convolutional currents before each LIF; all TTFS bridge components and
       training settings match the other conditions. The four-hour allocation
       covers five observed 23--35 minute seeds plus buffer. Seed 0 passed
       startup at epoch 30 with 87.80% validation accuracy and nonzero output
-      firing at every timestep.
+      firing at every timestep. All five seeds completed: 89.87% ± 0.45%
+      final validation accuracy.
 
   - job_id: "7348581.sched01"
     name: snn_pooling_i9_ttfs_postdet_5seed
@@ -122,13 +123,51 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: running
+    status: completed
     notes: >
       Five-seed controlled reference condition with deterministic max pooling
       after each LIF. It intentionally repeats the bridge recipe in a unique
       five-seed output group rather than reusing the calibration seed. Seed 0
       passed startup at epoch 21 with 86.58% validation accuracy and nonzero
-      output firing at every timestep.
+      firing at every timestep. All five seeds completed: 89.55% ± 0.22%
+      final validation accuracy.
+
+  - job_id: "7348854.sched01"
+    name: snn_pooling_i9_ttfs_random_5seed
+    configuration: fashion_mnist_snn_pooling_ttfs_bridge_post_random
+    condition: post_lif_random
+    dataset: fashion_mnist
+    encoding: thresholded_log_ttfs
+    decoding: first_spike
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "04:00:00"
+    submitted_at: "2026-07-23"
+    status: queued
+    notes: >
+      Five-seed post-LIF random tie-break condition. It uses the same TTFS
+      bridge, optimizer, and decoder as the completed wave-one references.
+
+  - job_id: "7348855.sched01"
+    name: snn_pooling_i9_ttfs_maxexcess_5seed
+    configuration: fashion_mnist_snn_pooling_ttfs_bridge_post_membrane_excess
+    condition: post_lif_membrane_excess
+    dataset: fashion_mnist
+    encoding: thresholded_log_ttfs
+    decoding: first_spike
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "04:00:00"
+    submitted_at: "2026-07-23"
+    status: queued
+    notes: >
+      Five-seed post-LIF greatest membrane-excess tie-break condition. It
+      selects, among spiking candidates, the largest post-integration
+      membrane potential and routes the max-pool gradient through it.
 
 planned_conditions:
   - pre_lif_deterministic

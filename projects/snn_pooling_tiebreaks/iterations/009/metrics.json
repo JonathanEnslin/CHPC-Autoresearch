@@ -58,5 +58,27 @@
     }
   },
   "in_progress_conditions": [],
-  "calibration_conclusion": "All four newly calibrated policies are healthy under the fixed TTFS bridge. This includes greatest-excess, which did not reproduce its earlier direct/TET collapse. These one-seed values are viability gates only and must not be used as a policy ranking; a five-seed comparison has not started."
+  "calibration_conclusion": "All four newly calibrated policies are healthy under the fixed TTFS bridge. This includes greatest-excess, which did not reproduce its earlier direct/TET collapse. These one-seed values are viability gates only and must not be used as a policy ranking.",
+  "five_seed_results": {
+    "pre_lif_deterministic": {
+      "final_accuracy_by_seed": [89.866667, 89.466667, 89.633333, 90.633333, 89.733333],
+      "mean_final_accuracy": 89.866667,
+      "sample_std_final_accuracy": 0.452769,
+      "mean_final_loss": 0.303887,
+      "mean_final_stage_firing_rate": [0.318507, 0.262463, 0.050837],
+      "mean_final_output_firing_rate_by_timestep": [0.069612, 0.099990, 0.114336, 0.127916, 0.145658, 0.167449],
+      "mean_final_contested_window_rate": [null, null],
+      "notes": "Pre-LIF pooling operates on currents, so post-LIF contested-spike-window and winner statistics are not applicable."
+    },
+    "post_lif_deterministic": {
+      "final_accuracy_by_seed": [89.666667, 89.183333, 89.733333, 89.550000, 89.633333],
+      "mean_final_accuracy": 89.553333,
+      "sample_std_final_accuracy": 0.217115,
+      "mean_final_loss": 0.305846,
+      "mean_final_stage_firing_rate": [0.217764, 0.085551, 0.049301],
+      "mean_final_output_firing_rate_by_timestep": [0.069203, 0.099645, 0.115797, 0.131766, 0.149516, 0.164856],
+      "mean_final_contested_window_rate": [0.181985, 0.041038],
+      "notes": "Deterministic post-LIF pooling preserves the standard implementation's implicit winner routing, so no explicit winner-offset distribution is recorded."
+    }
+  }
 }

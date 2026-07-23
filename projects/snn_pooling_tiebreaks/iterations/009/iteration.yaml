@@ -81,6 +81,17 @@ phases:
       firing at all six timesteps: pre-LIF deterministic reached 87.80%
       validation accuracy by epoch 30 and post-LIF deterministic reached
       86.58% by epoch 21.
+    wave_one_completed_at: "2026-07-23"
+    wave_one_summary: >
+      All five seeds completed under both initial policies. Pre-LIF
+      deterministic achieved 89.87% ± 0.45% final validation accuracy; post-
+      LIF deterministic achieved 89.55% ± 0.22%. With both GPU slots free,
+      random and greatest-excess are the next two five-seed conditions.
+    wave_two_submitted_at: "2026-07-23"
+    wave_two_notes: >
+      The random and greatest-excess five-seed jobs were submitted after wave
+      one completed. Least-excess remains pending until one of these two jobs
+      frees a GPU slot; the active-job cap remains two.
   analyze:
     pending: true
   conclude:
