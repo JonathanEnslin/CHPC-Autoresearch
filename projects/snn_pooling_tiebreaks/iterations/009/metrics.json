@@ -10,10 +10,26 @@
       "best_val_loss": 0.305811,
       "final_output_firing_rate_by_timestep": [0.072127, 0.100648, 0.115200, 0.130082, 0.146450, 0.168389],
       "interpretation": "Healthy one-seed calibration. The output remained active at all six timesteps through epoch 60."
+    },
+    "post_lif_membrane_excess_calibration": {
+      "n": 1,
+      "final_epoch_val_acc": 89.916667,
+      "final_epoch_val_loss": 0.295743,
+      "best_val_acc": 90.200000,
+      "best_val_loss": 0.295743,
+      "final_output_firing_rate_by_timestep": [0.068277, 0.100202, 0.114763, 0.129915, 0.150629, 0.173454],
+      "final_stage_firing_rate_mean": [0.182305, 0.101449, 0.051143],
+      "final_contested_window_rate_mean": [0.149121, 0.052290],
+      "final_winner_offset_distribution": {
+        "stage_1": [0.657188, 0.146926, 0.112231, 0.083655],
+        "stage_2": [0.349044, 0.230861, 0.224530, 0.195565]
+      },
+      "interpretation": "Healthy one-seed calibration. Greatest-excess routing did not reproduce the direct/TET collapse: output firing remained active and deep-layer activity was non-saturated."
     }
   },
   "in_progress_conditions": [
-    "post_lif_membrane_excess_calibration"
+    "post_lif_random_calibration",
+    "post_lif_membrane_least_excess_calibration"
   ],
   "notes": "Partial result file; the full five-condition comparison has not started."
 }

@@ -49,6 +49,12 @@ phases:
       accuracy. Greatest-excess reached 86.80% validation accuracy by epoch
       11, with nonzero output activity at every timestep and no saturation
       signature, so both initial calibration paths have passed startup.
+    expansion_submitted_at: "2026-07-23"
+    expansion_notes: >
+      Greatest-excess completed healthily at 89.92% final validation accuracy
+      (90.20% peak), without the earlier direct/TET collapse. The random and
+      least-excess one-seed bridge calibrations were therefore submitted as the
+      complete remaining calibration pair. No five-seed comparison has started.
   analyze:
     pending: true
   conclude:
