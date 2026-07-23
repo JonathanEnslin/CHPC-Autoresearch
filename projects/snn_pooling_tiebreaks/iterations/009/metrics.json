@@ -79,6 +79,20 @@
       "mean_final_output_firing_rate_by_timestep": [0.069203, 0.099645, 0.115797, 0.131766, 0.149516, 0.164856],
       "mean_final_contested_window_rate": [0.181985, 0.041038],
       "notes": "Deterministic post-LIF pooling preserves the standard implementation's implicit winner routing, so no explicit winner-offset distribution is recorded."
+    },
+    "post_lif_random": {
+      "final_accuracy_by_seed": [89.833333, 89.416667, 89.550000, 90.166667, 89.750000],
+      "mean_final_accuracy": 89.743333,
+      "sample_std_final_accuracy": 0.287856,
+      "mean_final_loss": 0.300549,
+      "mean_final_stage_firing_rate": [0.234608, 0.078462, 0.048470],
+      "mean_final_output_firing_rate_by_timestep": [0.068395, 0.099791, 0.115804, 0.130582, 0.150084, 0.168358],
+      "mean_final_contested_window_rate": [0.199168, 0.038445],
+      "mean_winner_offset_distribution": {
+        "stage_1": [0.250063, 0.250747, 0.250278, 0.248912],
+        "stage_2": [0.298102, 0.258171, 0.248506, 0.195222]
+      },
+      "notes": "All five seeds completed successfully. Random routing is effectively uniform at stage 1, with active output firing at all timesteps."
     }
   }
 }

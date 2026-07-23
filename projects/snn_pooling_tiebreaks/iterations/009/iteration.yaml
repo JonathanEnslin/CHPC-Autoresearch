@@ -97,6 +97,18 @@ phases:
       Both five-seed jobs have started seed 0 and created metrics plus a last
       checkpoint. They are in progress concurrently, with the two-job GPU cap
       respected.
+    random_five_seed_completed_at: "2026-07-23"
+    random_five_seed_summary: >
+      Random tie-breaking completed all five seeds at 89.74% ± 0.29% final
+      validation accuracy. Its first-pool winner offsets are effectively
+      uniform, as intended. The completed job frees one GPU slot for the
+      pending least-excess five-seed condition.
+    least_excess_five_seed_submitted_at: "2026-07-23"
+    least_excess_five_seed_notes: >
+      The pending five-seed least-excess job was submitted as 7349056.sched01
+      after random completed. The existing remote checkout already contains
+      the required code and configuration; the generated PBS file was copied
+      through the CHPC SCP node. Greatest-excess remains the other active job.
   analyze:
     pending: true
   conclude:

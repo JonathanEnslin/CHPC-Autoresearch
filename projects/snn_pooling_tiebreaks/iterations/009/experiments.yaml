@@ -145,12 +145,13 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: running
+    status: completed
     notes: >
       Five-seed post-LIF random tie-break condition. It uses the same TTFS
       bridge, optimizer, and decoder as the completed wave-one references.
       Seed 0 has passed startup with an in-progress status, metrics, and a
-      checkpoint.
+      checkpoint. All five seeds completed successfully: 89.74% ± 0.29%
+      final validation accuracy.
 
   - job_id: "7348855.sched01"
     name: snn_pooling_i9_ttfs_maxexcess_5seed
@@ -171,6 +172,26 @@ jobs:
       selects, among spiking candidates, the largest post-integration
       membrane potential and routes the max-pool gradient through it. Seed 0
       has passed startup with an in-progress status, metrics, and a checkpoint.
+
+  - job_id: "7349056.sched01"
+    name: snn_pooling_i9_ttfs_leastexcess_5seed
+    configuration: fashion_mnist_snn_pooling_ttfs_bridge_post_membrane_least_excess
+    condition: post_lif_membrane_least_excess
+    dataset: fashion_mnist
+    encoding: thresholded_log_ttfs
+    decoding: first_spike
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 60
+    queue: gpu_1
+    walltime: "04:00:00"
+    submitted_at: "2026-07-23"
+    status: queued
+    notes: >
+      Five-seed post-LIF least membrane-excess tie-break condition. It selects
+      the smallest positive post-integration threshold excess among spiking
+      candidates. Submitted after random completed, while greatest-excess was
+      still running; this maintains the two-job GPU cap.
 
 planned_conditions:
   - pre_lif_deterministic
