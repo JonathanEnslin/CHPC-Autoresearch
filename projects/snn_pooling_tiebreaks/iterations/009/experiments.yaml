@@ -100,12 +100,14 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: submitted
+    status: running
     notes: >
       Five-seed controlled comparison condition. Max pooling acts on
       convolutional currents before each LIF; all TTFS bridge components and
       training settings match the other conditions. The four-hour allocation
-      covers five observed 23--35 minute seeds plus buffer.
+      covers five observed 23--35 minute seeds plus buffer. Seed 0 passed
+      startup at epoch 30 with 87.80% validation accuracy and nonzero output
+      firing at every timestep.
 
   - job_id: "7348581.sched01"
     name: snn_pooling_i9_ttfs_postdet_5seed
@@ -120,11 +122,13 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: submitted
+    status: running
     notes: >
       Five-seed controlled reference condition with deterministic max pooling
       after each LIF. It intentionally repeats the bridge recipe in a unique
-      five-seed output group rather than reusing the calibration seed.
+      five-seed output group rather than reusing the calibration seed. Seed 0
+      passed startup at epoch 21 with 86.58% validation accuracy and nonzero
+      output firing at every timestep.
 
 planned_conditions:
   - pre_lif_deterministic

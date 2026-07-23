@@ -75,6 +75,12 @@ phases:
       identical TTFS bridge settings. Random, greatest-excess, and least-
       excess will be submitted as slots become available, never exceeding two
       active GPU jobs.
+    five_seed_startup_validated_at: "2026-07-23"
+    five_seed_startup_notes: >
+      Both wave-one jobs are actively training seed 0 with nonzero output
+      firing at all six timesteps: pre-LIF deterministic reached 87.80%
+      validation accuracy by epoch 30 and post-LIF deterministic reached
+      86.58% by epoch 21.
   analyze:
     pending: true
   conclude:
