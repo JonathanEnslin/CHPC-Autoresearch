@@ -1,4 +1,41 @@
-jobs: []
+jobs:
+  - job_id: "7347983.sched01"
+    name: snn_pooling_i9_fashion_ttfs_pre_cal
+    configuration: fashion_mnist_snn_pooling_ttfs_bridge_pre_deterministic
+    condition: pre_lif_deterministic_calibration
+    dataset: fashion_mnist
+    encoding: thresholded_log_ttfs
+    decoding: first_spike
+    timesteps: 6
+    seeds: [0]
+    epochs: 60
+    queue: gpu_1
+    walltime: "01:00:00"
+    submitted_at: "2026-07-23"
+    status: submitted
+    notes: >
+      One-seed bridge calibration with deterministic max pooling of currents
+      before each LIF. The temporal-BN, projection-LIF TTFS recipe is otherwise
+      identical to the healthy iteration-8 post-LIF reference.
+
+  - job_id: "7347984.sched01"
+    name: snn_pooling_i9_fashion_ttfs_maxexcess_cal
+    configuration: fashion_mnist_snn_pooling_ttfs_bridge_post_membrane_excess
+    condition: post_lif_membrane_excess_calibration
+    dataset: fashion_mnist
+    encoding: thresholded_log_ttfs
+    decoding: first_spike
+    timesteps: 6
+    seeds: [0]
+    epochs: 60
+    queue: gpu_1
+    walltime: "01:00:00"
+    submitted_at: "2026-07-23"
+    status: submitted
+    notes: >
+      One-seed bridge calibration for greatest post-integration membrane-excess
+      tie routing. It is specifically monitored for the earlier collapse
+      signature: saturated hidden activity with a starved output.
 planned_conditions:
   - pre_lif_deterministic
   - post_lif_deterministic
