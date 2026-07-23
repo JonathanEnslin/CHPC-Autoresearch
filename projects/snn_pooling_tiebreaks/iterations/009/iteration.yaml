@@ -114,6 +114,12 @@ phases:
       Least-excess seed 0 is in progress with metrics and a checkpoint. Both
       final remaining policy jobs are therefore actively training under the
       two-job GPU cap.
+    greatest_excess_five_seed_completed_at: "2026-07-23"
+    greatest_excess_five_seed_summary: >
+      Greatest-excess completed all five seeds at 89.55% ± 0.26% final
+      validation accuracy. It again did not reproduce the earlier direct/TET
+      collapse: output firing was active and its winner distribution favored
+      the largest-excess offset as designed. Least-excess remains running.
   analyze:
     pending: true
   conclude:

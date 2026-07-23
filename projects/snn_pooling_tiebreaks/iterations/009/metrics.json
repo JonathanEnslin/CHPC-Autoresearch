@@ -93,6 +93,20 @@
         "stage_2": [0.298102, 0.258171, 0.248506, 0.195222]
       },
       "notes": "All five seeds completed successfully. Random routing is effectively uniform at stage 1, with active output firing at all timesteps."
+    },
+    "post_lif_membrane_excess": {
+      "final_accuracy_by_seed": [89.916667, 89.316667, 89.583333, 89.633333, 89.283333],
+      "mean_final_accuracy": 89.546667,
+      "sample_std_final_accuracy": 0.258844,
+      "mean_final_loss": 0.304191,
+      "mean_final_stage_firing_rate": [0.213107, 0.092434, 0.050548],
+      "mean_final_output_firing_rate_by_timestep": [0.068050, 0.099319, 0.115472, 0.130910, 0.150603, 0.172816],
+      "mean_final_contested_window_rate": [0.175878, 0.048865],
+      "mean_winner_offset_distribution": {
+        "stage_1": [0.649393, 0.147046, 0.116152, 0.087408],
+        "stage_2": [0.389266, 0.232209, 0.208460, 0.170066]
+      },
+      "notes": "All five seeds completed successfully. Greatest-excess consistently favored offset 0 at both pool sites, while retaining active output firing and avoiding the earlier direct/TET collapse."
     }
   }
 }

@@ -166,12 +166,14 @@ jobs:
     queue: gpu_1
     walltime: "04:00:00"
     submitted_at: "2026-07-23"
-    status: running
+    status: completed
     notes: >
       Five-seed post-LIF greatest membrane-excess tie-break condition. It
       selects, among spiking candidates, the largest post-integration
       membrane potential and routes the max-pool gradient through it. Seed 0
       has passed startup with an in-progress status, metrics, and a checkpoint.
+      All five seeds completed successfully: 89.55% ± 0.26% final validation
+      accuracy, without the earlier direct/TET collapse signature.
 
   - job_id: "7349056.sched01"
     name: snn_pooling_i9_ttfs_leastexcess_5seed
