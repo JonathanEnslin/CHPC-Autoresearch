@@ -68,6 +68,13 @@ phases:
       excess is stable in this TTFS bridge despite its direct/TET collapse.
       These values establish viability only; the five-seed comparison awaits
       explicit human confirmation.
+    five_seed_comparison_submitted_at: "2026-07-23"
+    five_seed_comparison_notes: >
+      The human approved expansion. The first two five-seed conditions,
+      pre-LIF deterministic and post-LIF deterministic, were submitted with
+      identical TTFS bridge settings. Random, greatest-excess, and least-
+      excess will be submitted as slots become available, never exceeding two
+      active GPU jobs.
   analyze:
     pending: true
   conclude:
