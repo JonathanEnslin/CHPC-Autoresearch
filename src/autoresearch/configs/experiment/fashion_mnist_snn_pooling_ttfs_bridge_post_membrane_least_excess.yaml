@@ -1,0 +1,12 @@
+# @package _global_
+defaults:
+  - fashion_mnist_snn_pooling_ttfs_external_bridge
+  - _self_
+
+experiment_group: fashion_mnist_snn_pooling_ttfs_bridge_post_membrane_least_excess
+model:
+  pooling_placement: post_lif
+  tie_break: membrane_least_excess
+wandb:
+  tags: [fashion-mnist, snn, ttfs, first-spike, temporal-bn, projection-lif, post-lif, membrane-least-excess]
+  notes: "TTFS bridge comparison: smallest positive post-integration threshold excess wins each spike tie."

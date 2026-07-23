@@ -29,5 +29,5 @@ projects:
     path: projects/anp_datasets
   - slug: snn_pooling_tiebreaks
     status: active
-    current_iteration: 8
+    current_iteration: 9
     path: projects/snn_pooling_tiebreaks

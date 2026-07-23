@@ -1,0 +1,7 @@
+jobs: []
+planned_conditions:
+  - pre_lif_deterministic
+  - post_lif_deterministic
+  - post_lif_random
+  - post_lif_membrane_excess
+  - post_lif_membrane_least_excess

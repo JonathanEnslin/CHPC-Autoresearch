@@ -1,0 +1,52 @@
+iteration: 9
+project: snn_pooling_tiebreaks
+status: experiment
+goal: >
+  Establish the full, five-seed Fashion-MNIST thresholded-log TTFS / first-spike
+  comparison under the healthy temporal-BN plus projection-LIF bridge. Compare
+  pre-LIF deterministic pooling with post-LIF deterministic, random,
+  membrane-greatest-excess, and membrane-least-excess routing at six timesteps.
+created: "2026-07-23"
+phases:
+  plan:
+    completed_at: "2026-07-23"
+    notes: >
+      The iteration-8 deterministic bridge calibration completed healthily at
+      89.67% final validation accuracy with active output firing at every
+      timestep. The user authorised continuation, so this iteration expands
+      the controlled comparison while holding that entire recipe fixed.
+  survey:
+    completed_at: "2026-07-23"
+    notes: >
+      No new policy mechanism is introduced: the pre-LIF, deterministic,
+      random, greatest-excess, and least-excess rules were surveyed and
+      directly tested in earlier iterations. The new scientific requirement is
+      to hold the now-healthy TTFS bridge fixed while testing those rules.
+  implement:
+    completed_at: "2026-07-23"
+    notes: >
+      Added five explicit bridge presets. Each inherits the same six-timestep
+      thresholded-log encoder, temporal BN, projection-LIF, bias-free spiking
+      readout, optimiser, and decoder; only pooling placement or tie policy
+      differs.
+  local_validation:
+    completed_at: "2026-07-23"
+    notes: >
+      All five Hydra presets compose. Direct gradient-routing probes confirmed
+      that greatest-excess selects the highest active membrane and least-excess
+      the lowest active membrane. A bounded two-epoch greatest-excess training
+      smoke improved validation accuracy from 10.08% to 30.23%, exercising the
+      new temporal-BN bridge and membrane-routing path end-to-end.
+  experiment:
+    started_at: "2026-07-23"
+    notes: >
+      The deterministic post-LIF bridge seed from iteration 8 is the already
+      healthy reference. Submit one-seed calibrations for pre-LIF deterministic
+      and post-LIF greatest-excess first, respecting the two-GPU-job limit.
+  analyze:
+    pending: true
+  conclude:
+    pending: true
+human_feedback: >
+  Continue with the remaining experiments, including least-excess in all
+  remaining post-LIF comparisons.

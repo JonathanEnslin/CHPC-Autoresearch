@@ -1,0 +1,12 @@
+# @package _global_
+defaults:
+  - fashion_mnist_snn_pooling_ttfs_external_bridge
+  - _self_
+
+experiment_group: fashion_mnist_snn_pooling_ttfs_bridge_pre_deterministic
+model:
+  pooling_placement: pre_lif
+  tie_break: deterministic
+wandb:
+  tags: [fashion-mnist, snn, ttfs, first-spike, temporal-bn, projection-lif, pre-lif, deterministic]
+  notes: "TTFS bridge comparison: deterministic max pooling on currents before each LIF."
