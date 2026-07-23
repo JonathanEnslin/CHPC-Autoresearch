@@ -1,0 +1,59 @@
+iteration: 10
+project: snn_pooling_tiebreaks
+status: experiment
+goal: >
+  Replicate the healthy six-timestep CIFAR-10 direct-input/TET deterministic
+  post-LIF max-pooling reference across five seeds. Hold the iteration-6
+  Fashion-like dynamics recipe fixed, quantify its accuracy and activity
+  variability, and expand to the five pooling policies only if this reference
+  remains healthy.
+created: "2026-07-23"
+phases:
+  plan:
+    completed_at: "2026-07-23"
+    notes: >
+      Iteration 6 established a healthy one-seed CIFAR-10 reference: spiking
+      VGG-9, direct/TET input at six timesteps, post-LIF deterministic pooling,
+      beta 0.5, ATan surrogate, immediate reset, AdamW/cosine, and norm-5
+      gradient clipping. The completed Fashion-MNIST TTFS comparison leaves
+      this five-seed replication as the next prerequisite for a CIFAR policy
+      sweep.
+  survey:
+    completed_at: "2026-07-23"
+    notes: >
+      No new pooling method is introduced. The stable recipe and its failure
+      controls were already isolated in iteration 6, so this iteration tests
+      reproducibility rather than changing model components.
+  implement:
+    completed_at: "2026-07-23"
+    notes: >
+      Added a named five-seed preset that exactly inherits the healthy
+      iteration-6 Fashion-like dynamics: direct/TET input, deterministic
+      post-LIF pooling, beta 0.5, ATan surrogate, immediate reset,
+      AdamW/cosine, and norm-5 clipping. Only the experiment-group name and
+      W&B metadata differ from the original one-seed control.
+  local_validation:
+    completed_at: "2026-07-23"
+    notes: >
+      Hydra composition succeeded in the existing local SNN environment, and
+      a synthetic one-sample CPU forward pass returned finite 10-class TET
+      logits with the expected shape. CIFAR-10 is not stored locally, so a
+      bounded data-loader smoke cannot run here; iteration 6 already supplies
+      the full 200-epoch one-seed CHPC validation of this unchanged recipe.
+  experiment:
+    started_at: "2026-07-23"
+    notes: >
+      Submit one sequential five-seed, 200-epoch CIFAR-10 deterministic
+      reference job with a 20% walltime buffer based on the completed
+      iteration-6 calibration. Do not launch a policy sweep until all seeds
+      satisfy the activity and accuracy health gate.
+  analyze:
+    pending: true
+  conclude:
+    pending: true
+health_gate: >
+  Expand only if all five deterministic seeds complete without persistent
+  deep-layer/output silence and yield clearly above-chance validation accuracy.
+human_feedback: >
+  Continue with the next remaining experiments after completing the
+  Fashion-MNIST TTFS five-policy comparison.

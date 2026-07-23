@@ -8,8 +8,8 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 9
-branch: feature/snn-pooling-iter-9-ttfs-policy-sweep
+current_iteration: 10
+branch: feature/snn-pooling-iter-10-cifar-reference
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie
   resolution. The primary conditions are: (A) conv-current max pooling before
