@@ -1,4 +1,34 @@
-jobs: []
+jobs:
+  - job_id: "7350554.sched01"
+    name: snn_pooling_i11_cifar_pre_det_cal
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_pre_deterministic
+    condition: pre_lif_deterministic
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 200
+    queue: gpu_1
+    walltime: "04:30:00"
+    submitted_at: "2026-07-24"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_pre_det_calibration_wandb_offline
+  - job_id: "7350555.sched01"
+    name: snn_pooling_i11_cifar_random_cal
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
+    condition: post_lif_random
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 200
+    queue: gpu_1
+    walltime: "04:30:00"
+    submitted_at: "2026-07-24"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_random_calibration_wandb_offline
 
 calibration_plan:
   - condition: pre_lif_deterministic
