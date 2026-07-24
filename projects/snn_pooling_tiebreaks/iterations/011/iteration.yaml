@@ -1,0 +1,56 @@
+iteration: 11
+project: snn_pooling_tiebreaks
+status: experiment
+goal: >
+  Compare max-pooling placement and post-LIF tie-break routing on CIFAR-10
+  using the validated six-timestep direct/TET spiking VGG-9 recipe. First
+  establish one-seed viability for the four untested policies, then use five
+  common seeds for every healthy condition.
+created: "2026-07-24"
+evidence_from_previous_iteration: >
+  Iteration 10 completed the deterministic post-LIF reference at 88.87% ±
+  0.72% across five seeds. Every run retained active deep and output firing,
+  clearing the prerequisite stability gate for this comparison.
+phases:
+  plan:
+    completed_at: "2026-07-24"
+    notes: >
+      Keep the CIFAR model, augmentation, direct encoding, TET loss, optimizer,
+      schedule, six timesteps, and 200-epoch budget fixed. Vary only pooling
+      placement/tie-break policy: pre-LIF deterministic, post-LIF random,
+      post-LIF greatest membrane excess, and post-LIF least membrane excess.
+  survey:
+    completed_at: "2026-07-24"
+    notes: >
+      No new method is introduced. This is the required controlled extension
+      of the validated deterministic reference, with explicit routing and
+      activity telemetry already implemented.
+  implement:
+    completed_at: "2026-07-24"
+    notes: >
+      Added four named presets that keep the validated CIFAR recipe fixed and
+      vary only pooling placement/tie-break policy. All four compose under
+      Hydra and produce finite 10-class synthetic forwards locally.
+  experiment:
+    in_progress: true
+    notes: >
+      Local CIFAR-10 data is unavailable, so policy-specific two-epoch
+      data-loader smokes cannot run locally. The unchanged data/model pipeline
+      was validated for 200 epochs in iteration 10; synthetic forwards verify
+      all routing paths. Submit two one-seed 200-epoch calibrations first,
+      respecting the two-job GPU limit.
+  analyze:
+    pending: true
+  conclude:
+    pending: true
+conditions:
+  reference_completed: post_lif_deterministic
+  pending_calibrations:
+    - pre_lif_deterministic
+    - post_lif_random
+    - post_lif_membrane_excess
+    - post_lif_membrane_least_excess
+calibration_gate: >
+  A policy advances only when its one-seed calibration has clearly above-chance
+  accuracy and no persistent deep-layer or output silence/saturation. Healthy
+  policies then receive a five-seed evaluation with the same fixed recipe.

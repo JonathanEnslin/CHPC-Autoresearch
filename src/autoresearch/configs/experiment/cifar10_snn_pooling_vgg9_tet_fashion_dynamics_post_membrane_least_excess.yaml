@@ -1,0 +1,27 @@
+# @package _global_
+defaults:
+  - override /dataset: cifar10_augmented
+  - override /model: snn_pooling_cifar_vgg9
+  - override /optimizer: adamw_snn_pooling
+  - override /loss_fn: tet_cross_entropy
+  - override /scheduler: cosine_fashion_1pct
+
+experiment_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+experiment_name: ${experiment_group}_seed_${seed}
+seed: 0
+batch_size: 128
+epochs: 200
+num_workers: 4
+validation_split: 0.1
+max_grad_norm: 5.0
+model:
+  pooling_placement: post_lif
+  tie_break: membrane_least_excess
+  beta: 0.5
+  surrogate_kind: atan
+  reset_delay: false
+early_stopping:
+  enabled: false
+wandb:
+  tags: [cifar10, snn, vgg9, direct-input, tet, six-timesteps, post-lif, membrane-least-excess, fashion-dynamics]
+  notes: "CIFAR-10 pooling-policy calibration: least post-integration membrane excess."

@@ -1,0 +1,21 @@
+jobs: []
+
+calibration_plan:
+  - condition: pre_lif_deterministic
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_pre_deterministic
+    seeds: [0]
+  - condition: post_lif_random
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
+    seeds: [0]
+  - condition: post_lif_membrane_excess
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+    seeds: [0]
+  - condition: post_lif_membrane_least_excess
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+    seeds: [0]
+
+five_seed_policy_order:
+  - pre_lif_deterministic
+  - post_lif_random
+  - post_lif_membrane_excess
+  - post_lif_membrane_least_excess
