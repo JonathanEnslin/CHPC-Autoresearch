@@ -1,0 +1,35 @@
+{
+  "dataset": "cifar10",
+  "track": "direct_tet_fashion_like_dynamics",
+  "model": "spiking_vgg9",
+  "condition": "post_lif_deterministic",
+  "timesteps": 6,
+  "seeds": [0, 1, 2, 3, 4],
+  "final_accuracy_by_seed": [89.06, 87.88, 88.58, 89.84, 88.98],
+  "mean_final_accuracy": 88.868,
+  "sample_std_final_accuracy": 0.716464,
+  "final_loss_by_seed": [0.561386, 0.598404, 0.547667, 0.520529, 0.556938],
+  "mean_final_loss": 0.556985,
+  "sample_std_final_loss": 0.028066,
+  "mean_final_firing_rate": {
+    "stage_1_conv_1": 0.125422,
+    "stage_1_conv_2_post_pool": 0.090712,
+    "stage_2_conv_2_post_pool": 0.085437,
+    "stage_3_conv_2_post_pool": 0.050205,
+    "stage_4_conv_2": 0.011474,
+    "output": 0.110206
+  },
+  "sample_std_final_firing_rate": {
+    "stage_1_conv_1": 0.020077,
+    "stage_1_conv_2_post_pool": 0.008935,
+    "stage_2_conv_2_post_pool": 0.007341,
+    "stage_3_conv_2_post_pool": 0.005921,
+    "stage_4_conv_2": 0.000603,
+    "output": 0.001814
+  },
+  "health_gate": {
+    "passed": true,
+    "reason": "All five 200-epoch seeds are far above chance (87.88--89.84%), retain nonzero deep-layer firing (stage-4 conv-2 mean 1.15%), and retain active output firing (mean 11.02%)."
+  },
+  "resume_incident": "The first continuation skipped seed 3 because PyTorch 2.6 defaulted torch.load(weights_only=True), rejecting the checkpoint's RNG state. The locally validated weights_only=False loader correction resumed seed 3 from epoch 28; it completed normally."
+}

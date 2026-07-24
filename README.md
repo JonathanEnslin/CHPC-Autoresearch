@@ -223,6 +223,7 @@ Excluded from the leaderboard. Listed for traceability.
 | Image Processing NN | 3 | ResNet-18 | Adam | ✓ | 5 | 90.57% ± 0.51% | ✅ |
 | Image Processing NN | 1 | ResNet-18 | Adam | ✗ | 5 | 83.56% ± 0.36% | ✅ |
 | Image Processing NN | 2 | ResNet-18 | SGD+Cosine | ✗ | 5 | 78.87% ± 0.94% | ✅ |
+| SNN pooling tie-breaks | 10 | SNN VGG-9, post-LIF deterministic | AdamW+Cosine | ✓ | 5 | 88.87% ± 0.72% | ✅ stable pooling reference |
 
 *Updated 2026-04-13.*
 

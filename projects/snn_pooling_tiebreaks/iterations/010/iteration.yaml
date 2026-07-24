@@ -1,6 +1,6 @@
 iteration: 10
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Replicate the healthy six-timestep CIFAR-10 direct-input/TET deterministic
   post-LIF max-pooling reference across five seeds. Hold the iteration-6
@@ -68,10 +68,25 @@ phases:
       The corrected seed-3 recovery resumed from epoch 28 and wrote an epoch-30
       checkpoint and metric record, confirming that the trusted checkpoint and
       optimizer state restored successfully.
+    completed_at: "2026-07-24"
+    completion_notes: >
+      All five deterministic seeds completed. The final seed-3 recovery reached
+      epoch 200 after the PyTorch-2.6 checkpoint-loader correction; no seed was
+      rerun unnecessarily.
   analyze:
-    pending: true
+    completed_at: "2026-07-24"
+    notes: >
+      Final validation accuracy was 88.87% ± 0.72% across five seeds. All runs
+      were clearly above chance and retained active stage-4 conv-2 firing
+      (1.15% mean) and output firing (11.02% mean), so the deterministic CIFAR
+      reference passes the policy-sweep health gate.
   conclude:
-    pending: true
+    completed_at: "2026-07-24"
+    conclusion: >
+      The fixed direct/TET SNN VGG-9 recipe is reproducibly stable on CIFAR-10:
+      88.87% ± 0.72% at five seeds under deterministic post-LIF pooling. This
+      establishes the controlled reference required before comparing pooling
+      placement and tie-break policies on CIFAR-10.
 health_gate: >
   Expand only if all five deterministic seeds complete without persistent
   deep-layer/output silence and yield clearly above-chance validation accuracy.
