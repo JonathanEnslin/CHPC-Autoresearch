@@ -39,6 +39,11 @@ phases:
       was validated for 200 epochs in iteration 10; synthetic forwards verify
       all routing paths. Submit two one-seed 200-epoch calibrations first,
       respecting the two-job GPU limit.
+    startup_validated_at: "2026-07-24"
+    startup_notes: >
+      The pre-LIF deterministic and post-LIF random calibrations both passed
+      startup with meaningful validation accuracy and active stage-4/output
+      firing. They may continue to their 200-epoch viability assessments.
   analyze:
     pending: true
   conclude:
