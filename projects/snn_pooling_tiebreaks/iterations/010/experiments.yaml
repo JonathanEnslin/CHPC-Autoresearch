@@ -12,14 +12,36 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-07-23"
-    status: running
+    status: walltime_exceeded
     notes: >
       Sequential five-seed replication of the healthy iteration-6 CIFAR-10
       reference. It holds deterministic post-LIF pooling and the complete
       Fashion-like stabilisation bundle fixed. Twelve hours provides a
       conservative 20% buffer for five 200-epoch seeds. Seed 0 has passed
       startup at epoch 9: 75.26% validation accuracy with nonzero stage-4 and
-      output firing at every timestep.
+      output firing at every timestep. PBS killed the sequential job after
+      12 hours: seeds 0--2 completed, while seed 3 checkpointed at epoch 28.
+
+  - job_id: "7349770.sched01"
+    name: snn_pooling_i10_cifar_postdet_resume
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_deterministic
+    condition: post_lif_deterministic
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1, 2, 3, 4]
+    epochs: 200
+    queue: gpu_1
+    walltime: "10:00:00"
+    submitted_at: "2026-07-24"
+    status: queued
+    notes: >
+      Queue-compliant continuation after 7349285.sched01 exceeded its
+      12-hour walltime. The same output group lets seeds 0--2 exit from their
+      completed checkpoints, resumes seed 3 from epoch 28, and runs seed 4.
+      Ten hours exceeds the remaining estimated work with a conservative
+      buffer while staying within the queue limit.
 
 planned_conditions:
   - pre_lif_deterministic

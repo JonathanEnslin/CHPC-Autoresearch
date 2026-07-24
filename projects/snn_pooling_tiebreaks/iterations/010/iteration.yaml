@@ -53,6 +53,13 @@ phases:
       firing is nonzero at every timestep (0.42--0.84%), as is output firing
       (14.76--26.05%), so this reproduces the healthy rather than output-silent
       training trajectory at startup.
+    continuation_submitted_at: "2026-07-24"
+    continuation_notes: >
+      The initial 12-hour sequential job was terminated by PBS walltime after
+      completing seeds 0--2 and checkpointing seed 3 at epoch 28. A requested
+      24-hour continuation was rejected by the queue limit, so a verified
+      10-hour continuation was submitted as 7349770.sched01. It will reuse
+      completed checkpoints and only execute the remaining work.
   analyze:
     pending: true
   conclude:
