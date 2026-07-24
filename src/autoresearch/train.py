@@ -181,7 +181,10 @@ def load_checkpoint(
         Dictionary with checkpoint metadata
     """
     log.info("Loading checkpoint from %s", checkpoint_path)
-    checkpoint = torch.load(checkpoint_path, map_location=device)
+    # Checkpoints include Python/NumPy RNG state in addition to tensor weights.
+    # PyTorch 2.6 defaults ``weights_only`` to True, which rejects those trusted
+    # local checkpoint objects and prevents interrupted runs from resuming.
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
 
     model.load_state_dict(checkpoint["model_state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
