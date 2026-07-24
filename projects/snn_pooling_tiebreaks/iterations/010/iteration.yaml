@@ -58,8 +58,11 @@ phases:
       The initial 12-hour sequential job was terminated by PBS walltime after
       completing seeds 0--2 and checkpointing seed 3 at epoch 28. A requested
       24-hour continuation was rejected by the queue limit, so a verified
-      10-hour continuation was submitted as 7349770.sched01. It will reuse
-      completed checkpoints and only execute the remaining work.
+      10-hour continuation was submitted as 7349770.sched01. It completed
+      seed 4, but PyTorch 2.6 rejected seed 3's trusted checkpoint because
+      torch.load now defaults to weights_only=True while our checkpoint stores
+      RNG state. A locally validated weights_only=False loader correction was
+      synchronized to CHPC; seed 3 is now recovering alone as 7350183.sched01.
   analyze:
     pending: true
   conclude:

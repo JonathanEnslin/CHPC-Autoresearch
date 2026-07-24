@@ -35,13 +35,34 @@ jobs:
     queue: gpu_1
     walltime: "10:00:00"
     submitted_at: "2026-07-24"
-    status: queued
+    status: partial_completed
     notes: >
       Queue-compliant continuation after 7349285.sched01 exceeded its
-      12-hour walltime. The same output group lets seeds 0--2 exit from their
-      completed checkpoints, resumes seed 3 from epoch 28, and runs seed 4.
-      Ten hours exceeds the remaining estimated work with a conservative
-      buffer while staying within the queue limit.
+      12-hour walltime. Seeds 0--2 exited as completed and seed 4 completed,
+      but seed 3's checkpoint reload failed before training because PyTorch
+      2.6 defaults torch.load to weights_only=True while our trusted
+      checkpoint includes RNG state. The loader was fixed and seed 3 is
+      recovered separately by 7350183.sched01.
+
+  - job_id: "7350183.sched01"
+    name: snn_pooling_i10_cifar_postdet_seed3_recovery
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_deterministic
+    condition: post_lif_deterministic
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [3]
+    epochs: 200
+    queue: gpu_1
+    walltime: "04:30:00"
+    submitted_at: "2026-07-24"
+    status: queued
+    notes: >
+      Seed-3-only recovery from its epoch-28 checkpoint after the verified
+      PyTorch-2.6 checkpoint-loader correction. The 4.5-hour walltime provides
+      a 20% buffer for the remaining 172 epochs, and avoids rerunning the four
+      already completed seeds.
 
 planned_conditions:
   - pre_lif_deterministic
