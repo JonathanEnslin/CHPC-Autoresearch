@@ -57,12 +57,13 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-24"
-    status: queued
+    status: running
     notes: >
       Seed-3-only recovery from its epoch-28 checkpoint after the verified
       PyTorch-2.6 checkpoint-loader correction. The 4.5-hour walltime provides
       a 20% buffer for the remaining 172 epochs, and avoids rerunning the four
-      already completed seeds.
+      already completed seeds. Startup was validated at epoch 30 with a fresh
+      checkpoint and metric record.
 
 planned_conditions:
   - pre_lif_deterministic

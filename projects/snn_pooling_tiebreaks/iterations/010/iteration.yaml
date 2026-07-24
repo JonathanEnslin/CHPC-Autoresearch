@@ -63,6 +63,11 @@ phases:
       torch.load now defaults to weights_only=True while our checkpoint stores
       RNG state. A locally validated weights_only=False loader correction was
       synchronized to CHPC; seed 3 is now recovering alone as 7350183.sched01.
+    recovery_startup_validated_at: "2026-07-24"
+    recovery_startup_notes: >
+      The corrected seed-3 recovery resumed from epoch 28 and wrote an epoch-30
+      checkpoint and metric record, confirming that the trusted checkpoint and
+      optimizer state restored successfully.
   analyze:
     pending: true
   conclude:
