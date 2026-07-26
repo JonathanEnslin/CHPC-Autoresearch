@@ -60,8 +60,11 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-25"
-    status: queued
+    status: running
     output_group: cifar10_snn_pooling_i11_memex_calibration_wandb_offline
+    startup_notes: >
+      Epoch 10: 74.98% validation accuracy, with nonzero stage-4 conv-2 and
+      output firing. The calibration has passed startup.
   - job_id: "7352561.sched01"
     name: snn_pooling_i11_cifar_leastex_cal
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
@@ -75,8 +78,11 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-25"
-    status: queued
+    status: running
     output_group: cifar10_snn_pooling_i11_leastex_calibration_wandb_offline
+    startup_notes: >
+      Epoch 4: 57.46% validation accuracy, with nonzero stage-4 conv-2 and
+      output firing. The calibration has passed startup.
 
 calibration_plan:
   - condition: pre_lif_deterministic

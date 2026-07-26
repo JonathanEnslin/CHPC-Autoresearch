@@ -50,6 +50,11 @@ phases:
       post-LIF random reached 88.74% final validation accuracy, retaining
       active deep and output firing. Submit the greatest- and least-excess
       calibrations in the newly available two GPU slots.
+    membrane_calibrations_startup_validated_at: "2026-07-26"
+    membrane_calibrations_startup_notes: >
+      Greatest-excess reached 74.98% by epoch 10 and least-excess reached
+      57.46% by epoch 4. Both show nonzero stage-4 and output firing and may
+      proceed to their final viability assessment.
   analyze:
     pending: true
   conclude:
