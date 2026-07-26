@@ -44,6 +44,12 @@ phases:
       The pre-LIF deterministic and post-LIF random calibrations both passed
       startup with meaningful validation accuracy and active stage-4/output
       firing. They may continue to their 200-epoch viability assessments.
+    initial_calibrations_completed_at: "2026-07-25"
+    initial_calibrations_notes: >
+      Both completed healthily: pre-LIF deterministic reached 89.90% and
+      post-LIF random reached 88.74% final validation accuracy, retaining
+      active deep and output firing. Submit the greatest- and least-excess
+      calibrations in the newly available two GPU slots.
   analyze:
     pending: true
   conclude:

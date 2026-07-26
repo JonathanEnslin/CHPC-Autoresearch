@@ -12,11 +12,17 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-24"
-    status: running
+    status: completed
     output_group: cifar10_snn_pooling_i11_pre_det_calibration_wandb_offline
     startup_notes: >
       Epoch 14: 80.26% validation accuracy, with nonzero stage-4 conv-2 and
       output firing. The calibration has passed startup.
+    final_metrics:
+      final_validation_accuracy: 89.90
+      final_validation_loss: 0.518867
+      mean_stage_4_conv_2_firing_rate: 0.014843
+      mean_output_firing_rate: 0.107467
+    conclusion: healthy
   - job_id: "7350555.sched01"
     name: snn_pooling_i11_cifar_random_cal
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
@@ -30,11 +36,47 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-24"
-    status: running
+    status: completed
     output_group: cifar10_snn_pooling_i11_random_calibration_wandb_offline
     startup_notes: >
       Epoch 10: 75.76% validation accuracy, with nonzero stage-4 conv-2 and
       output firing. The calibration has passed startup.
+    final_metrics:
+      final_validation_accuracy: 88.74
+      final_validation_loss: 0.588569
+      mean_stage_4_conv_2_firing_rate: 0.011433
+      mean_output_firing_rate: 0.109359
+    conclusion: healthy
+  - job_id: "7352560.sched01"
+    name: snn_pooling_i11_cifar_memex_cal
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+    condition: post_lif_membrane_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 200
+    queue: gpu_1
+    walltime: "04:30:00"
+    submitted_at: "2026-07-25"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_memex_calibration_wandb_offline
+  - job_id: "7352561.sched01"
+    name: snn_pooling_i11_cifar_leastex_cal
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+    condition: post_lif_membrane_least_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 200
+    queue: gpu_1
+    walltime: "04:30:00"
+    submitted_at: "2026-07-25"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_leastex_calibration_wandb_offline
 
 calibration_plan:
   - condition: pre_lif_deterministic
