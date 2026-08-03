@@ -73,6 +73,11 @@ phases:
       buffer. Wave 1 submits pre-LIF deterministic and post-LIF random seeds
       0--1. Later waves complete seeds 2--4 and then run greatest- and
       least-excess, respecting the two-GPU-job cap.
+    final_sweep_wave_1_completed_at: "2026-08-03"
+    final_sweep_wave_1_notes: >
+      Both jobs completed their planned seeds 0--1. Pre-LIF deterministic is
+      89.94% +/- 0.06%; post-LIF random is 88.94% +/- 0.28%. Both retain
+      active deep/output firing. Jobs 7354661 and 7354662 now run seeds 2--3.
   analyze:
     pending: true
   conclude:

@@ -1,5 +1,5 @@
 {
-  "scope": "CIFAR-10 direct/TET VGG-9 one-seed policy calibrations",
+  "scope": "CIFAR-10 direct/TET VGG-9 policy calibrations and partial final sweep",
   "recipe": {
     "timesteps": 6,
     "dynamics": "beta=0.5, ATan surrogate, immediate reset, AdamW cosine schedule, norm-5 gradient clipping",
@@ -37,5 +37,22 @@
       "resume_note": "Resumed from an epoch-199 checkpoint after the original job reached its PBS walltime."
     }
   },
-  "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. These gates justify, but do not replace, the planned five-seed controlled comparison."
+  "partial_final_sweep": {
+    "seeds_completed_per_condition": 2,
+    "pre_lif_deterministic": {
+      "final_validation_accuracy_mean": 89.94,
+      "final_validation_accuracy_sample_std": 0.056569,
+      "final_validation_loss_mean": 0.523862,
+      "mean_stage_4_conv_2_firing_rate": 0.014083,
+      "mean_output_firing_rate": 0.107264
+    },
+    "post_lif_random": {
+      "final_validation_accuracy_mean": 88.94,
+      "final_validation_accuracy_sample_std": 0.282843,
+      "final_validation_loss_mean": 0.578965,
+      "mean_stage_4_conv_2_firing_rate": 0.012176,
+      "mean_output_firing_rate": 0.108683
+    }
+  },
+  "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. The final sweep has two completed seeds each for pre-LIF deterministic and post-LIF random; five-seed inference remains pending."
 }

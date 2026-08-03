@@ -128,12 +128,19 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-03"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_pre_det_5seed
     wave: 1
     notes: >
       First two final-comparison seeds. The remaining seeds are submitted in
       12-hour waves after this job is assessed.
+    completed_metrics:
+      seed_count: 2
+      mean_final_validation_accuracy: 89.94
+      std_final_validation_accuracy: 0.056569
+      mean_final_validation_loss: 0.523862
+      mean_stage_4_conv_2_firing_rate: 0.014083
+      mean_output_firing_rate: 0.107264
   - job_id: "7353517.sched01"
     name: snn_pooling_i11_cifar_random_5s_a
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
@@ -147,12 +154,51 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-03"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_random_5seed
     wave: 1
     notes: >
       First two final-comparison seeds. The remaining seeds are submitted in
       12-hour waves after this job is assessed.
+    completed_metrics:
+      seed_count: 2
+      mean_final_validation_accuracy: 88.94
+      std_final_validation_accuracy: 0.282843
+      mean_final_validation_loss: 0.578965
+      mean_stage_4_conv_2_firing_rate: 0.012176
+      mean_output_firing_rate: 0.108683
+  - job_id: "7354661.sched01"
+    name: snn_pooling_i11_cifar_pre_5s_b
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_pre_deterministic
+    condition: pre_lif_deterministic
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [2, 3]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-03"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_pre_det_5seed
+    wave: 2
+  - job_id: "7354662.sched01"
+    name: snn_pooling_i11_cifar_random_5s_b
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
+    condition: post_lif_random
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [2, 3]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-03"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_random_5seed
+    wave: 2
 
 calibration_plan:
   - condition: pre_lif_deterministic
