@@ -66,6 +66,13 @@ phases:
       The resumed least-excess run completed at 89.04%, retaining 1.13%
       stage-4 conv-2 and 11.01% output firing. All four one-seed policies are
       viable; await human confirmation before launching the five-seed sweep.
+    final_sweep_started_at: "2026-08-03"
+    final_sweep_notes: >
+      Human confirmation received. Measured runtime is roughly 4.25--4.5
+      hours per seed, so each 12-hour job runs two complete seeds with a 20%
+      buffer. Wave 1 submits pre-LIF deterministic and post-LIF random seeds
+      0--1. Later waves complete seeds 2--4 and then run greatest- and
+      least-excess, respecting the two-GPU-job cap.
   analyze:
     pending: true
   conclude:

@@ -115,6 +115,44 @@ jobs:
       mean_stage_4_conv_2_firing_rate: 0.011261
       mean_output_firing_rate: 0.110124
     conclusion: healthy
+  - job_id: "7353516.sched01"
+    name: snn_pooling_i11_cifar_pre_5s_a
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_pre_deterministic
+    condition: pre_lif_deterministic
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-03"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_pre_det_5seed
+    wave: 1
+    notes: >
+      First two final-comparison seeds. The remaining seeds are submitted in
+      12-hour waves after this job is assessed.
+  - job_id: "7353517.sched01"
+    name: snn_pooling_i11_cifar_random_5s_a
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
+    condition: post_lif_random
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-03"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_random_5seed
+    wave: 1
+    notes: >
+      First two final-comparison seeds. The remaining seeds are submitted in
+      12-hour waves after this job is assessed.
 
 calibration_plan:
   - condition: pre_lif_deterministic
@@ -135,3 +173,15 @@ five_seed_policy_order:
   - post_lif_random
   - post_lif_membrane_excess
   - post_lif_membrane_least_excess
+
+final_sweep:
+  reference:
+    condition: post_lif_deterministic
+    source_iteration: 10
+    output_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_deterministic_5seed_wandb_offline
+    seeds: [0, 1, 2, 3, 4]
+  pending_conditions:
+    - pre_lif_deterministic
+    - post_lif_random
+    - post_lif_membrane_excess
+    - post_lif_membrane_least_excess
