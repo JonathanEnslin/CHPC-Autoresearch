@@ -55,6 +55,12 @@ phases:
       Greatest-excess reached 74.98% by epoch 10 and least-excess reached
       57.46% by epoch 4. Both show nonzero stage-4 and output firing and may
       proceed to their final viability assessment.
+    membrane_excess_completed_at: "2026-08-03"
+    membrane_excess_notes: >
+      The greatest-excess calibration completed healthily at 88.28% final
+      validation accuracy, with mean final stage-4 conv-2/output firing of
+      1.12%/11.03%. The least-excess calibration checkpointed epoch 199 and
+      was killed only by its walltime limit; job 7353326.sched01 resumes it.
   analyze:
     pending: true
   conclude:

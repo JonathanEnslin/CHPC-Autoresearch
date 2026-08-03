@@ -60,11 +60,17 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-25"
-    status: running
+    status: completed
     output_group: cifar10_snn_pooling_i11_memex_calibration_wandb_offline
     startup_notes: >
       Epoch 10: 74.98% validation accuracy, with nonzero stage-4 conv-2 and
       output firing. The calibration has passed startup.
+    final_metrics:
+      final_validation_accuracy: 88.28
+      final_validation_loss: 0.562896
+      mean_stage_4_conv_2_firing_rate: 0.011164
+      mean_output_firing_rate: 0.110283
+    conclusion: healthy
   - job_id: "7352561.sched01"
     name: snn_pooling_i11_cifar_leastex_cal
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
@@ -78,11 +84,31 @@ jobs:
     queue: gpu_1
     walltime: "04:30:00"
     submitted_at: "2026-07-25"
-    status: running
+    status: interrupted
     output_group: cifar10_snn_pooling_i11_leastex_calibration_wandb_offline
     startup_notes: >
       Epoch 4: 57.46% validation accuracy, with nonzero stage-4 conv-2 and
       output firing. The calibration has passed startup.
+    interruption: >
+      PBS killed the job at its 04:30:00 walltime limit after checkpointing
+      epoch 199 of 200. The checkpoint is valid; a short resume job completes
+      the remaining epoch.
+  - job_id: "7353326.sched01"
+    name: snn_pooling_i11_cifar_leastex_resume
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+    condition: post_lif_membrane_least_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0]
+    epochs: 200
+    queue: gpu_1
+    walltime: "00:30:00"
+    submitted_at: "2026-08-03"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_leastex_calibration_wandb_offline
+    resume_from_epoch: 199
 
 calibration_plan:
   - condition: pre_lif_deterministic
