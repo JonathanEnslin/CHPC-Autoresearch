@@ -61,6 +61,11 @@ phases:
       validation accuracy, with mean final stage-4 conv-2/output firing of
       1.12%/11.03%. The least-excess calibration checkpointed epoch 199 and
       was killed only by its walltime limit; job 7353326.sched01 resumes it.
+    all_calibrations_completed_at: "2026-08-03"
+    all_calibrations_notes: >
+      The resumed least-excess run completed at 89.04%, retaining 1.13%
+      stage-4 conv-2 and 11.01% output firing. All four one-seed policies are
+      viable; await human confirmation before launching the five-seed sweep.
   analyze:
     pending: true
   conclude:
@@ -68,6 +73,8 @@ phases:
 conditions:
   reference_completed: post_lif_deterministic
   pending_calibrations:
+    []
+  viable_calibrations:
     - pre_lif_deterministic
     - post_lif_random
     - post_lif_membrane_excess

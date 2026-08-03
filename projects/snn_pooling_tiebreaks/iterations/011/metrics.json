@@ -1,0 +1,41 @@
+{
+  "scope": "CIFAR-10 direct/TET VGG-9 one-seed policy calibrations",
+  "recipe": {
+    "timesteps": 6,
+    "dynamics": "beta=0.5, ATan surrogate, immediate reset, AdamW cosine schedule, norm-5 gradient clipping",
+    "epochs": 200,
+    "seeds_per_condition": 1
+  },
+  "conditions": {
+    "pre_lif_deterministic": {
+      "final_validation_accuracy": 89.9,
+      "final_validation_loss": 0.518867,
+      "mean_stage_4_conv_2_firing_rate": 0.014843,
+      "mean_output_firing_rate": 0.107467,
+      "viability": "healthy"
+    },
+    "post_lif_random": {
+      "final_validation_accuracy": 88.74,
+      "final_validation_loss": 0.588569,
+      "mean_stage_4_conv_2_firing_rate": 0.011433,
+      "mean_output_firing_rate": 0.109359,
+      "viability": "healthy"
+    },
+    "post_lif_membrane_excess": {
+      "final_validation_accuracy": 88.28,
+      "final_validation_loss": 0.562896,
+      "mean_stage_4_conv_2_firing_rate": 0.011164,
+      "mean_output_firing_rate": 0.110283,
+      "viability": "healthy"
+    },
+    "post_lif_membrane_least_excess": {
+      "final_validation_accuracy": 89.04,
+      "final_validation_loss": 0.592335,
+      "mean_stage_4_conv_2_firing_rate": 0.011261,
+      "mean_output_firing_rate": 0.110124,
+      "viability": "healthy",
+      "resume_note": "Resumed from an epoch-199 checkpoint after the original job reached its PBS walltime."
+    }
+  },
+  "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. These gates justify, but do not replace, the planned five-seed controlled comparison."
+}

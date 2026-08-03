@@ -106,9 +106,15 @@ jobs:
     queue: gpu_1
     walltime: "00:30:00"
     submitted_at: "2026-08-03"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_leastex_calibration_wandb_offline
     resume_from_epoch: 199
+    final_metrics:
+      final_validation_accuracy: 89.04
+      final_validation_loss: 0.592335
+      mean_stage_4_conv_2_firing_rate: 0.011261
+      mean_output_firing_rate: 0.110124
+    conclusion: healthy
 
 calibration_plan:
   - condition: pre_lif_deterministic
