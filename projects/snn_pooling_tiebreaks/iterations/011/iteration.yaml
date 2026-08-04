@@ -85,6 +85,13 @@ phases:
       deep/output activity failure. Jobs 7355062 and 7355063 use observed
       per-policy runtimes to pack the remaining pre/random seeds with the
       first greatest- and least-excess seeds efficiently.
+    final_sweep_wave_3_completed_at: "2026-08-04"
+    final_sweep_wave_3_notes: >
+      The mixed job completed pre-LIF seed 4, random seed 4, and greatest-
+      excess seed 0; the least-excess job completed seeds 0--1. Pre-LIF
+      deterministic and random now have all five seeds: 90.01% +/- 0.62% and
+      88.92% +/- 0.30%. Jobs 7356442 and 7356443 progress the remaining
+      membrane-policy seeds in two-seed 12-hour batches.
   analyze:
     pending: true
   conclude:

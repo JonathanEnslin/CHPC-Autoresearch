@@ -240,10 +240,23 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-04"
-    status: queued
+    status: completed
     notes: >
       Runtime-aware mixed job: the measured pre-LIF, random, and
       greatest-excess per-seed times total about 11.25 hours.
+    completed_components:
+      - condition: pre_lif_deterministic
+        seed: 4
+        final_validation_accuracy: 89.06
+        final_validation_loss: 0.554293
+      - condition: post_lif_random
+        seed: 4
+        final_validation_accuracy: 88.52
+        final_validation_loss: 0.570733
+      - condition: post_lif_membrane_excess
+        seed: 0
+        final_validation_accuracy: 88.28
+        final_validation_loss: 0.562896
   - job_id: "7355063.sched01"
     name: snn_pooling_i11_cifar_leastex_5s_a
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
@@ -257,9 +270,47 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-04"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_leastex_5seed
     wave: 1
+    completed_metrics:
+      seed_count: 2
+      completed_seeds: [0, 1]
+      mean_final_validation_accuracy: 88.58
+      std_final_validation_accuracy: 0.650538
+      mean_final_validation_loss: 0.586589
+  - job_id: "7356442.sched01"
+    name: snn_pooling_i11_cifar_memex_5s_b
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+    condition: post_lif_membrane_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [1, 2]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-04"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_memex_5seed
+    wave: 2
+  - job_id: "7356443.sched01"
+    name: snn_pooling_i11_cifar_leastex_5s_b
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+    condition: post_lif_membrane_least_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [2, 3]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-04"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_leastex_5seed
+    wave: 2
 
 calibration_plan:
   - condition: pre_lif_deterministic
@@ -288,7 +339,5 @@ final_sweep:
     output_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_deterministic_5seed_wandb_offline
     seeds: [0, 1, 2, 3, 4]
   pending_conditions:
-    - pre_lif_deterministic
-    - post_lif_random
     - post_lif_membrane_excess
     - post_lif_membrane_least_excess
