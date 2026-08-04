@@ -180,9 +180,18 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-03"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_pre_det_5seed
     wave: 2
+    completed_metrics:
+      seed_count: 2
+      completed_seeds: [2, 3]
+      cumulative_seed_count: 4
+      cumulative_mean_final_validation_accuracy: 90.245
+      cumulative_std_final_validation_accuracy: 0.361248
+      cumulative_mean_final_validation_loss: 0.513877
+      cumulative_mean_stage_4_conv_2_firing_rate: 0.014157
+      cumulative_mean_output_firing_rate: 0.107318
   - job_id: "7354662.sched01"
     name: snn_pooling_i11_cifar_random_5s_b
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
@@ -196,9 +205,61 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-03"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_random_5seed
     wave: 2
+    completed_metrics:
+      seed_count: 2
+      completed_seeds: [2, 3]
+      cumulative_seed_count: 4
+      cumulative_mean_final_validation_accuracy: 89.015
+      cumulative_std_final_validation_accuracy: 0.231157
+      cumulative_mean_final_validation_loss: 0.551465
+      cumulative_mean_stage_4_conv_2_firing_rate: 0.011846
+      cumulative_mean_output_firing_rate: 0.109717
+  - job_id: "7355062.sched01"
+    name: snn_pooling_i11_cifar_mix_5s_c
+    components:
+      - condition: pre_lif_deterministic
+        seed: 4
+        configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_pre_deterministic
+        output_group: cifar10_snn_pooling_i11_pre_det_5seed
+      - condition: post_lif_random
+        seed: 4
+        configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_random
+        output_group: cifar10_snn_pooling_i11_random_5seed
+      - condition: post_lif_membrane_excess
+        seed: 0
+        configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+        output_group: cifar10_snn_pooling_i11_memex_5seed
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-04"
+    status: queued
+    notes: >
+      Runtime-aware mixed job: the measured pre-LIF, random, and
+      greatest-excess per-seed times total about 11.25 hours.
+  - job_id: "7355063.sched01"
+    name: snn_pooling_i11_cifar_leastex_5s_a
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+    condition: post_lif_membrane_least_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [0, 1]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-04"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_leastex_5seed
+    wave: 1
 
 calibration_plan:
   - condition: pre_lif_deterministic

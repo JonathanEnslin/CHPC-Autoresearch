@@ -78,6 +78,13 @@ phases:
       Both jobs completed their planned seeds 0--1. Pre-LIF deterministic is
       89.94% +/- 0.06%; post-LIF random is 88.94% +/- 0.28%. Both retain
       active deep/output firing. Jobs 7354661 and 7354662 now run seeds 2--3.
+    final_sweep_wave_2_completed_at: "2026-08-04"
+    final_sweep_wave_2_notes: >
+      Both jobs completed seeds 2--3. Across four seeds, pre-LIF deterministic
+      is 90.25% +/- 0.36% and post-LIF random is 89.02% +/- 0.23%, with no
+      deep/output activity failure. Jobs 7355062 and 7355063 use observed
+      per-policy runtimes to pack the remaining pre/random seeds with the
+      first greatest- and least-excess seeds efficiently.
   analyze:
     pending: true
   conclude:

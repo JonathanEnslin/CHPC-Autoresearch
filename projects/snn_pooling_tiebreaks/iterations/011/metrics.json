@@ -38,21 +38,21 @@
     }
   },
   "partial_final_sweep": {
-    "seeds_completed_per_condition": 2,
+    "seeds_completed_per_condition": 4,
     "pre_lif_deterministic": {
-      "final_validation_accuracy_mean": 89.94,
-      "final_validation_accuracy_sample_std": 0.056569,
-      "final_validation_loss_mean": 0.523862,
-      "mean_stage_4_conv_2_firing_rate": 0.014083,
-      "mean_output_firing_rate": 0.107264
+      "final_validation_accuracy_mean": 90.245,
+      "final_validation_accuracy_sample_std": 0.361248,
+      "final_validation_loss_mean": 0.513877,
+      "mean_stage_4_conv_2_firing_rate": 0.014157,
+      "mean_output_firing_rate": 0.107318
     },
     "post_lif_random": {
-      "final_validation_accuracy_mean": 88.94,
-      "final_validation_accuracy_sample_std": 0.282843,
-      "final_validation_loss_mean": 0.578965,
-      "mean_stage_4_conv_2_firing_rate": 0.012176,
-      "mean_output_firing_rate": 0.108683
+      "final_validation_accuracy_mean": 89.015,
+      "final_validation_accuracy_sample_std": 0.231157,
+      "final_validation_loss_mean": 0.551465,
+      "mean_stage_4_conv_2_firing_rate": 0.011846,
+      "mean_output_firing_rate": 0.109717
     }
   },
-  "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. The final sweep has two completed seeds each for pre-LIF deterministic and post-LIF random; five-seed inference remains pending."
+  "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. The final sweep has four completed seeds each for pre-LIF deterministic and post-LIF random; five-seed inference and the membrane-policy comparisons remain pending."
 }
