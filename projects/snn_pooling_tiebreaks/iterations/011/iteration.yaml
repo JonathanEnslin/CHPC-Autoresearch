@@ -1,6 +1,6 @@
 iteration: 11
 project: snn_pooling_tiebreaks
-status: experiment
+status: completed
 goal: >
   Compare max-pooling placement and post-LIF tie-break routing on CIFAR-10
   using the validated six-timestep direct/TET spiking VGG-9 recipe. First
@@ -32,7 +32,7 @@ phases:
       vary only pooling placement/tie-break policy. All four compose under
       Hydra and produce finite 10-class synthetic forwards locally.
   experiment:
-    in_progress: true
+    completed_at: "2026-08-05"
     notes: >
       Local CIFAR-10 data is unavailable, so policy-specific two-epoch
       data-loader smokes cannot run locally. The unchanged data/model pipeline
@@ -97,10 +97,30 @@ phases:
       Greatest-excess completed seeds 1--2 and least-excess completed seeds
       2--3, both with active deep/output firing. Final jobs 7356971 and
       7356972 complete greatest-excess seeds 3--4 and least-excess seed 4.
+    final_sweep_completed_at: "2026-08-05"
+    final_sweep_completed_notes: >
+      All five conditions completed all five common seeds. No condition
+      collapsed or showed output starvation.
   analyze:
-    pending: true
+    completed_at: "2026-08-05"
+    notes: >
+      Friedman repeated-measures test across the five conditions is
+      significant (chi-square=11.551, p=0.0210). Pre-LIF deterministic is
+      1.14 percentage points above post-LIF deterministic; the paired t-test
+      is nominally significant (p=0.0381), but not after Holm correction
+      across the four post-deterministic contrasts (adjusted p=0.1525).
+      Random, greatest-excess, and least-excess do not differ detectably from
+      post-LIF deterministic under the corrected analysis.
   conclude:
-    pending: true
+    completed_at: "2026-08-05"
+    conclusion: >
+      On this stable direct/TET CIFAR-10 VGG-9 recipe, pre-LIF deterministic
+      pooling has the highest observed accuracy (90.01% +/- 0.62%), whereas
+      random tie-breaking is essentially neutral versus the post-LIF
+      deterministic reference. Membrane-excess and least-excess are stable
+      but show lower observed means. The five-seed study supports a global
+      condition effect, but no pairwise conclusion survives correction;
+      pre-LIF's advantage is therefore promising rather than definitive.
 conditions:
   reference_completed: post_lif_deterministic
   pending_calibrations:

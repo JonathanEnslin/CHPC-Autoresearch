@@ -1,66 +1,25 @@
 {
-  "scope": "CIFAR-10 direct/TET VGG-9 policy calibrations and partial final sweep",
+  "scope": "CIFAR-10 direct/TET six-timestep VGG-9 final pooling-policy comparison",
   "recipe": {
-    "timesteps": 6,
-    "dynamics": "beta=0.5, ATan surrogate, immediate reset, AdamW cosine schedule, norm-5 gradient clipping",
     "epochs": 200,
-    "seeds_per_condition": 1
+    "common_seeds": [0, 1, 2, 3, 4],
+    "dynamics": "beta=0.5, ATan surrogate, immediate reset, AdamW cosine schedule, norm-5 gradient clipping"
   },
   "conditions": {
-    "pre_lif_deterministic": {
-      "final_validation_accuracy": 89.9,
-      "final_validation_loss": 0.518867,
-      "mean_stage_4_conv_2_firing_rate": 0.014843,
-      "mean_output_firing_rate": 0.107467,
-      "viability": "healthy"
-    },
-    "post_lif_random": {
-      "final_validation_accuracy": 88.74,
-      "final_validation_loss": 0.588569,
-      "mean_stage_4_conv_2_firing_rate": 0.011433,
-      "mean_output_firing_rate": 0.109359,
-      "viability": "healthy"
-    },
-    "post_lif_membrane_excess": {
-      "final_validation_accuracy": 88.28,
-      "final_validation_loss": 0.562896,
-      "mean_stage_4_conv_2_firing_rate": 0.011164,
-      "mean_output_firing_rate": 0.110283,
-      "viability": "healthy"
-    },
-    "post_lif_membrane_least_excess": {
-      "final_validation_accuracy": 89.04,
-      "final_validation_loss": 0.592335,
-      "mean_stage_4_conv_2_firing_rate": 0.011261,
-      "mean_output_firing_rate": 0.110124,
-      "viability": "healthy",
-      "resume_note": "Resumed from an epoch-199 checkpoint after the original job reached its PBS walltime."
+    "pre_lif_deterministic": {"accuracy": [89.9, 89.98, 90.46, 90.64, 89.06], "accuracy_mean": 90.008, "accuracy_sample_std": 0.615402, "loss_mean": 0.52196, "stage_4_conv_2_firing_rate_mean": 0.01378, "output_firing_rate_mean": 0.107613},
+    "post_lif_deterministic": {"accuracy": [89.06, 87.88, 88.58, 89.84, 88.98], "accuracy_mean": 88.868, "accuracy_sample_std": 0.716464, "loss_mean": 0.556985, "stage_4_conv_2_firing_rate_mean": 0.011474, "output_firing_rate_mean": 0.110206},
+    "post_lif_random": {"accuracy": [88.74, 89.14, 89.26, 88.92, 88.52], "accuracy_mean": 88.916, "accuracy_sample_std": 0.298463, "loss_mean": 0.555319, "stage_4_conv_2_firing_rate_mean": 0.011567, "output_firing_rate_mean": 0.109688},
+    "post_lif_membrane_excess": {"accuracy": [88.28, 87.88, 89.18, 89.3, 88.48], "accuracy_mean": 88.624, "accuracy_sample_std": 0.603887, "loss_mean": 0.559969, "stage_4_conv_2_firing_rate_mean": 0.011257, "output_firing_rate_mean": 0.110322},
+    "post_lif_membrane_least_excess": {"accuracy": [89.04, 88.12, 88.58, 88.94, 87.56], "accuracy_mean": 88.448, "accuracy_sample_std": 0.613612, "loss_mean": 0.5734, "stage_4_conv_2_firing_rate_mean": 0.0112, "output_firing_rate_mean": 0.111351}
+  },
+  "statistics": {
+    "friedman": {"statistic": 11.55102, "p_value": 0.021022},
+    "paired_vs_post_lif_deterministic": {
+      "pre_lif_deterministic": {"mean_delta_pp": 1.14, "paired_t_p_value": 0.038116, "holm_adjusted_p_value": 0.152463, "wilcoxon_p_value": 0.0625},
+      "post_lif_random": {"mean_delta_pp": 0.048, "paired_t_p_value": 0.910253, "holm_adjusted_p_value": 0.910253},
+      "post_lif_membrane_excess": {"mean_delta_pp": -0.244, "paired_t_p_value": 0.37776, "holm_adjusted_p_value": 0.75552},
+      "post_lif_membrane_least_excess": {"mean_delta_pp": -0.42, "paired_t_p_value": 0.255081, "holm_adjusted_p_value": 0.765242}
     }
   },
-  "partial_final_sweep": {
-    "seeds_completed_per_condition": 5,
-    "pre_lif_deterministic": {
-      "final_validation_accuracy_mean": 90.008,
-      "final_validation_accuracy_sample_std": 0.615402,
-      "final_validation_loss_mean": 0.52196,
-      "mean_stage_4_conv_2_firing_rate": 0.01378,
-      "mean_output_firing_rate": 0.107613
-    },
-    "post_lif_random": {
-      "final_validation_accuracy_mean": 88.916,
-      "final_validation_accuracy_sample_std": 0.298463,
-      "final_validation_loss_mean": 0.555319,
-      "mean_stage_4_conv_2_firing_rate": 0.011567,
-      "mean_output_firing_rate": 0.109688
-    }
-  },
-  "membrane_policy_progress": {
-    "post_lif_membrane_excess_completed_seeds": 3,
-    "post_lif_membrane_least_excess_completed_seeds": 4,
-    "post_lif_membrane_excess_accuracy_mean": 88.446667,
-    "post_lif_membrane_excess_accuracy_sample_std": 0.665833,
-    "post_lif_membrane_least_excess_accuracy_mean": 88.67,
-    "post_lif_membrane_least_excess_accuracy_sample_std": 0.416493
-  },
-  "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. Pre-LIF deterministic and post-LIF random now have five completed sweep seeds; the membrane-policy comparison remains in progress."
+  "conclusion": "All five policies trained stably. The global repeated-measures test detects a condition effect, but no pairwise contrast survives Holm correction. Pre-LIF deterministic pooling is the highest observed mean and has a nominal +1.14pp paired advantage over post-LIF deterministic pooling; treat that result as promising, not definitive."
 }

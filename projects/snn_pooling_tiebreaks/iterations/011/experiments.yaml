@@ -348,8 +348,17 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-05"
-    status: queued
+    status: completed
     notes: "Final runtime-aware mixed job; estimated workload is about 8.7 hours."
+    completed_components:
+      - condition: post_lif_membrane_excess
+        seed: 3
+        final_validation_accuracy: 89.30
+        final_validation_loss: 0.523079
+      - condition: post_lif_membrane_least_excess
+        seed: 4
+        final_validation_accuracy: 87.56
+        final_validation_loss: 0.599091
   - job_id: "7356972.sched01"
     name: snn_pooling_i11_cifar_memex_5s_c
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
@@ -363,9 +372,18 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-05"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_memex_5seed
     wave: 3
+    completed_metrics:
+      seed_count: 1
+      completed_seeds: [4]
+      cumulative_seed_count: 5
+      cumulative_mean_final_validation_accuracy: 88.624
+      cumulative_std_final_validation_accuracy: 0.603887
+      cumulative_mean_final_validation_loss: 0.559969
+      cumulative_mean_stage_4_conv_2_firing_rate: 0.011257
+      cumulative_mean_output_firing_rate: 0.110322
 
 calibration_plan:
   - condition: pre_lif_deterministic
@@ -394,5 +412,10 @@ final_sweep:
     output_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_deterministic_5seed_wandb_offline
     seeds: [0, 1, 2, 3, 4]
   pending_conditions:
+    []
+  completed_conditions:
+    - pre_lif_deterministic
+    - post_lif_deterministic
+    - post_lif_random
     - post_lif_membrane_excess
     - post_lif_membrane_least_excess
