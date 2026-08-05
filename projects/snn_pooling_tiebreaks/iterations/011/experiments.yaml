@@ -292,9 +292,18 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-04"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_memex_5seed
     wave: 2
+    completed_metrics:
+      seed_count: 2
+      completed_seeds: [1, 2]
+      cumulative_seed_count: 3
+      cumulative_mean_final_validation_accuracy: 88.446667
+      cumulative_std_final_validation_accuracy: 0.665833
+      cumulative_mean_final_validation_loss: 0.565808
+      cumulative_mean_stage_4_conv_2_firing_rate: 0.011432
+      cumulative_mean_output_firing_rate: 0.110451
   - job_id: "7356443.sched01"
     name: snn_pooling_i11_cifar_leastex_5s_b
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
@@ -308,9 +317,55 @@ jobs:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-04"
-    status: queued
+    status: completed
     output_group: cifar10_snn_pooling_i11_leastex_5seed
     wave: 2
+    completed_metrics:
+      seed_count: 2
+      completed_seeds: [2, 3]
+      cumulative_seed_count: 4
+      cumulative_mean_final_validation_accuracy: 88.67
+      cumulative_std_final_validation_accuracy: 0.416493
+      cumulative_mean_final_validation_loss: 0.566977
+      cumulative_mean_stage_4_conv_2_firing_rate: 0.011242
+      cumulative_mean_output_firing_rate: 0.111249
+  - job_id: "7356971.sched01"
+    name: snn_pooling_i11_cifar_memmix_5s_c
+    components:
+      - condition: post_lif_membrane_excess
+        seed: 3
+        configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+        output_group: cifar10_snn_pooling_i11_memex_5seed
+      - condition: post_lif_membrane_least_excess
+        seed: 4
+        configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_least_excess
+        output_group: cifar10_snn_pooling_i11_leastex_5seed
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-05"
+    status: queued
+    notes: "Final runtime-aware mixed job; estimated workload is about 8.7 hours."
+  - job_id: "7356972.sched01"
+    name: snn_pooling_i11_cifar_memex_5s_c
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+    condition: post_lif_membrane_excess
+    dataset: cifar10
+    encoding: direct
+    decoding: tet
+    timesteps: 6
+    seeds: [4]
+    epochs: 200
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-05"
+    status: queued
+    output_group: cifar10_snn_pooling_i11_memex_5seed
+    wave: 3
 
 calibration_plan:
   - condition: pre_lif_deterministic

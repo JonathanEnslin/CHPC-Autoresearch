@@ -92,6 +92,11 @@ phases:
       deterministic and random now have all five seeds: 90.01% +/- 0.62% and
       88.92% +/- 0.30%. Jobs 7356442 and 7356443 progress the remaining
       membrane-policy seeds in two-seed 12-hour batches.
+    final_sweep_wave_4_completed_at: "2026-08-05"
+    final_sweep_wave_4_notes: >
+      Greatest-excess completed seeds 1--2 and least-excess completed seeds
+      2--3, both with active deep/output firing. Final jobs 7356971 and
+      7356972 complete greatest-excess seeds 3--4 and least-excess seed 4.
   analyze:
     pending: true
   conclude:

@@ -55,8 +55,12 @@
     }
   },
   "membrane_policy_progress": {
-    "post_lif_membrane_excess_completed_seeds": 1,
-    "post_lif_membrane_least_excess_completed_seeds": 2
+    "post_lif_membrane_excess_completed_seeds": 3,
+    "post_lif_membrane_least_excess_completed_seeds": 4,
+    "post_lif_membrane_excess_accuracy_mean": 88.446667,
+    "post_lif_membrane_excess_accuracy_sample_std": 0.665833,
+    "post_lif_membrane_least_excess_accuracy_mean": 88.67,
+    "post_lif_membrane_least_excess_accuracy_sample_std": 0.416493
   },
   "conclusion": "Every one-seed calibration learned and retained nonzero deep and output activity. Pre-LIF deterministic and post-LIF random now have five completed sweep seeds; the membrane-policy comparison remains in progress."
 }
