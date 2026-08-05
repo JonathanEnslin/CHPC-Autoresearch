@@ -7,7 +7,12 @@ experiments:
     seeds: [0]
     coefficient_values: [0.03, 0.1]
     epochs: 200
-    status: pending_submission
+    job_id: "7358025.sched01"
+    job_name: snn_pooling_i12_nonwinner_low
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-05"
+    status: queued
     output_groups:
       0.03: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p03
       0.1: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p1
@@ -20,7 +25,12 @@ experiments:
     seeds: [0]
     coefficient_values: [0.3, 1.0]
     epochs: 200
-    status: pending_submission
+    job_id: "7358026.sched01"
+    job_name: snn_pooling_i12_nonwinner_high
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-05"
+    status: queued
     output_groups:
       0.3: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p3
       1.0: cifar10_snn_pooling_i12_memex_nonwinner_lambda_1p0

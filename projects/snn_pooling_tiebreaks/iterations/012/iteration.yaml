@@ -32,7 +32,13 @@ phases:
       loss component, a named regularized CIFAR preset, and focused routing
       tests.
   experiment:
-    pending: true
+    submitted_at: "2026-08-05"
+    notes: >
+      Submitted two concurrent 12-hour, sequential two-coefficient jobs after
+      a verified local routing/gradient smoke test and synthetic full-VGG
+      measurement. Job 7358025 evaluates lambda=0.03 then 0.1; job
+      7358026 evaluates lambda=0.3 then 1.0. Both were verified queued in
+      gpu_1 immediately after submission.
   analyze:
     pending: true
   conclude:
