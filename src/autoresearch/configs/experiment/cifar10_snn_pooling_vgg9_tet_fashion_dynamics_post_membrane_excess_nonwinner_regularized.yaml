@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+  - _self_
+
+experiment_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_nonwinner_regularized
+experiment_name: ${experiment_group}_seed_${seed}
+
+model:
+  nonwinner_regularization_lambda: 0.01
+
+wandb:
+  tags: [cifar10, snn, vgg9, direct-input, tet, six-timesteps, post-lif, membrane-excess, nonwinner-regularization]
+  notes: "Greatest-excess pooling with a penalty on every non-winning pre-pool spike."

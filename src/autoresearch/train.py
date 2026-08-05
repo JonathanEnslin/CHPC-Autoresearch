@@ -248,6 +248,9 @@ def train_one_epoch(
     """
     model.train()
     total_loss = 0.0
+    total_classification_loss = 0.0
+    total_regularization_loss = 0.0
+    total_weighted_regularization_loss = 0.0
     correct = 0
     total = 0
     activity_totals: Dict[str, float] = {}
@@ -261,7 +264,17 @@ def train_one_epoch(
         # Forward pass
         optimizer.zero_grad()
         y_pred = model(x)
-        loss = compute_model_loss(model, loss_fn, y_pred, y)
+        classification_loss = compute_model_loss(model, loss_fn, y_pred, y)
+        regularization_loss = None
+        if hasattr(model, "get_nonwinner_regularization_loss"):
+            regularization_loss = model.get_nonwinner_regularization_loss()
+            regularization_weight = float(
+                getattr(model, "nonwinner_regularization_lambda", 0.0)
+            )
+            loss = classification_loss + regularization_weight * regularization_loss
+        else:
+            regularization_weight = 0.0
+            loss = classification_loss
 
         # Backward pass
         loss.backward()
@@ -271,6 +284,12 @@ def train_one_epoch(
 
         # Track metrics
         total_loss += loss.item()
+        total_classification_loss += classification_loss.item()
+        if regularization_loss is not None:
+            total_regularization_loss += regularization_loss.detach().item()
+            total_weighted_regularization_loss += (
+                regularization_weight * regularization_loss.detach().item()
+            )
         _, predicted = torch.max(y_pred.data, 1)
         total += y.size(0)
         correct += (predicted == y).sum().item()
@@ -298,7 +317,13 @@ def train_one_epoch(
     avg_loss = total_loss / batches
     accuracy = 100.0 * correct / total
 
-    metrics = {"loss": avg_loss, "accuracy": accuracy}
+    metrics = {
+        "loss": avg_loss,
+        "classification_loss": total_classification_loss / batches,
+        "nonwinner_regularization_loss": total_regularization_loss / batches,
+        "weighted_nonwinner_regularization_loss": total_weighted_regularization_loss / batches,
+        "accuracy": accuracy,
+    }
     metrics.update({key: value / batches for key, value in activity_totals.items()})
     return metrics
 

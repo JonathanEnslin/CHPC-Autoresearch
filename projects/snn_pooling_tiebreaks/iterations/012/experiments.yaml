@@ -1,0 +1,27 @@
+experiments:
+  - name: cifar10_nonwinner_regularization_calibration_low
+    condition: post_lif_membrane_excess_nonwinner_regularized
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_nonwinner_regularized
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seeds: [0]
+    coefficient_values: [0.03, 0.1]
+    epochs: 200
+    status: pending_submission
+    output_groups:
+      0.03: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p03
+      0.1: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p1
+    selection_criteria: above_chance_active_and_sparser_than_lambda_zero
+  - name: cifar10_nonwinner_regularization_calibration_high
+    condition: post_lif_membrane_excess_nonwinner_regularized
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_nonwinner_regularized
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seeds: [0]
+    coefficient_values: [0.3, 1.0]
+    epochs: 200
+    status: pending_submission
+    output_groups:
+      0.3: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p3
+      1.0: cifar10_snn_pooling_i12_memex_nonwinner_lambda_1p0
+    selection_criteria: above_chance_active_and_sparser_than_lambda_zero

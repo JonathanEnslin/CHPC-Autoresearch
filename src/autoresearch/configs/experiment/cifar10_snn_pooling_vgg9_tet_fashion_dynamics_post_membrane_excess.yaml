@@ -20,6 +20,7 @@ model:
   beta: 0.5
   surrogate_kind: atan
   reset_delay: false
+  nonwinner_regularization_lambda: 0.0
 early_stopping:
   enabled: false
 wandb:

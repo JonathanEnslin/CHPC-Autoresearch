@@ -8,8 +8,8 @@ description: >
   The project compares conventional deterministic max pooling with stochastic
   and membrane-potential-informed alternatives when a pooling window contains
   multiple spikes.
-current_iteration: 11
-branch: feature/snn-pooling-iter-11-cifar-policy-comparison
+current_iteration: 12
+branch: feature/snn-pooling-iter-12-nonwinner-regularization
 human_direction: >
   Establish a controlled comparison of pooling placement and post-spike tie
   resolution. The primary conditions are: (A) conv-current max pooling before
@@ -68,6 +68,12 @@ human_direction: >
   reset, AdamW/cosine, and norm-5 gradient clipping. Replicate that exact
   recipe across five deterministic seeds before rerunning the five pooling
   conditions with the stable recipe held fixed.
+
+  Next, test neuron-level activity regularization before post-LIF greatest-
+  membrane-excess pooling: at every pool site and timestep, penalize every
+  spike except the greatest-excess winner in its 2x2 pooling window. The
+  winner is explicitly exempt. Calibrate the regularization coefficient on
+  the stable CIFAR direct/TET recipe before a five-seed comparison.
 best_result:
   iteration: 1
   dataset: fashion_mnist

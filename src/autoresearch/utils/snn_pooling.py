@@ -18,6 +18,7 @@ class SpikeTieMaxPool2d(nn.Module):
         stride: Optional[int] = None,
         mode: str = "deterministic",
         random_seed: Optional[int] = None,
+        track_nonwinner_spikes: bool = False,
     ) -> None:
         super().__init__()
         if kernel_size != 2 or (stride is not None and stride != 2):
@@ -33,8 +34,14 @@ class SpikeTieMaxPool2d(nn.Module):
         self.stride = stride or kernel_size
         self.mode = mode
         self.random_seed = random_seed
+        if track_nonwinner_spikes and mode != "membrane_excess":
+            raise ValueError(
+                "Non-winner spike tracking is defined only for membrane_excess pooling"
+            )
+        self.track_nonwinner_spikes = track_nonwinner_spikes
         self._generators: Dict[str, torch.Generator] = {}
         self.last_metrics: Dict[str, float] = {}
+        self.last_nonwinner_spikes: Optional[torch.Tensor] = None
 
     def _generator(self, device: torch.device) -> Optional[torch.Generator]:
         if self.random_seed is None:
@@ -49,7 +56,13 @@ class SpikeTieMaxPool2d(nn.Module):
         spikes: torch.Tensor,
         membrane: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
-        """Pool binary spikes, explicitly resolving only multi-spike windows."""
+        """Pool binary spikes, explicitly resolving only multi-spike windows.
+
+        When requested for greatest-excess routing, ``last_nonwinner_spikes``
+        contains the live spikes not selected as the winner in each nonempty
+        window. Its routing mask is detached, so it can be used as a surrogate-
+        gradient activity regularizer without differentiating through argmax.
+        """
         pooled = functional.max_pool2d(spikes, self.kernel_size, self.stride)
         windows = functional.unfold(spikes, kernel_size=self.kernel_size, stride=self.stride)
         batch, channels, _, _ = spikes.shape
@@ -61,6 +74,37 @@ class SpikeTieMaxPool2d(nn.Module):
             "pool_windows": float(multi_spike.numel()),
             "multi_spike_window_rate": float(multi_spike.detach().float().mean().item()),
         }
+
+        membrane_windows = None
+        self.last_nonwinner_spikes = None
+        if self.track_nonwinner_spikes:
+            if membrane is None:
+                raise ValueError("membrane tie-breaking requires pre-reset membrane values")
+            membrane_windows = functional.unfold(
+                membrane, kernel_size=self.kernel_size, stride=self.stride
+            ).view(batch, channels, self.kernel_size**2, -1)
+            active_windows = active.any(dim=2)
+            winner_offset = membrane_windows.masked_fill(~active, float("-inf")).argmax(dim=2)
+            winner_mask = functional.one_hot(
+                winner_offset,
+                num_classes=self.kernel_size**2,
+            ).permute(0, 1, 3, 2).to(spikes.dtype)
+            winner_mask = winner_mask * active_windows.unsqueeze(2).to(spikes.dtype)
+            winner_mask = functional.fold(
+                winner_mask.reshape(batch, channels * self.kernel_size**2, -1),
+                output_size=spikes.shape[-2:],
+                kernel_size=self.kernel_size,
+                stride=self.stride,
+            ).detach()
+            self.last_nonwinner_spikes = spikes * (1.0 - winner_mask)
+            nonwinner = self.last_nonwinner_spikes.detach()
+            self.last_metrics.update(
+                {
+                    "nonwinner_spike_count": float(nonwinner.sum().item()),
+                    "nonwinner_spike_rate": float(nonwinner.mean().item()),
+                }
+            )
+
         if self.mode == "deterministic" or not bool(multi_spike.any()):
             return pooled
 
@@ -76,9 +120,10 @@ class SpikeTieMaxPool2d(nn.Module):
         else:
             if membrane is None:
                 raise ValueError("membrane tie-breaking requires pre-reset membrane values")
-            membrane_windows = functional.unfold(
-                membrane, kernel_size=self.kernel_size, stride=self.stride
-            ).view(batch, channels, self.kernel_size**2, -1)
+            if membrane_windows is None:
+                membrane_windows = functional.unfold(
+                    membrane, kernel_size=self.kernel_size, stride=self.stride
+                ).view(batch, channels, self.kernel_size**2, -1)
             scores = membrane_windows.permute(0, 1, 3, 2)[multi_spike]
 
         if self.mode == "membrane_least_excess":

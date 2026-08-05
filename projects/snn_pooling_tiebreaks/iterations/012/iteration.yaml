@@ -1,0 +1,58 @@
+iteration: 12
+project: snn_pooling_tiebreaks
+status: experiment
+goal: >
+  Test non-winner spike regularization with post-LIF greatest-membrane-excess
+  pooling on the stable six-timestep direct/TET CIFAR-10 VGG-9 recipe. At each
+  pooling site and timestep, penalize all emitted spikes except the greatest-
+  excess winner in each 2x2 window.
+created: "2026-08-05"
+evidence_from_previous_iteration: >
+  Iteration 11 completed all five pooling policies without collapse. Greatest-
+  excess routing was stable at 88.62% +/- 0.60%, but did not improve accuracy
+  over post-LIF deterministic pooling. It is therefore safe to test whether
+  directly suppressing non-winning spikes improves sparsity or accuracy.
+phases:
+  plan:
+    completed_at: "2026-08-05"
+    notes: >
+      Add a mean-normalized regularizer R over pooling sites and timesteps:
+      R = mean(spike * (1 - detached_winner_mask)). The greatest-excess winner
+      receives zero penalty; a window with no spike or exactly one spike has
+      zero regularization. Optimize TET loss plus lambda times R.
+  survey:
+    pending: true
+  implement:
+    completed_at: "2026-08-05"
+    notes: >
+      Added greatest-excess winner masks to the post-LIF pooling operator. The
+      mask is detached before it gates the live pre-pool spike tensor, so the
+      loss has surrogate gradients only through non-winning spikes. Added
+      per-site/timestep non-winner activity telemetry, an unweighted training
+      loss component, a named regularized CIFAR preset, and focused routing
+      tests.
+  experiment:
+    pending: true
+  analyze:
+    pending: true
+  conclude:
+    pending: true
+coefficient_calibration:
+  values: [0.03, 0.1, 0.3, 1.0]
+  selection_criteria: >
+    Retain a coefficient only if the one-seed run remains clearly above chance,
+    keeps nonzero deep/output firing, and reduces non-winner activity relative
+    to the completed lambda=0 greatest-excess reference. Choose the largest healthy coefficient for a five-seed
+    comparison against unregularized greatest-excess pooling.
+  rationale: >
+    A synthetic full-VGG forward measured an initial unweighted penalty of
+    0.0414, so the earlier 0.001--0.1 proposal would contribute only
+    0.00004--0.00414 to an approximately order-one TET loss. The calibrated
+    range spans weighted initial penalties of roughly 0.0012--0.0414.
+success_metrics:
+  - final_validation_accuracy
+  - per-site winner and non-winner spike rates
+  - regularization_loss
+  - stage_4_conv_2_firing_rate
+  - output_firing_rate
+  - contested_window_rate
