@@ -76,7 +76,12 @@ phases:
       regularization at lambda=0.1. It was verified queued in gpu_1. The
       previously completed selective non-winner lambda=0.1 run is the third
       matched arm.
-    activity_sweep_submitted_at: null
+    activity_sweep_submitted_at: "2026-08-06"
+    activity_sweep_notes: >
+      Submitted two queue-accepted 12-hour jobs. Job 7359499 runs the shared
+      lambda=0 baseline then selective lambda={0.03, 0.1, 0.3, 0.5}; job
+      7359500 runs ordinary lambda={0.03, 0.1, 0.3, 0.5}. Every condition is
+      trained for 80 epochs and records activity every five epochs.
   analyze:
     completed_at: "2026-08-06"
     notes: >

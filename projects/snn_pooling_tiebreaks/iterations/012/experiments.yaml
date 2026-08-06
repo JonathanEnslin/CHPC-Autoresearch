@@ -8,7 +8,12 @@ experiments:
     epochs: 80
     coefficient_values: [0.0, 0.03, 0.1, 0.3, 0.5]
     activity_epoch_frequency: 5
-    status: pending_submission
+    job_id: "7359499.sched01"
+    job_name: snn_pooling_i12_activity_sweep_selective
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-06"
+    status: queued
     output_groups:
       0.0: cifar10_snn_pooling_i12_activity_sweep_none_80e
       0.03: cifar10_snn_pooling_i12_activity_sweep_selective_0p03_80e
@@ -24,7 +29,12 @@ experiments:
     epochs: 80
     coefficient_values: [0.03, 0.1, 0.3, 0.5]
     activity_epoch_frequency: 5
-    status: pending_submission
+    job_id: "7359500.sched01"
+    job_name: snn_pooling_i12_activity_sweep_ordinary
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-06"
+    status: queued
     output_groups:
       0.03: cifar10_snn_pooling_i12_activity_sweep_ordinary_0p03_80e
       0.1: cifar10_snn_pooling_i12_activity_sweep_ordinary_0p1_80e
