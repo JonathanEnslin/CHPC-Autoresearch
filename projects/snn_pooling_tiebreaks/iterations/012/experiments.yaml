@@ -1,4 +1,35 @@
 experiments:
+  - name: cifar10_regularization_activity_sweep_selective
+    condition: post_lif_membrane_excess_nonwinner_activity_sweep
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_nonwinner_regularized
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seed: 0
+    epochs: 80
+    coefficient_values: [0.0, 0.03, 0.1, 0.3, 0.5]
+    activity_epoch_frequency: 5
+    status: pending_submission
+    output_groups:
+      0.0: cifar10_snn_pooling_i12_activity_sweep_none_80e
+      0.03: cifar10_snn_pooling_i12_activity_sweep_selective_0p03_80e
+      0.1: cifar10_snn_pooling_i12_activity_sweep_selective_0p1_80e
+      0.3: cifar10_snn_pooling_i12_activity_sweep_selective_0p3_80e
+      0.5: cifar10_snn_pooling_i12_activity_sweep_selective_0p5_80e
+  - name: cifar10_regularization_activity_sweep_ordinary
+    condition: post_lif_membrane_excess_all_spike_activity_sweep
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_all_spike_regularized
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seed: 0
+    epochs: 80
+    coefficient_values: [0.03, 0.1, 0.3, 0.5]
+    activity_epoch_frequency: 5
+    status: pending_submission
+    output_groups:
+      0.03: cifar10_snn_pooling_i12_activity_sweep_ordinary_0p03_80e
+      0.1: cifar10_snn_pooling_i12_activity_sweep_ordinary_0p1_80e
+      0.3: cifar10_snn_pooling_i12_activity_sweep_ordinary_0p3_80e
+      0.5: cifar10_snn_pooling_i12_activity_sweep_ordinary_0p5_80e
   - name: cifar10_no_regularization_telemetry_control
     condition: post_lif_membrane_excess_no_regularization
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_no_regularization_telemetry

@@ -282,7 +282,12 @@ class SNNPoolingCNN(nn.Module):
                 projection_current, projection_membrane
             )
             if recorder is not None:
-                recorder.record("projection", timestep, projection_value)
+                recorder.record(
+                    "projection",
+                    timestep,
+                    projection_value,
+                    count_toward_network_total=True,
+                )
             pooled = projection_value
         output_current = self.classifier(pooled)
         if self.output_lif is not None:
@@ -290,7 +295,12 @@ class SNNPoolingCNN(nn.Module):
                 output_current, output_membrane
             )
             if recorder is not None:
-                recorder.record("output", timestep, output_value)
+                recorder.record(
+                    "output",
+                    timestep,
+                    output_value,
+                    count_toward_network_total=True,
+                )
         else:
             output_value = output_current
         return output_value, output_membrane, projection_membrane
@@ -312,10 +322,11 @@ class SNNPoolingCNN(nn.Module):
 
         current, membrane = lif(current, membrane)
         if recorder is not None:
-            recorder.record(layer_name, timestep, current)
+            recorder.record(layer_name, timestep, current, count_toward_network_total=True)
         if is_pool_site:
             if self.pool_activity_regularization_mode == "all":
                 self._pool_activity_regularization_terms.append(current.mean())
+            pre_pool_spikes = current
             pool = self.post_pools[str(stage_index)]
             current = pool(current, membrane)
             if (
@@ -326,6 +337,12 @@ class SNNPoolingCNN(nn.Module):
                     pool.last_nonwinner_spikes.mean()
                 )
             if recorder is not None:
+                recorder.record_pool_spikes(
+                    layer_name,
+                    timestep,
+                    pre_pool_spikes,
+                    current,
+                )
                 recorder.record_pool(
                     layer_name,
                     timestep,

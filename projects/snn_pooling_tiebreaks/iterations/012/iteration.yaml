@@ -25,6 +25,13 @@ phases:
       all-spike regularization at the same lambda and a zero-penalty control.
       All three retain post-LIF greatest-excess routing; ordinary regularization
       differs only by including the winner in the pre-pool spike penalty.
+    activity_sweep_extension: >
+      Build one-seed 80-epoch accuracy-activity curves for both selective and
+      ordinary regularization at lambda={0.03, 0.1, 0.3, 0.5}, plus one shared
+      zero-penalty baseline. Record activity every fifth epoch, including raw
+      pre-pool/post-pool counts at every pool site and timestep and a total
+      neuronal spike count. Plot validation accuracy against each activity
+      measure after completion.
   survey:
     pending: true
   implement:
@@ -42,6 +49,12 @@ phases:
       mode that records the same non-winner statistics. Existing selective
       regularization behavior is retained. Unit tests, Hydra composition, and
       synthetic all/none backward-pass smokes pass locally.
+    activity_sweep_extension_completed_at: "2026-08-06"
+    activity_sweep_extension_notes: >
+      Added explicit raw pre-pool, post-pool, and reduction counts to every
+      recorded pooling event, plus a non-duplicated total neuronal spike count
+      and spikes-per-sample metric. Three focused pooling tests and a
+      synthetic model forward pass passed locally.
   experiment:
     submitted_at: "2026-08-05"
     notes: >
@@ -63,6 +76,7 @@ phases:
       regularization at lambda=0.1. It was verified queued in gpu_1. The
       previously completed selective non-winner lambda=0.1 run is the third
       matched arm.
+    activity_sweep_submitted_at: null
   analyze:
     completed_at: "2026-08-06"
     notes: >

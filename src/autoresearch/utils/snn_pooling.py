@@ -145,19 +145,57 @@ class SpikeActivityRecorder:
 
     def __init__(self) -> None:
         self._metrics: Dict[str, float] = {}
+        self._total_neuron_spike_count = 0.0
+        self._total_neuron_spikes_per_sample = 0.0
 
-    def record(self, layer: str, timestep: int, spikes: torch.Tensor) -> None:
+    def record(
+        self,
+        layer: str,
+        timestep: int,
+        spikes: torch.Tensor,
+        count_toward_network_total: bool = False,
+    ) -> None:
         count = float(spikes.detach().sum().item())
         prefix = f"activity/{layer}/timestep_{timestep}"
         self._metrics[f"{prefix}/spike_count"] = count
         self._metrics[f"{prefix}/spikes_per_sample"] = count / spikes.shape[0]
         self._metrics[f"{prefix}/firing_rate"] = count / spikes.numel()
+        if count_toward_network_total:
+            self._total_neuron_spike_count += count
+            self._total_neuron_spikes_per_sample += count / spikes.shape[0]
 
     def record_pool(self, layer: str, timestep: int, metrics: Dict[str, float]) -> None:
         prefix = f"pooling/{layer}/timestep_{timestep}"
         self._metrics.update({f"{prefix}/{key}": value for key, value in metrics.items()})
 
+    def record_pool_spikes(
+        self,
+        layer: str,
+        timestep: int,
+        pre_pool_spikes: torch.Tensor,
+        post_pool_spikes: torch.Tensor,
+    ) -> None:
+        """Record raw spike counts at both sides of a pooling operation."""
+        prefix = f"pooling/{layer}/timestep_{timestep}"
+        pre_count = float(pre_pool_spikes.detach().sum().item())
+        post_count = float(post_pool_spikes.detach().sum().item())
+        self._metrics.update(
+            {
+                f"{prefix}/pre_pool_spike_count": pre_count,
+                f"{prefix}/post_pool_spike_count": post_count,
+                f"{prefix}/pool_spike_count_reduction": pre_count - post_count,
+                f"{prefix}/pre_pool_spikes_per_sample": pre_count / pre_pool_spikes.shape[0],
+                f"{prefix}/post_pool_spikes_per_sample": post_count / post_pool_spikes.shape[0],
+            }
+        )
+
     def consume(self) -> Dict[str, float]:
         metrics = self._metrics
+        metrics["activity/network/total_neuron_spike_count"] = self._total_neuron_spike_count
+        metrics["activity/network/total_neuron_spikes_per_sample"] = (
+            self._total_neuron_spikes_per_sample
+        )
         self._metrics = {}
+        self._total_neuron_spike_count = 0.0
+        self._total_neuron_spikes_per_sample = 0.0
         return metrics
