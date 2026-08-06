@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess
+  - _self_
+
+experiment_group: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_no_regularization_telemetry
+experiment_name: ${experiment_group}_seed_${seed}
+
+model:
+  track_nonwinner_activity: true
+
+wandb:
+  tags: [cifar10, snn, vgg9, direct-input, tet, six-timesteps, post-lif, membrane-excess, no-regularization-telemetry]
+  notes: "Greatest-excess pooling with no activity penalty, instrumented for the same pre-pool and non-winner activity metrics."

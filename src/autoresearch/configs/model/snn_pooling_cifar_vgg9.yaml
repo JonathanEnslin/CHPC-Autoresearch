@@ -20,3 +20,5 @@ reset_delay: true
 random_seed: ${seed}
 ttfs_log_scale: 20.0
 nonwinner_regularization_lambda: 0.0
+all_spike_regularization_lambda: 0.0
+track_nonwinner_activity: false

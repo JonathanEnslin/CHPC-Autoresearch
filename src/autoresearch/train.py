@@ -266,7 +266,13 @@ def train_one_epoch(
         y_pred = model(x)
         classification_loss = compute_model_loss(model, loss_fn, y_pred, y)
         regularization_loss = None
-        if hasattr(model, "get_nonwinner_regularization_loss"):
+        if hasattr(model, "get_pool_activity_regularization_loss"):
+            regularization_loss = model.get_pool_activity_regularization_loss()
+            regularization_weight = float(
+                getattr(model, "pool_activity_regularization_lambda", 0.0)
+            )
+            loss = classification_loss + regularization_weight * regularization_loss
+        elif hasattr(model, "get_nonwinner_regularization_loss"):
             regularization_loss = model.get_nonwinner_regularization_loss()
             regularization_weight = float(
                 getattr(model, "nonwinner_regularization_lambda", 0.0)

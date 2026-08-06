@@ -46,6 +46,8 @@ class SNNPoolingCNN(nn.Module):
         ttfs_input_threshold: float = 0.01,
         first_spike_survival: bool = False,
         nonwinner_regularization_lambda: float = 0.0,
+        all_spike_regularization_lambda: float = 0.0,
+        track_nonwinner_activity: bool = False,
     ) -> None:
         super().__init__()
         if len(channels) != len(convs_per_stage):
@@ -70,11 +72,18 @@ class SNNPoolingCNN(nn.Module):
             raise ValueError("temporal_batch_norm and bntt are mutually exclusive")
         if nonwinner_regularization_lambda < 0.0:
             raise ValueError("nonwinner_regularization_lambda must be non-negative")
-        if nonwinner_regularization_lambda > 0.0 and (
+        if all_spike_regularization_lambda < 0.0:
+            raise ValueError("all_spike_regularization_lambda must be non-negative")
+        if nonwinner_regularization_lambda > 0.0 and all_spike_regularization_lambda > 0.0:
+            raise ValueError("Only one pool-activity regularizer may be active at a time")
+        if (
+            nonwinner_regularization_lambda > 0.0
+            or all_spike_regularization_lambda > 0.0
+        ) and (
             pooling_placement != "post_lif" or tie_break != "membrane_excess"
         ):
             raise ValueError(
-                "non-winner regularization requires post-LIF membrane_excess pooling"
+                "pool-activity regularization requires post-LIF membrane_excess pooling"
             )
 
         self.timesteps = timesteps
@@ -90,6 +99,17 @@ class SNNPoolingCNN(nn.Module):
         self.ttfs_input_threshold = ttfs_input_threshold
         self.first_spike_survival = first_spike_survival
         self.nonwinner_regularization_lambda = nonwinner_regularization_lambda
+        self.all_spike_regularization_lambda = all_spike_regularization_lambda
+        self.pool_activity_regularization_lambda = max(
+            nonwinner_regularization_lambda,
+            all_spike_regularization_lambda,
+        )
+        self.pool_activity_regularization_mode = (
+            "nonwinner"
+            if nonwinner_regularization_lambda > 0.0
+            else "all" if all_spike_regularization_lambda > 0.0 else "none"
+        )
+        self.track_nonwinner_activity = track_nonwinner_activity
         spike_grad = (
             surrogate.fast_sigmoid(slope=surrogate_slope)
             if surrogate_kind == "fast_sigmoid"
@@ -136,7 +156,9 @@ class SNNPoolingCNN(nn.Module):
                 str(stage): SpikeTieMaxPool2d(
                     mode=tie_break,
                     random_seed=None if random_seed is None else random_seed + stage,
-                    track_nonwinner_spikes=nonwinner_regularization_lambda > 0.0,
+                    track_nonwinner_spikes=(
+                        nonwinner_regularization_lambda > 0.0 or track_nonwinner_activity
+                    ),
                 )
                 for stage in self.pooled_stages
             }
@@ -173,7 +195,8 @@ class SNNPoolingCNN(nn.Module):
         self._last_temporal_logits: torch.Tensor | None = None
         self._last_activity: Dict[str, float] = {}
         self._last_nonwinner_regularization: torch.Tensor | None = None
-        self._nonwinner_regularization_terms: List[torch.Tensor] = []
+        self._last_pool_activity_regularization: torch.Tensor | None = None
+        self._pool_activity_regularization_terms: List[torch.Tensor] = []
         self._record_activity = True
 
     def _encode(self, x: torch.Tensor) -> torch.Tensor:
@@ -202,10 +225,14 @@ class SNNPoolingCNN(nn.Module):
         return metrics
 
     def get_nonwinner_regularization_loss(self) -> torch.Tensor:
-        """Return the unweighted mean penalty from the most recent forward pass."""
-        if self._last_nonwinner_regularization is None:
-            raise RuntimeError("Non-winner regularization is available only after a forward pass")
-        return self._last_nonwinner_regularization
+        """Compatibility alias for the most recent pool-activity penalty."""
+        return self.get_pool_activity_regularization_loss()
+
+    def get_pool_activity_regularization_loss(self) -> torch.Tensor:
+        """Return the unweighted mean pool-activity penalty after a forward pass."""
+        if self._last_pool_activity_regularization is None:
+            raise RuntimeError("Pool-activity regularization is available only after a forward pass")
+        return self._last_pool_activity_regularization
 
     def set_activity_recording(self, enabled: bool) -> None:
         """Enable or disable detached spike-activity summaries for a forward pass."""
@@ -287,10 +314,17 @@ class SNNPoolingCNN(nn.Module):
         if recorder is not None:
             recorder.record(layer_name, timestep, current)
         if is_pool_site:
+            if self.pool_activity_regularization_mode == "all":
+                self._pool_activity_regularization_terms.append(current.mean())
             pool = self.post_pools[str(stage_index)]
             current = pool(current, membrane)
-            if pool.last_nonwinner_spikes is not None:
-                self._nonwinner_regularization_terms.append(pool.last_nonwinner_spikes.mean())
+            if (
+                self.pool_activity_regularization_mode == "nonwinner"
+                and pool.last_nonwinner_spikes is not None
+            ):
+                self._pool_activity_regularization_terms.append(
+                    pool.last_nonwinner_spikes.mean()
+                )
             if recorder is not None:
                 recorder.record_pool(
                     layer_name,
@@ -409,25 +443,43 @@ class SNNPoolingCNN(nn.Module):
         """Run the SNN and return count or first-spike class scores."""
         inputs = self._encode(x)
         recorder = SpikeActivityRecorder() if self._record_activity else None
-        self._nonwinner_regularization_terms = []
+        self._pool_activity_regularization_terms = []
         temporal_logits = (
             self._forward_temporal_batch_norm(inputs, recorder)
             if self.temporal_batch_norm
             else self._forward_sequential(inputs, recorder)
         )
-        if self._nonwinner_regularization_terms:
-            self._last_nonwinner_regularization = torch.stack(
-                self._nonwinner_regularization_terms
+        if self._pool_activity_regularization_terms:
+            self._last_pool_activity_regularization = torch.stack(
+                self._pool_activity_regularization_terms
             ).mean()
         else:
-            self._last_nonwinner_regularization = torch.zeros((), device=x.device, dtype=x.dtype)
+            self._last_pool_activity_regularization = torch.zeros(
+                (), device=x.device, dtype=x.dtype
+            )
+        self._last_nonwinner_regularization = self._last_pool_activity_regularization
         self._last_activity = recorder.consume() if recorder is not None else {}
+        if recorder is not None and self.pool_activity_regularization_lambda > 0.0:
+            self._last_activity["regularization/pool_activity_penalty"] = float(
+                self._last_pool_activity_regularization.detach().item()
+            )
+            self._last_activity["regularization/weighted_pool_activity_penalty"] = float(
+                (
+                    self.pool_activity_regularization_lambda
+                    * self._last_pool_activity_regularization
+                )
+                .detach()
+                .item()
+            )
         if recorder is not None and self.nonwinner_regularization_lambda > 0.0:
             self._last_activity["regularization/nonwinner_spike_penalty"] = float(
-                self._last_nonwinner_regularization.detach().item()
+                self._last_pool_activity_regularization.detach().item()
             )
             self._last_activity["regularization/weighted_nonwinner_spike_penalty"] = float(
-                (self.nonwinner_regularization_lambda * self._last_nonwinner_regularization)
+                (
+                    self.nonwinner_regularization_lambda
+                    * self._last_pool_activity_regularization
+                )
                 .detach()
                 .item()
             )

@@ -1,4 +1,35 @@
 experiments:
+  - name: cifar10_no_regularization_telemetry_control
+    condition: post_lif_membrane_excess_no_regularization
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_no_regularization_telemetry
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seeds: [0]
+    regularization_lambda: 0.0
+    epochs: 200
+    status: pending_submission
+    output_group: cifar10_snn_pooling_i12_memex_no_regularization_telemetry
+  - name: cifar10_all_spike_regularization_control
+    condition: post_lif_membrane_excess_all_spike_regularized
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_all_spike_regularized
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seeds: [0]
+    regularization_lambda: 0.1
+    epochs: 200
+    status: pending_submission
+    output_group: cifar10_snn_pooling_i12_memex_all_spike_lambda_0p1
+  - name: cifar10_nonwinner_regularization_comparison_reference
+    condition: post_lif_membrane_excess_nonwinner_regularized
+    configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_nonwinner_regularized
+    dataset: cifar10
+    model: six_timestep_direct_tet_vgg9_fashion_dynamics
+    seeds: [0]
+    regularization_lambda: 0.1
+    epochs: 200
+    status: completed
+    output_group: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p1
+    final_validation_accuracy: 88.26
   - name: cifar10_nonwinner_regularization_calibration_low
     condition: post_lif_membrane_excess_nonwinner_regularized
     configuration: cifar10_snn_pooling_vgg9_tet_fashion_dynamics_post_membrane_excess_nonwinner_regularized

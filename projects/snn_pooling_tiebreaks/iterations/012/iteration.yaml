@@ -1,6 +1,6 @@
 iteration: 12
 project: snn_pooling_tiebreaks
-status: analyze
+status: experiment
 goal: >
   Test non-winner spike regularization with post-LIF greatest-membrane-excess
   pooling on the stable six-timestep direct/TET CIFAR-10 VGG-9 recipe. At each
@@ -20,6 +20,11 @@ phases:
       R = mean(spike * (1 - detached_winner_mask)). The greatest-excess winner
       receives zero penalty; a window with no spike or exactly one spike has
       zero regularization. Optimize TET loss plus lambda times R.
+    comparison_extension: >
+      Compare the viable selective lambda=0.1 condition against ordinary
+      all-spike regularization at the same lambda and a zero-penalty control.
+      All three retain post-LIF greatest-excess routing; ordinary regularization
+      differs only by including the winner in the pre-pool spike penalty.
   survey:
     pending: true
   implement:
@@ -31,6 +36,12 @@ phases:
       per-site/timestep non-winner activity telemetry, an unweighted training
       loss component, a named regularized CIFAR preset, and focused routing
       tests.
+    control_extension_completed_at: "2026-08-06"
+    control_extension_notes: >
+      Added an ordinary all-pre-pool-spike penalty, plus a no-penalty telemetry
+      mode that records the same non-winner statistics. Existing selective
+      regularization behavior is retained. Unit tests, Hydra composition, and
+      synthetic all/none backward-pass smokes pass locally.
   experiment:
     submitted_at: "2026-08-05"
     notes: >
@@ -45,6 +56,7 @@ phases:
       collapsed or starved its deep/output layers. Increasing lambda reduced
       the recorded non-winner rate but worsened accuracy from lambda=0.3
       onward.
+    control_comparison_submitted_at: null
   analyze:
     completed_at: "2026-08-06"
     notes: >
@@ -56,6 +68,7 @@ phases:
       absolute sparsity claim. Do not expand a strong fixed penalty; a future
       warm-up/ramp experiment is the appropriate next test if stronger
       regularization is desired.
+    control_comparison_pending: true
   conclude:
     pending: true
 coefficient_calibration:
