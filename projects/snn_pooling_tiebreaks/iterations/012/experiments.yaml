@@ -7,7 +7,12 @@ experiments:
     seeds: [0]
     regularization_lambda: 0.0
     epochs: 200
-    status: pending_submission
+    job_id: "7358469.sched01"
+    job_name: snn_pooling_i12_regularizer_controls
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-06"
+    status: queued
     output_group: cifar10_snn_pooling_i12_memex_no_regularization_telemetry
   - name: cifar10_all_spike_regularization_control
     condition: post_lif_membrane_excess_all_spike_regularized
@@ -17,7 +22,12 @@ experiments:
     seeds: [0]
     regularization_lambda: 0.1
     epochs: 200
-    status: pending_submission
+    job_id: "7358469.sched01"
+    job_name: snn_pooling_i12_regularizer_controls
+    queue: gpu_1
+    walltime: "12:00:00"
+    submitted_at: "2026-08-06"
+    status: queued
     output_group: cifar10_snn_pooling_i12_memex_all_spike_lambda_0p1
   - name: cifar10_nonwinner_regularization_comparison_reference
     condition: post_lif_membrane_excess_nonwinner_regularized

@@ -56,7 +56,13 @@ phases:
       collapsed or starved its deep/output layers. Increasing lambda reduced
       the recorded non-winner rate but worsened accuracy from lambda=0.3
       onward.
-    control_comparison_submitted_at: null
+    control_comparison_submitted_at: "2026-08-06"
+    control_comparison_notes: >
+      Job 7358469.sched01 is a packed 12-hour sequential job: first the
+      no-regularization telemetry control, then ordinary all-spike
+      regularization at lambda=0.1. It was verified queued in gpu_1. The
+      previously completed selective non-winner lambda=0.1 run is the third
+      matched arm.
   analyze:
     completed_at: "2026-08-06"
     notes: >
