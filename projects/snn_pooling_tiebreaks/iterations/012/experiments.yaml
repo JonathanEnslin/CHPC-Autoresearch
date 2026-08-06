@@ -12,7 +12,12 @@ experiments:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-06"
-    status: queued
+    status: completed
+    completed_at: "2026-08-06"
+    final_metrics:
+      validation_accuracy: 88.28
+      prepool_firing_rate: 0.026455
+      nonwinner_firing_rate: 0.009602
     output_group: cifar10_snn_pooling_i12_memex_no_regularization_telemetry
   - name: cifar10_all_spike_regularization_control
     condition: post_lif_membrane_excess_all_spike_regularized
@@ -27,7 +32,12 @@ experiments:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-06"
-    status: queued
+    status: completed
+    completed_at: "2026-08-06"
+    final_metrics:
+      validation_accuracy: 87.48
+      prepool_firing_rate: 0.018851
+      nonwinner_firing_rate: 0.006693
     output_group: cifar10_snn_pooling_i12_memex_all_spike_lambda_0p1
   - name: cifar10_nonwinner_regularization_comparison_reference
     condition: post_lif_membrane_excess_nonwinner_regularized

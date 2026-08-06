@@ -8,8 +8,9 @@
   "reference": {
     "regularization_lambda": 0.0,
     "final_validation_accuracy": 88.28,
-    "source": "iteration 11 one-seed greatest-excess calibration",
-    "note": "The lambda=0 reference pre-dated non-winner telemetry, so its non-winner rate was not recorded."
+    "source": "iteration 12 no-regularization telemetry control",
+    "pool_nonwinner_firing_rate": 0.009602,
+    "prepool_firing_rate": 0.026455
   },
   "conditions": {
     "lambda_0.03": {
@@ -53,5 +54,38 @@
       "output_firing_rate": 0.128812
     }
   },
-  "conclusion": "All four one-seed runs completed with active deep and output layers. Increasing lambda monotonically reduced recorded non-winner firing (0.7907% at lambda=0.03 to 0.3634% at lambda=1.0), but accuracy fell from 88.04% to 84.48%. Lambda=0.1 matched the unregularized same-seed accuracy within 0.02 percentage points (88.26% vs 88.28%) while recording a 0.7151% non-winner firing rate. A zero-lambda telemetry reference is needed before claiming an absolute sparsity reduction; stronger fixed penalties are not suitable for expansion. If stronger regularization is pursued, test a warm-up/ramp schedule rather than applying it from epoch 1."
+  "three_way_lambda_0.1_comparison": {
+    "no_regularization": {
+      "final_validation_accuracy": 88.28,
+      "final_validation_loss": 0.562896,
+      "prepool_firing_rate": 0.026455,
+      "pool_nonwinner_firing_rate": 0.009602,
+      "stage_4_conv_2_firing_rate": 0.011164,
+      "output_firing_rate": 0.110283
+    },
+    "selective_nonwinner_regularization": {
+      "final_validation_accuracy": 88.26,
+      "final_validation_loss": 0.591854,
+      "prepool_firing_rate": 0.019849,
+      "pool_nonwinner_firing_rate": 0.007151,
+      "stage_4_conv_2_firing_rate": 0.011138,
+      "output_firing_rate": 0.111292,
+      "accuracy_delta_vs_no_regularization_pp": -0.02,
+      "prepool_activity_reduction_vs_no_regularization_percent": 24.97,
+      "nonwinner_activity_reduction_vs_no_regularization_percent": 25.53
+    },
+    "ordinary_all_spike_regularization": {
+      "final_validation_accuracy": 87.48,
+      "final_validation_loss": 0.607344,
+      "prepool_firing_rate": 0.018851,
+      "pool_nonwinner_firing_rate": 0.006693,
+      "stage_4_conv_2_firing_rate": 0.009229,
+      "output_firing_rate": 0.112969,
+      "accuracy_delta_vs_no_regularization_pp": -0.8,
+      "prepool_activity_reduction_vs_no_regularization_percent": 28.74,
+      "nonwinner_activity_reduction_vs_no_regularization_percent": 30.3
+    },
+    "interpretation": "At the common coefficient lambda=0.1, exempting the greatest-excess winner preserves the no-regularization accuracy while reducing pre-pool and non-winner activity by about one quarter. Ordinary regularization yields a slightly larger activity reduction but loses 0.80 percentage points. Its unweighted penalty is 2.70 times the selective penalty at the same lambda, so a penalty-matched ordinary baseline would be a useful follow-up."
+  },
+  "conclusion": "All one-seed runs completed with active deep and output layers. Strong selective penalties reduce non-winner firing but hurt accuracy. At lambda=0.1, selective non-winner regularization is the promising fixed-strength formulation: it matched the no-regularization accuracy within 0.02 percentage points while reducing measured pre-pool activity by 24.97% and non-winner activity by 25.53%. Ordinary all-spike regularization at the same coefficient reduced activity slightly more but lost 0.80 percentage points. These are one-seed results, so the fixed-lambda comparison needs a five-seed confirmation before a statistical claim."
 }

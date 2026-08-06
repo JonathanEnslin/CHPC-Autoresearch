@@ -1,6 +1,6 @@
 iteration: 12
 project: snn_pooling_tiebreaks
-status: experiment
+status: analyze
 goal: >
   Test non-winner spike regularization with post-LIF greatest-membrane-excess
   pooling on the stable six-timestep direct/TET CIFAR-10 VGG-9 recipe. At each
@@ -74,7 +74,17 @@ phases:
       absolute sparsity claim. Do not expand a strong fixed penalty; a future
       warm-up/ramp experiment is the appropriate next test if stronger
       regularization is desired.
-    control_comparison_pending: true
+    control_comparison_completed_at: "2026-08-06"
+    control_comparison_notes: >
+      The no-penalty telemetry control reached 88.28% with 2.6455% mean
+      pre-pool and 0.9602% non-winner firing. Selective non-winner
+      regularization at lambda=0.1 reached 88.26%, reducing those rates by
+      24.97% and 25.53%; ordinary all-spike regularization reached 87.48%,
+      reducing them by 28.74% and 30.30%. All layers remained active. The
+      ordinary penalty was 2.70 times larger than the selective one at the
+      same lambda, so a penalty-matched ordinary control remains a potential
+      follow-up. The promising selective versus no-regularization comparison
+      requires five seeds before inferential conclusions.
   conclude:
     pending: true
 coefficient_calibration:
