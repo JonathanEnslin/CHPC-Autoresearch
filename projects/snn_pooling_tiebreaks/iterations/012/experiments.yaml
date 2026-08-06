@@ -12,7 +12,15 @@ experiments:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-05"
-    status: queued
+    status: completed
+    completed_at: "2026-08-06"
+    final_metrics:
+      lambda_0.03:
+        validation_accuracy: 88.04
+        nonwinner_firing_rate: 0.007907
+      lambda_0.1:
+        validation_accuracy: 88.26
+        nonwinner_firing_rate: 0.007151
     output_groups:
       0.03: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p03
       0.1: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p1
@@ -30,7 +38,15 @@ experiments:
     queue: gpu_1
     walltime: "12:00:00"
     submitted_at: "2026-08-05"
-    status: queued
+    status: completed
+    completed_at: "2026-08-06"
+    final_metrics:
+      lambda_0.3:
+        validation_accuracy: 86.14
+        nonwinner_firing_rate: 0.00486
+      lambda_1.0:
+        validation_accuracy: 84.48
+        nonwinner_firing_rate: 0.003634
     output_groups:
       0.3: cifar10_snn_pooling_i12_memex_nonwinner_lambda_0p3
       1.0: cifar10_snn_pooling_i12_memex_nonwinner_lambda_1p0

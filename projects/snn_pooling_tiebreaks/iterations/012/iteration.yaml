@@ -1,6 +1,6 @@
 iteration: 12
 project: snn_pooling_tiebreaks
-status: experiment
+status: analyze
 goal: >
   Test non-winner spike regularization with post-LIF greatest-membrane-excess
   pooling on the stable six-timestep direct/TET CIFAR-10 VGG-9 recipe. At each
@@ -39,8 +39,23 @@ phases:
       measurement. Job 7358025 evaluates lambda=0.03 then 0.1; job
       7358026 evaluates lambda=0.3 then 1.0. Both were verified queued in
       gpu_1 immediately after submission.
+    completed_at: "2026-08-06"
+    completion_notes: >
+      Both jobs completed all four 200-epoch calibrations. No condition
+      collapsed or starved its deep/output layers. Increasing lambda reduced
+      the recorded non-winner rate but worsened accuracy from lambda=0.3
+      onward.
   analyze:
-    pending: true
+    completed_at: "2026-08-06"
+    notes: >
+      Lambda=0.1 reached 88.26%, essentially identical to the prior
+      unregularized same-seed greatest-excess reference (88.28%), while lambda
+      0.3 and 1.0 reached 86.14% and 84.48%. Non-winner firing decreased from
+      0.7907% at lambda=0.03 to 0.3634% at lambda=1.0. The unregularized
+      reference did not record this newly added metric, preventing a direct
+      absolute sparsity claim. Do not expand a strong fixed penalty; a future
+      warm-up/ramp experiment is the appropriate next test if stronger
+      regularization is desired.
   conclude:
     pending: true
 coefficient_calibration:

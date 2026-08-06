@@ -1,0 +1,57 @@
+{
+  "scope": "CIFAR-10 direct/TET six-timestep VGG-9 greatest-excess non-winner regularization calibration",
+  "recipe": {
+    "epochs": 200,
+    "seed": 0,
+    "dynamics": "beta=0.5, ATan surrogate, immediate reset, AdamW cosine schedule, norm-5 gradient clipping"
+  },
+  "reference": {
+    "regularization_lambda": 0.0,
+    "final_validation_accuracy": 88.28,
+    "source": "iteration 11 one-seed greatest-excess calibration",
+    "note": "The lambda=0 reference pre-dated non-winner telemetry, so its non-winner rate was not recorded."
+  },
+  "conditions": {
+    "lambda_0.03": {
+      "final_validation_accuracy": 88.04,
+      "final_validation_loss": 0.617358,
+      "final_train_accuracy": 98.966667,
+      "raw_nonwinner_penalty": 0.007572,
+      "weighted_nonwinner_penalty": 0.000227,
+      "pool_nonwinner_firing_rate": 0.007907,
+      "stage_4_conv_2_firing_rate": 0.00938,
+      "output_firing_rate": 0.111823
+    },
+    "lambda_0.1": {
+      "final_validation_accuracy": 88.26,
+      "final_validation_loss": 0.591854,
+      "final_train_accuracy": 98.771111,
+      "raw_nonwinner_penalty": 0.006988,
+      "weighted_nonwinner_penalty": 0.000699,
+      "pool_nonwinner_firing_rate": 0.007151,
+      "stage_4_conv_2_firing_rate": 0.011138,
+      "output_firing_rate": 0.111292
+    },
+    "lambda_0.3": {
+      "final_validation_accuracy": 86.14,
+      "final_validation_loss": 0.6356,
+      "final_train_accuracy": 96.922222,
+      "raw_nonwinner_penalty": 0.00492,
+      "weighted_nonwinner_penalty": 0.001476,
+      "pool_nonwinner_firing_rate": 0.00486,
+      "stage_4_conv_2_firing_rate": 0.009972,
+      "output_firing_rate": 0.116576
+    },
+    "lambda_1.0": {
+      "final_validation_accuracy": 84.48,
+      "final_validation_loss": 0.678919,
+      "final_train_accuracy": 93.813333,
+      "raw_nonwinner_penalty": 0.00372,
+      "weighted_nonwinner_penalty": 0.00372,
+      "pool_nonwinner_firing_rate": 0.003634,
+      "stage_4_conv_2_firing_rate": 0.007555,
+      "output_firing_rate": 0.128812
+    }
+  },
+  "conclusion": "All four one-seed runs completed with active deep and output layers. Increasing lambda monotonically reduced recorded non-winner firing (0.7907% at lambda=0.03 to 0.3634% at lambda=1.0), but accuracy fell from 88.04% to 84.48%. Lambda=0.1 matched the unregularized same-seed accuracy within 0.02 percentage points (88.26% vs 88.28%) while recording a 0.7151% non-winner firing rate. A zero-lambda telemetry reference is needed before claiming an absolute sparsity reduction; stronger fixed penalties are not suitable for expansion. If stronger regularization is pursued, test a warm-up/ramp schedule rather than applying it from epoch 1."
+}
