@@ -87,5 +87,30 @@
     },
     "interpretation": "At the common coefficient lambda=0.1, exempting the greatest-excess winner preserves the no-regularization accuracy while reducing pre-pool and non-winner activity by about one quarter. Ordinary regularization yields a slightly larger activity reduction but loses 0.80 percentage points. Its unweighted penalty is 2.70 times the selective penalty at the same lambda, so a penalty-matched ordinary baseline would be a useful follow-up."
   },
+  "activity_sweep_80_epochs": {
+    "activity_definition": "Final validation-epoch mean activity. Network spikes are the sum of LIF, projection-LIF, and output-LIF spikes per sample across six timesteps; pooling relay outputs are excluded from this total. Pre/post pool counts are summed over all three pool sites and six timesteps per sample.",
+    "no_regularization": {
+      "lambda": 0.0,
+      "validation_accuracy": 87.26,
+      "network_spikes_per_sample": 108096.519,
+      "pre_pool_spikes_per_sample": 21852.282,
+      "post_pool_spikes_per_sample": 13660.886,
+      "pool_spike_reduction_per_sample": 8020.985,
+      "mean_nonwinner_rate": 0.010525
+    },
+    "selective_winner_exempted": [
+      {"lambda": 0.03, "validation_accuracy": 86.48, "network_spikes_per_sample": 106300.501, "pre_pool_spikes_per_sample": 17493.547, "post_pool_spikes_per_sample": 11027.145, "pool_spike_reduction_per_sample": 6329.084, "mean_nonwinner_rate": 0.008071},
+      {"lambda": 0.1, "validation_accuracy": 86.64, "network_spikes_per_sample": 101043.562, "pre_pool_spikes_per_sample": 15965.539, "post_pool_spikes_per_sample": 10047.698, "pool_spike_reduction_per_sample": 5787.048, "mean_nonwinner_rate": 0.00727},
+      {"lambda": 0.3, "validation_accuracy": 83.36, "network_spikes_per_sample": 106894.611, "pre_pool_spikes_per_sample": 10523.376, "post_pool_spikes_per_sample": 6675.48, "pool_spike_reduction_per_sample": 3763.492, "mean_nonwinner_rate": 0.004837},
+      {"lambda": 0.5, "validation_accuracy": 82.36, "network_spikes_per_sample": 101265.273, "pre_pool_spikes_per_sample": 9249.969, "post_pool_spikes_per_sample": 5837.141, "pool_spike_reduction_per_sample": 3338.654, "mean_nonwinner_rate": 0.004302}
+    ],
+    "ordinary_all_spike": [
+      {"lambda": 0.03, "validation_accuracy": 86.5, "network_spikes_per_sample": 100831.664, "pre_pool_spikes_per_sample": 17712.61, "post_pool_spikes_per_sample": 11528.629, "pool_spike_reduction_per_sample": 6047.079, "mean_nonwinner_rate": 0.008223},
+      {"lambda": 0.1, "validation_accuracy": 86.34, "network_spikes_per_sample": 118512.027, "pre_pool_spikes_per_sample": 15601.955, "post_pool_spikes_per_sample": 9684.091, "pool_spike_reduction_per_sample": 5792.099, "mean_nonwinner_rate": 0.007372},
+      {"lambda": 0.3, "validation_accuracy": 85.12, "network_spikes_per_sample": 108606.525, "pre_pool_spikes_per_sample": 12069.956, "post_pool_spikes_per_sample": 7513.374, "pool_spike_reduction_per_sample": 4452.388, "mean_nonwinner_rate": 0.00564},
+      {"lambda": 0.5, "validation_accuracy": 84.3, "network_spikes_per_sample": 117534.051, "pre_pool_spikes_per_sample": 9635.498, "post_pool_spikes_per_sample": 6177.124, "pool_spike_reduction_per_sample": 3380.752, "mean_nonwinner_rate": 0.004333}
+    ],
+    "interpretation": "Both regularizers monotonically suppress pre-pool and non-winner activity as lambda rises, at an accuracy cost. Total network activity is not monotonic, demonstrating why it must be measured rather than inferred from pooling activity alone. At 80 epochs the best observed accuracy-activity compromise is selective lambda=0.1: 86.64% validation accuracy with 101043.6 network spikes and 15965.5 pre-pool spikes per sample. All conclusions remain one-seed observations."
+  },
   "conclusion": "All one-seed runs completed with active deep and output layers. Strong selective penalties reduce non-winner firing but hurt accuracy. At lambda=0.1, selective non-winner regularization is the promising fixed-strength formulation: it matched the no-regularization accuracy within 0.02 percentage points while reducing measured pre-pool activity by 24.97% and non-winner activity by 25.53%. Ordinary all-spike regularization at the same coefficient reduced activity slightly more but lost 0.80 percentage points. These are one-seed results, so the fixed-lambda comparison needs a five-seed confirmation before a statistical claim."
 }

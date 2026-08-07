@@ -82,6 +82,15 @@ phases:
       lambda=0 baseline then selective lambda={0.03, 0.1, 0.3, 0.5}; job
       7359500 runs ordinary lambda={0.03, 0.1, 0.3, 0.5}. Every condition is
       trained for 80 epochs and records activity every five epochs.
+    activity_sweep_completed_at: "2026-08-07"
+    activity_sweep_completion_notes: >
+      Both packed jobs completed all nine 80-epoch conditions. Raw pre-pool,
+      post-pool, and total-neuronal spike counts were recorded every five
+      epochs. Selective lambda=0.1 was the strongest observed 80-epoch
+      accuracy-activity compromise (86.64% accuracy, 101043.6 total neuronal
+      and 15965.5 pre-pool spikes per validation sample). Total network
+      activity was not monotonic across strengths, confirming the need for
+      direct measurement rather than a pooling-only energy proxy.
   analyze:
     completed_at: "2026-08-06"
     notes: >
