@@ -1,0 +1,4 @@
+# Keep project-specific PBS scripts and credentials private.
+*.private.pbs
+.env
+logs/
