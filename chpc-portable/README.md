@@ -2,6 +2,21 @@
 
 Copy this folder into an existing project when you need to run it on CHPC without bringing in the AutoResearch framework. It contains only operational instructions and a PBS template; it has no Python/package dependency on this repository.
 
+## 0. Agent preflight: authentication and private configuration
+
+This workstation already has SSH keys configured for the CHPC account. Agents should use the existing SSH client and key configuration; they must **not** ask for a password, generate a replacement key, copy a private key, or alter CHPC `authorized_keys`.
+
+Each project that uses this kit needs a **local, untracked** `.env` containing at least:
+
+```dotenv
+CHPC_USERNAME=...
+CHPC_HOST=...
+CHPC_PROJECT_ID=...
+CHPC_LUSTRE_PATH=...
+```
+
+Useful optional fields are `CHPC_REPO_NAME`, `CHPC_MODULE_PYTHON`, `WANDB_ENTITY`, `WANDB_PROJECT`, and `WANDB_API_KEY`. An agent may read these values locally to connect, but must never print them in chat/logs, commit `.env`, or transfer it to CHPC.
+
 ## 1. Decide the remote project path
 
 On your local machine, choose variables matching your CHPC account and allocation. Do not put passwords, API keys, or a copied `.env` in Git.
@@ -13,6 +28,14 @@ CHPC_PROJECT="your_PBS_project_code"
 REMOTE_ROOT="/mnt/lustre/users/$CHPC_USER"
 REMOTE_PROJECT="$REMOTE_ROOT/my-project"
 ```
+
+Before a transfer or submission, run a non-interactive connection test. It should return an identity/path response without prompting for a password:
+
+```bash
+ssh -o BatchMode=yes -o ConnectTimeout=15 "$CHPC_USER@$CHPC_LOGIN" 'whoami; pwd'
+```
+
+If it fails, report the exact safe error to the user. Do not try to work around an authentication failure by exposing credentials or changing keys.
 
 Use the normal CHPC login host for shell work, PBS submission, and monitoring:
 
