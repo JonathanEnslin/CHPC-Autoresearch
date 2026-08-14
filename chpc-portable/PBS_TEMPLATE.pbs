@@ -3,6 +3,7 @@
 #PBS -q gpu_1
 #PBS -N CHANGE_ME_job_name
 #PBS -l select=1:ncpus=4:mem=32gb:ngpus=1
+# GPU jobs have a 12-hour maximum walltime; do not increase this value.
 #PBS -l walltime=12:00:00
 #PBS -o CHANGE_ME_REMOTE_PROJECT/logs/CHANGE_ME_job_name_${PBS_JOBID}.out
 #PBS -e CHANGE_ME_REMOTE_PROJECT/logs/CHANGE_ME_job_name_${PBS_JOBID}.err

@@ -133,6 +133,8 @@ Use a short smoke job before a long experiment. Then size walltime from an obser
 walltime = number of sequential seeds × observed time per seed × 1.2
 ```
 
+GPU jobs are limited to **12 hours** (`#PBS -l walltime=12:00:00`). Do not request a longer GPU walltime. Fit sequential work within that limit, leave the 20% buffer, and use checkpoints so a continuation job can resume safely if needed.
+
 The template writes a unique stdout/stderr pair beneath `logs/`; inspect these first whenever a job ends unexpectedly.
 
 ## 5. Monitor and recover
