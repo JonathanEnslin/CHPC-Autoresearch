@@ -50,7 +50,7 @@ An existing Lustre environment used by the SNN experiments is available at:
 /mnt/lustre/users/jenslin/SNN/.snn-venv3
 ```
 
-It has previously provided CUDA PyTorch, `snntorch`, Hydra/OmegaConf, and W&B. Treat it as shared/known-good: activate and verify it, but do **not** install, upgrade, or remove packages in it.
+It has previously provided CUDA PyTorch, `snntorch`, Hydra/OmegaConf, and W&B. The AutoResearch checkout's `.venv` is a symlink to this environment; use the canonical path above in independent projects. Treat it as shared/known-good: activate and verify it, but do **not** install, upgrade, or remove packages in it.
 
 ```bash
 source /mnt/lustre/users/jenslin/SNN/.snn-venv3/bin/activate
@@ -60,6 +60,24 @@ print("torch:", torch.__version__, "CUDA:", torch.cuda.is_available())
 print("snntorch:", snntorch.__version__)
 PY
 ```
+
+### Existing private environment file
+
+The current private CHPC configuration file is on Lustre at:
+
+```bash
+/mnt/lustre/users/jenslin/chpc_autoresearch/.env
+```
+
+It contains connection/allocation values and W&B credentials used by the existing experiments. It is deliberately untracked. Do **not** download it, commit it, or transfer it to another system. If an existing project on CHPC needs those settings, it may load the private file *on CHPC only* immediately before starting its command:
+
+```bash
+set -a
+source /mnt/lustre/users/jenslin/chpc_autoresearch/.env
+set +a
+```
+
+Do not echo the values after loading them. New projects should keep their own project settings separate and only reuse this file where the existing private credentials are genuinely required.
 
 If the project needs additional packages, create a project-local environment instead, preferably from an Internet-capable CHPC node such as `chpclic1` according to current CHPC policy:
 

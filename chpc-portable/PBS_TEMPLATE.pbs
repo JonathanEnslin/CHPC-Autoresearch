@@ -16,6 +16,12 @@ mkdir -p logs
 # Use the existing shared SNN environment unchanged, or replace with .venv/bin/activate.
 source /mnt/lustre/users/jenslin/SNN/.snn-venv3/bin/activate
 
+# Optional: use the existing private CHPC/W&B settings on the cluster only.
+# Never copy this file or print values from it.
+# set -a
+# source /mnt/lustre/users/jenslin/chpc_autoresearch/.env
+# set +a
+
 # Make an in-project src/ package importable when applicable.
 export PYTHONPATH="$PROJECT_DIR/src${PYTHONPATH:+:$PYTHONPATH}"
 
